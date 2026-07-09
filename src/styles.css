@@ -778,6 +778,11 @@ ul { list-style: none; }
   .hero-script { right: 4vw; bottom: 8%; }
 
   .scroll-cue { display: none; }
+  /* Mobiele GPU sparen: kleinere/goedkopere glows, geen animerende blur-laag */
+  .travel-bottle::before { width: 32vh; height: 42vh; filter: blur(22px); }
+  .journey-glow { filter: blur(26px); }
+  .journey-atmos { display: none; }
+  .palm-blur { filter: blur(3px) drop-shadow(0 20px 26px rgba(10, 30, 18, 0.4)); }
   .hero-script { left: 10px; top: 0; }
   .hero-script .script { font-size: 26px; }
   .hero-script .arrow { width: 54px; margin-left: 64px; }

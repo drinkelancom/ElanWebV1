@@ -50,19 +50,47 @@ export default function BottleScroll() {
     // Ankers buiten de sectie: hero (start) en orbit-bottle (eindbestemming).
     const heroStage = document.querySelector('.hero-stage')
     const orbitImg = document.querySelector('.orbit-bottle')
+    const orbitWrap = orbitImg?.closest('[data-depth]')
     // Voorkom een flits van de journey-bottle vóór de overdracht.
     bottle.style.opacity = '0'
 
-    const updateProgress = () => {
-      const rect = section.getBoundingClientRect()
-      const total = rect.height - window.innerHeight
-      progRef.current = clamp(-rect.top / Math.max(1, total), 0, 1)
-      topRef.current = rect.top
-      bottomRef.current = rect.bottom
+    // Geometrie één keer meten (document-coördinaten) i.p.v. elke frame een
+    // getBoundingClientRect — per-frame layout-reads veroorzaken jank op mobiel.
+    const geo = { secTop: 0, secH: 1, heroCX: 0, heroCY: 0, orbCX: 0, orbCY: 0, orbH: 1, baseH: 1 }
+    const measure = () => {
+      const sy = window.scrollY
+      const sr = section.getBoundingClientRect()
+      geo.secTop = sr.top + sy
+      geo.secH = sr.height
+      if (heroStage) {
+        const hr = heroStage.getBoundingClientRect()
+        geo.heroCX = hr.left + hr.width / 2
+        geo.heroCY = hr.top + sy + hr.height / 2
+      }
+      if (orbitImg) {
+        const or = orbitImg.getBoundingClientRect()
+        // huidige diepte-translatie eruit rekenen: die telt per frame apart mee
+        const dt0 = orbitWrap ? parseFloat(orbitWrap.dataset.dt || '0') : 0
+        geo.orbCX = or.left + or.width / 2
+        geo.orbCY = or.top + sy + or.height / 2 - dt0
+        geo.orbH = or.height
+      }
+      const ti = travel?.querySelector('img')
+      geo.baseH = ti ? ti.offsetHeight : 1
+      updateProgress()
     }
-    updateProgress()
+
+    const updateProgress = () => {
+      const top = geo.secTop - window.scrollY
+      topRef.current = top
+      bottomRef.current = top + geo.secH
+      progRef.current = clamp(-top / Math.max(1, geo.secH - window.innerHeight), 0, 1)
+    }
+    measure()
     window.addEventListener('scroll', updateProgress, { passive: true })
-    window.addEventListener('resize', updateProgress)
+    window.addEventListener('resize', measure)
+    window.addEventListener('load', measure)
+    const remeasureT = setTimeout(measure, 1500)
 
     // Doel-x/-y per chapter (rustplek van het pak).
     const stops = journey.map((c) => sideX[c.side] ?? 0)
@@ -71,6 +99,11 @@ export default function BottleScroll() {
     let raf
     // Startwaarden = pose van chapter 0, zodat de overdracht naadloos is.
     let cx = 0, cy = sideY.center, cscale = 1, crot = 0
+    // Gedempte pose van het reizende pak (px). Demping maakt schokkerige
+    // (mobiele) scroll-events vloeiend; seeding bij fase-wissels houdt de
+    // overdrachten naadloos.
+    let tx = 0, ty = 0, tr = 0, ts = 1, seeded = false
+    let mode = null // 'hero' | 'journey' | 'end' | 'orbit'
     let t0 = performance.now()
 
     const tick = (now) => {
@@ -83,51 +116,81 @@ export default function BottleScroll() {
       // 0 = journey nog bezig, 1 = journey volledig uit beeld (orbit bereikt)
       const endT = clamp((vh - bottomRef.current) / vh, 0, 1)
       const floatIdle = reduce ? 0 : Math.sin(now * 0.0011) * 10
-
       const mobile = vw <= 860
+      // actuele scrollpositie, afgeleid — geen DOM-read in de frame-loop
+      const sy = geo.secTop - topRef.current
+      const kFast = reduce ? 1 : 1 - Math.pow(0.0008, dt)
+
+      // Fase bepalen + pose doorzetten bij een wissel (naadloze overdracht).
+      const m = stickT < 1 ? 'hero' : endT >= 1 ? 'orbit' : endT > 0 ? 'end' : 'journey'
+      if (m !== mode) {
+        const prev = mode
+        mode = m
+        if (m === 'journey' && (prev === 'hero' || prev === 'end')) {
+          cx = (tx / vw) * 100
+          cy = ((ty - floatIdle) / vh) * 100
+          cscale = ts
+          crot = tr
+        } else if ((m === 'hero' || m === 'end') && prev === 'journey') {
+          tx = (cx * vw) / 100
+          ty = (cy * vh) / 100 + floatIdle
+          ts = cscale
+          tr = crot
+          seeded = true
+        } else if (m === 'end' && prev === 'orbit') {
+          tx = geo.orbCX - vw / 2
+          ty = geo.orbCY - sy - vh / 2
+          ts = geo.orbH / Math.max(1, geo.baseH)
+          tr = 0
+          seeded = true
+        }
+      }
 
       if (travel) {
-        if (stickT < 1 && heroStage) {
+        if (m === 'hero' && heroStage) {
           // ── Fase 1: reis van hero naar journey ──
-          // Op mobiel staat het pak gecentreerd óver het logo (subtielere kanteling);
+          // Op mobiel gecentreerd óver het logo (subtiele kanteling);
           // op desktop links ernaast met -30°.
-          const hr = heroStage.getBoundingClientRect()
           const heroOffX = (mobile ? -0.02 : -0.26) * vw
-          const hx = hr.left + hr.width / 2 - vw / 2 + heroOffX
-          const hy = hr.top + hr.height / 2 - vh / 2 + (mobile ? 0.05 : 0.09) * vh
+          const hx = geo.heroCX - vw / 2 + heroOffX
+          const hy = geo.heroCY - sy - vh / 2 + (mobile ? 0.05 : 0.09) * vh
           const jy = topRef.current + sideY.center * vh / 100
           const e = smooth(stickT)
-          const x = lerp(hx, 0, e)
-          const y = lerp(hy, jy, e) + floatIdle
-          const rot = lerp(mobile ? -14 : -30, 0, e)
-          // in de hero iets kleiner; groeit tijdens de reis terug naar vol formaat
-          const s = lerp(mobile ? 0.62 : 0.68, 1.0, e)
+          const gx = lerp(hx, 0, e)
+          const gy = lerp(hy, jy, e) + floatIdle
+          const grot = lerp(mobile ? -14 : -30, 0, e)
+          // in de hero iets kleiner; groeit tijdens de reis naar vol formaat
+          const gs = lerp(mobile ? 0.62 : 0.68, 1.0, e)
+          if (!seeded) { tx = gx; ty = gy; tr = grot; ts = gs; seeded = true }
+          tx = lerp(tx, gx, kFast); ty = lerp(ty, gy, kFast)
+          tr = lerp(tr, grot, kFast); ts = lerp(ts, gs, kFast)
           travel.style.opacity = '1'
           travel.style.transform =
-            `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) rotate(${rot.toFixed(2)}deg) scale(${s.toFixed(3)})`
+            `translate3d(${tx.toFixed(1)}px, ${ty.toFixed(1)}px, 0) rotate(${tr.toFixed(2)}deg) scale(${ts.toFixed(3)})`
           bottle.style.opacity = '0'
           if (orbitImg) orbitImg.style.opacity = '0'
-        } else if (endT >= 1) {
+        } else if (m === 'orbit') {
           // ── Aangekomen: de orbit-bottle neemt het over ──
           travel.style.opacity = '0'
           bottle.style.opacity = '0'
           if (orbitImg) orbitImg.style.opacity = '1'
-        } else if (endT > 0 && orbitImg) {
+        } else if (m === 'end' && orbitImg) {
           // ── Fase 3: reis van journey-einde naar de orbit-sectie ──
-          const or = orbitImg.getBoundingClientRect()
-          const travelImg = travel.querySelector('img')
-          const baseH = travelImg ? travelImg.offsetHeight : 1
+          const wrapDt = orbitWrap ? parseFloat(orbitWrap.dataset.dt || '0') : 0
+          const ox = geo.orbCX - vw / 2
+          const oy = geo.orbCY - sy - vh / 2 + wrapDt
+          const oscale = geo.orbH / Math.max(1, geo.baseH)
           const stageTop = bottomRef.current - vh // top van de (losgelaten) stage
-          const ox = or.left + or.width / 2 - vw / 2
-          const oy = or.top + or.height / 2 - vh / 2
-          const oscale = or.height / Math.max(1, baseH)
           const e = smooth(endT)
-          const x = lerp(0, ox, e)
-          const y = lerp(stageTop + sideY.center * vh / 100, oy, e) + floatIdle * (1 - e)
-          const s = lerp(1.0, oscale, e)
+          const gx = lerp(0, ox, e)
+          const gy = lerp(stageTop + sideY.center * vh / 100, oy, e) + floatIdle * (1 - e)
+          const gs = lerp(1.0, oscale, e)
+          if (!seeded) { tx = gx; ty = gy; tr = 0; ts = gs; seeded = true }
+          tx = lerp(tx, gx, kFast); ty = lerp(ty, gy, kFast)
+          tr = lerp(tr, 0, kFast); ts = lerp(ts, gs, kFast)
           travel.style.opacity = '1'
           travel.style.transform =
-            `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) rotate(0deg) scale(${s.toFixed(3)})`
+            `translate3d(${tx.toFixed(1)}px, ${ty.toFixed(1)}px, 0) rotate(${tr.toFixed(2)}deg) scale(${ts.toFixed(3)})`
           bottle.style.opacity = '0'
           orbitImg.style.opacity = '0'
         } else {
@@ -207,8 +270,10 @@ export default function BottleScroll() {
 
     return () => {
       cancelAnimationFrame(raf)
+      clearTimeout(remeasureT)
       window.removeEventListener('scroll', updateProgress)
-      window.removeEventListener('resize', updateProgress)
+      window.removeEventListener('resize', measure)
+      window.removeEventListener('load', measure)
     }
   }, [])
 
