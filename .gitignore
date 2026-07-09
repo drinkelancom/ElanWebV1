@@ -12,3 +12,6 @@ dist/
 
 # Logs
 *.log
+
+# Giphy render-output
+giphy/

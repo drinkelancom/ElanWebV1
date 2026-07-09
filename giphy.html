@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8" />
+<title>ÉLAN Giphy scenes</title>
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700,800&f[]=zodiak@700,800,900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ivory:#fffaee; --forest:#0c2c1b; --deep:#123a24; --green:#51b83e;
+    --green-dark:#3f9430; --clay:#c58a6d; --sand:#efe4d3; --ink:#14130f;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#222; }
+  .stage {
+    position:relative; width:480px; height:480px; overflow:hidden;
+    font-family:'Cabinet Grotesk',sans-serif;
+  }
+  .script { font-family:'Sacramento',cursive; font-weight:400; }
+  .serif { font-family:'Zodiak',serif; font-weight:800; }
+  .logo { position:absolute; right:18px; bottom:16px; height:20px; z-index:50; }
+  img { user-select:none; }
+
+  /* ══ 1. float — stay hydrated ══ */
+  .s-float { background:radial-gradient(120% 100% at 50% 0%, #1b5233, var(--forest)); }
+  .s-float .glow { position:absolute; left:50%; top:55%; width:340px; height:420px; transform:translate(-50%,-50%);
+    background:radial-gradient(ellipse, rgba(150,240,190,.35), transparent 65%); filter:blur(30px);
+    animation:f-glow var(--dur) ease-in-out infinite; }
+  @keyframes f-glow { 0%,100%{opacity:.7} 50%{opacity:1} }
+  .s-float .pack { position:absolute; left:50%; top:54%; height:300px; transform:translate(-50%,-50%);
+    filter:drop-shadow(0 24px 26px rgba(0,0,0,.5)); animation:f-bob var(--dur) ease-in-out infinite; }
+  @keyframes f-bob { 0%,100%{transform:translate(-50%,-50%) rotate(-2deg)} 50%{transform:translate(-50%,-56%) rotate(2deg)} }
+  .s-float .palm { position:absolute; width:190px; }
+  .s-float .palm.a { top:-36px; left:-40px; transform:rotate(-140deg) scaleX(-1); animation:f-sway var(--dur) ease-in-out infinite; }
+  .s-float .palm.b { bottom:-30px; right:-36px; transform:rotate(28deg); animation:f-sway2 var(--dur) ease-in-out infinite; }
+  @keyframes f-sway  { 0%,100%{rotate:0deg} 50%{rotate:5deg} }
+  @keyframes f-sway2 { 0%,100%{rotate:0deg} 50%{rotate:-5deg} }
+  .s-float .txt { position:absolute; left:50%; top:44px; transform:translateX(-50%); color:var(--ivory);
+    font-size:52px; white-space:nowrap; text-shadow:0 6px 18px rgba(0,0,0,.4);
+    animation:f-txt var(--dur) ease-in-out infinite; }
+  @keyframes f-txt { 0%,100%{transform:translateX(-50%) rotate(-2.5deg)} 50%{transform:translateX(-50%) rotate(2.5deg)} }
+
+  /* ══ 2. pure — 100% PURE stamp ══ */
+  .s-pure { background:radial-gradient(110% 90% at 80% 10%, #d69d80, var(--clay)); }
+  .s-pure .pack { position:absolute; left:26%; top:56%; height:310px; transform:translate(-50%,-50%) rotate(-8deg);
+    filter:drop-shadow(0 22px 24px rgba(90,40,20,.45)); animation:p-tilt var(--dur) ease-in-out infinite; }
+  @keyframes p-tilt { 0%,100%{transform:translate(-50%,-50%) rotate(-9deg)} 50%{transform:translate(-50%,-52%) rotate(-4deg)} }
+  .s-pure .badge { position:absolute; right:44px; top:34%; transform:rotate(9deg); text-align:center;
+    color:var(--ivory); animation:p-pop var(--dur) ease-in-out infinite; }
+  @keyframes p-pop { 0%,100%{scale:.94; rotate:8deg} 50%{scale:1.08; rotate:11deg} }
+  .s-pure .badge .n { font-size:86px; line-height:.9; text-shadow:0 8px 20px rgba(90,40,20,.4); }
+  .s-pure .badge .w { font-size:38px; letter-spacing:.14em; }
+  .s-pure .spark { position:absolute; color:var(--ivory); font-size:34px; animation:p-spin var(--dur) linear infinite; }
+  .s-pure .spark.a { right:36px; top:110px; }
+  .s-pure .spark.b { right:196px; top:290px; font-size:22px; animation-direction:reverse; }
+  @keyframes p-spin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+  .s-pure .sub { position:absolute; left:50%; bottom:46px; transform:translateX(-50%); color:var(--ivory);
+    font-size:40px; white-space:nowrap; }
+
+  /* ══ 3. coconut — born from purity ══ */
+  .s-coco { background:radial-gradient(100% 90% at 50% 0%, #fff, var(--sand)); }
+  .s-coco .nut { position:absolute; left:50%; top:52%; width:190px; transform:translate(-50%,-50%);
+    transform-origin:50% 100%; animation:c-bounce var(--dur) cubic-bezier(.36,0,.64,1) infinite;
+    filter:drop-shadow(0 18px 16px rgba(20,19,15,.25)); }
+  @keyframes c-bounce {
+    0%,100% { transform:translate(-50%,-50%) scale(1,1); }
+    30%     { transform:translate(-50%,-84%) scale(.96,1.05); }
+    50%     { transform:translate(-50%,-50%) scale(1,1); }
+    58%     { transform:translate(-50%,-44%) scale(1.09,.88); }
+    66%     { transform:translate(-50%,-50%) scale(.98,1.03); }
+  }
+  .s-coco .shadow { position:absolute; left:50%; top:76%; width:180px; height:34px; transform:translateX(-50%);
+    background:radial-gradient(ellipse, rgba(20,19,15,.28), transparent 68%);
+    animation:c-shadow var(--dur) cubic-bezier(.36,0,.64,1) infinite; }
+  @keyframes c-shadow { 0%,50%,100%{transform:translateX(-50%) scale(1)} 30%{transform:translateX(-50%) scale(.72); opacity:.6} 58%{transform:translateX(-50%) scale(1.12)} }
+  .s-coco .drop { position:absolute; left:50%; top:58%; width:12px; height:16px; background:var(--green);
+    border-radius:50% 50% 50% 50%/60% 60% 40% 40%; opacity:0; }
+  .s-coco .drop.a { animation:c-dropA var(--dur) ease-out infinite; }
+  .s-coco .drop.b { animation:c-dropB var(--dur) ease-out infinite; }
+  @keyframes c-dropA { 0%,55%{opacity:0; transform:translate(0,0) scale(.6)} 60%{opacity:1} 78%{opacity:1; transform:translate(-64px,-70px) scale(1)} 92%,100%{opacity:0; transform:translate(-80px,-30px)} }
+  @keyframes c-dropB { 0%,55%{opacity:0; transform:translate(0,0) scale(.6)} 60%{opacity:1} 78%{opacity:1; transform:translate(58px,-78px) scale(1)} 92%,100%{opacity:0; transform:translate(74px,-34px)} }
+  .s-coco .txt { position:absolute; left:50%; bottom:52px; transform:translateX(-50%); color:var(--deep);
+    font-size:46px; white-space:nowrap; }
+
+  /* ══ 4. morning — good morning sunshine ══ */
+  .s-morning { background:linear-gradient(180deg, #f6d9b8 0%, #efc9a0 45%, var(--sand) 100%); }
+  .s-morning .rays { position:absolute; left:50%; top:50%; width:700px; height:700px; transform:translate(-50%,-50%);
+    background:repeating-conic-gradient(rgba(255,250,238,.55) 0deg 9deg, transparent 9deg 24deg);
+    animation:m-rot var(--dur) linear infinite; }
+  @keyframes m-rot { from{transform:translate(-50%,-50%) rotate(0)} to{transform:translate(-50%,-50%) rotate(48deg)} }
+  .s-morning .sun { position:absolute; left:50%; top:50%; width:250px; height:250px; transform:translate(-50%,-50%);
+    background:radial-gradient(circle, #ffe9c4, rgba(255,233,196,0) 70%); }
+  .s-morning .pack { position:absolute; left:50%; top:52%; height:290px; transform:translate(-50%,-50%);
+    filter:drop-shadow(0 20px 22px rgba(120,80,40,.35)); animation:m-float var(--dur) ease-in-out infinite; }
+  @keyframes m-float { 0%,100%{transform:translate(-50%,-50%)} 50%{transform:translate(-50%,-53%)} }
+  .s-morning .txt { position:absolute; left:50%; top:36px; transform:translateX(-50%); color:#8a5a34;
+    font-size:48px; white-space:nowrap; }
+  .s-morning .palm { position:absolute; width:170px; bottom:-30px; left:-38px; transform:rotate(-46deg);
+    animation:m-sway var(--dur) ease-in-out infinite; }
+  @keyframes m-sway { 0%,100%{rotate:0deg} 50%{rotate:4deg} }
+
+  /* ══ 5. thirsty — thirsty? ══ */
+  .s-thirsty { background:radial-gradient(120% 100% at 50% 100%, #1c5c36, var(--deep)); }
+  .s-thirsty .txt { position:absolute; left:50%; top:64px; transform:translateX(-50%); color:var(--ivory);
+    font-size:92px; white-space:nowrap; text-shadow:0 10px 26px rgba(0,0,0,.45);
+    animation:t-wob var(--dur) ease-in-out infinite; }
+  @keyframes t-wob { 0%,100%{transform:translateX(-50%) rotate(-3deg) scale(.98)} 50%{transform:translateX(-50%) rotate(3deg) scale(1.04)} }
+  .s-thirsty .pack { position:absolute; left:50%; top:70%; height:250px;
+    filter:drop-shadow(0 22px 24px rgba(0,0,0,.5)); animation:t-peek var(--dur) ease-in-out infinite; }
+  @keyframes t-peek { 0%,100%{transform:translate(-50%,-46%) rotate(-7deg)} 50%{transform:translate(-50%,-54%) rotate(5deg)} }
+  .s-thirsty .q { position:absolute; color:var(--green); font-size:44px; font-weight:800; font-family:'Zodiak',serif; }
+  .s-thirsty .q.a { left:64px; top:220px; animation:t-q var(--dur) ease-in-out infinite; }
+  .s-thirsty .q.b { right:64px; top:200px; animation:t-q var(--dur) ease-in-out infinite reverse; }
+  @keyframes t-q { 0%,100%{transform:translateY(0) rotate(-10deg); opacity:.7} 50%{transform:translateY(-14px) rotate(8deg); opacity:1} }
+
+  /* ══ 6. sparkle — naturally hydrating ══ */
+  .s-sparkle { background:radial-gradient(110% 100% at 50% 10%, #16452a, var(--forest)); }
+  .s-sparkle .pack { position:absolute; left:50%; top:50%; height:300px; transform:translate(-50%,-52%);
+    filter:drop-shadow(0 24px 26px rgba(0,0,0,.55)); animation:sp-breathe var(--dur) ease-in-out infinite; }
+  @keyframes sp-breathe { 0%,100%{transform:translate(-50%,-52%) scale(1)} 50%{transform:translate(-50%,-52%) scale(1.04)} }
+  .s-sparkle .st { position:absolute; color:#b6f0a0; }
+  .s-sparkle .st::after { content:'✦'; }
+  .s-sparkle .st.a { left:96px;  top:120px; font-size:30px; animation:sp-tw var(--dur) ease-in-out infinite; }
+  .s-sparkle .st.b { right:88px; top:150px; font-size:22px; animation:sp-tw var(--dur) ease-in-out infinite; animation-delay:calc(var(--dur) * -0.33); }
+  .s-sparkle .st.c { left:120px; bottom:130px; font-size:24px; animation:sp-tw var(--dur) ease-in-out infinite; animation-delay:calc(var(--dur) * -0.66); }
+  .s-sparkle .st.d { right:110px; bottom:170px; font-size:34px; animation:sp-tw var(--dur) ease-in-out infinite; animation-delay:calc(var(--dur) * -0.5); }
+  @keyframes sp-tw { 0%,100%{opacity:.15; scale:.7; rotate:0deg} 50%{opacity:1; scale:1.15; rotate:40deg} }
+  .s-sparkle .txt { position:absolute; left:50%; bottom:44px; transform:translateX(-50%); color:var(--ivory);
+    font-size:44px; white-space:nowrap; text-shadow:0 6px 16px rgba(0,0,0,.4); }
+
+  /* ══ 7. loading — refreshment loading ══ */
+  .s-loading { background:var(--ivory); }
+  .s-loading .txt { position:absolute; left:50%; top:120px; transform:translateX(-50%); color:var(--ink);
+    font-size:34px; font-weight:800; font-family:'Zodiak',serif; white-space:nowrap; }
+  .s-loading .script-sub { position:absolute; left:50%; top:64px; transform:translateX(-50%) rotate(-3deg);
+    color:var(--green-dark); font-size:40px; white-space:nowrap; }
+  .s-loading .bar { position:absolute; left:60px; right:60px; top:64%; height:26px; border-radius:999px;
+    background:#e8e0cd; overflow:hidden; }
+  .s-loading .fill { position:absolute; inset:0; border-radius:999px; transform-origin:0 50%;
+    background:linear-gradient(90deg, var(--green), var(--green-dark)); animation:l-fill var(--dur) linear infinite; }
+  @keyframes l-fill { 0%{transform:scaleX(.04)} 82%{transform:scaleX(1)} 100%{transform:scaleX(1)} }
+  .s-loading .pack { position:absolute; top:64%; left:60px; height:118px; transform:translate(-50%,-108%);
+    filter:drop-shadow(0 14px 16px rgba(20,19,15,.3)); animation:l-ride var(--dur) linear infinite; }
+  @keyframes l-ride {
+    0%   { left:76px;  transform:translate(-50%,-106%) rotate(-3deg); }
+    41%  { transform:translate(-50%,-106%) rotate(3deg); }
+    82%  { left:404px; transform:translate(-50%,-106%) rotate(-3deg); }
+    100% { left:404px; transform:translate(-50%,-112%) rotate(0deg); }
+  }
+  .s-loading .pct { position:absolute; left:50%; bottom:98px; transform:translateX(-50%); color:var(--green-dark);
+    font-weight:800; font-size:26px; letter-spacing:.06em; animation:l-blink var(--dur) linear infinite; }
+  @keyframes l-blink { 0%,80%{opacity:.55} 84%,92%{opacity:1} 96%,100%{opacity:.55} }
+
+  /* ══ 8. sea — vitamin sea ══ */
+  .s-sea { background:linear-gradient(180deg, #bfe4d9 0%, #79c4b0 46%, #3f9e8c 100%); }
+  .s-sea .wave { position:absolute; left:-40%; width:180%; height:150px; border-radius:46% 54% 0 0/100% 100% 0 0; }
+  .s-sea .wave.w1 { bottom:-56px; background:rgba(24,120,102,.65); animation:w-drift var(--dur) ease-in-out infinite; }
+  .s-sea .wave.w2 { bottom:-78px; background:rgba(16,95,82,.8);  animation:w-drift var(--dur) ease-in-out infinite reverse; }
+  @keyframes w-drift { 0%,100%{transform:translateX(-20px)} 50%{transform:translateX(20px)} }
+  .s-sea .pack { position:absolute; left:50%; top:47%; height:270px; transform-origin:50% 90%;
+    filter:drop-shadow(0 20px 20px rgba(10,60,50,.4)); animation:sea-buoy var(--dur) ease-in-out infinite; }
+  @keyframes sea-buoy { 0%,100%{transform:translate(-50%,-50%) rotate(-5deg)} 50%{transform:translate(-50%,-46%) rotate(5deg)} }
+  .s-sea .txt { position:absolute; left:50%; top:44px; transform:translateX(-50%) rotate(-3deg); color:#0d4a3e;
+    font-size:56px; white-space:nowrap; }
+  .s-sea .gull { position:absolute; color:#0d4a3e; font-size:22px; opacity:.7; }
+  .s-sea .gull.a { left:80px; top:130px; animation:g-fly var(--dur) ease-in-out infinite; }
+  .s-sea .gull.b { right:90px; top:104px; animation:g-fly var(--dur) ease-in-out infinite reverse; }
+  @keyframes g-fly { 0%,100%{transform:translate(0,0)} 50%{transform:translate(14px,-8px)} }
+</style>
+</head>
+<body>
+<div id="stage" class="stage"></div>
+<script>
+const PACK = '/elan-bottle.png'
+const PALM = '/palm-leaf.png'
+const NUT = '/kokosnoot.png'
+const LOGO_L = '/elan-logo-light.svg'
+const LOGO_D = '/elan-logo-black.svg'
+
+const SCENES = {
+  float: { dur: 3200, html: `
+    <div class="glow"></div>
+    <img class="palm a" src="${PALM}"><img class="palm b" src="${PALM}">
+    <img class="pack" src="${PACK}">
+    <div class="txt script">stay hydrated</div>
+    <img class="logo" src="${LOGO_L}">` },
+  pure: { dur: 2400, html: `
+    <img class="pack" src="${PACK}">
+    <div class="badge"><div class="n serif">100%</div><div class="w serif">PURE</div></div>
+    <div class="spark a">✦</div><div class="spark b">✦</div>
+    <div class="sub script">nothing else</div>
+    <img class="logo" src="${LOGO_L}">` },
+  coconut: { dur: 1900, html: `
+    <div class="shadow"></div>
+    <img class="nut" src="${NUT}">
+    <div class="drop a"></div><div class="drop b"></div>
+    <div class="txt script">born from purity</div>
+    <img class="logo" src="${LOGO_D}" style="filter:none">` },
+  morning: { dur: 3600, html: `
+    <div class="rays"></div><div class="sun"></div>
+    <img class="palm" src="${PALM}">
+    <img class="pack" src="${PACK}">
+    <div class="txt script">good morning sunshine</div>
+    <img class="logo" src="${LOGO_D}">` },
+  thirsty: { dur: 2200, html: `
+    <div class="txt script">thirsty?</div>
+    <div class="q a">?</div><div class="q b">?</div>
+    <img class="pack" src="${PACK}">
+    <img class="logo" src="${LOGO_L}">` },
+  sparkle: { dur: 2600, html: `
+    <span class="st a"></span><span class="st b"></span><span class="st c"></span><span class="st d"></span>
+    <img class="pack" src="${PACK}">
+    <div class="txt script">naturally hydrating</div>
+    <img class="logo" src="${LOGO_L}">` },
+  loading: { dur: 3000, html: `
+    <div class="script-sub script">almost weekend…</div>
+    <div class="txt">REFRESHMENT LOADING</div>
+    <div class="bar"><div class="fill"></div></div>
+    <img class="pack" src="${PACK}">
+    <div class="pct">100%</div>
+    <img class="logo" src="${LOGO_D}">` },
+  sea: { dur: 3200, html: `
+    <div class="txt script">vitamin sea</div>
+    <img class="pack" src="${PACK}">
+    <div class="wave w1"></div><div class="wave w2"></div>
+    <img class="logo" src="${LOGO_L}">` },
+}
+
+const name = new URLSearchParams(location.search).get('scene') || 'float'
+const scene = SCENES[name]
+const stage = document.getElementById('stage')
+stage.className = 'stage s-' + { float:'float', pure:'pure', coconut:'coco', morning:'morning', thirsty:'thirsty', sparkle:'sparkle', loading:'loading', sea:'sea' }[name]
+stage.style.setProperty('--dur', scene.dur + 'ms')
+stage.innerHTML = scene.html
+window.SCENE_DUR = scene.dur
+window.SCENE_LIST = Object.keys(SCENES)
+
+// Alle animaties pauzeren en exact op tijdstip t (ms) zetten — voor frame-capture.
+window.seek = (t) => {
+  document.getAnimations().forEach((a) => { a.pause(); a.currentTime = t })
+}
+</script>
+</body>
+</html>
