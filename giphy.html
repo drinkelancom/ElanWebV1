@@ -252,6 +252,56 @@
   @keyframes fr-sway { 0%,100%{rotate:0deg} 50%{rotate:6deg} }
   .s-fresh .st-brand { bottom:28px; }
 
+  /* ══ 13. lockup — officiële 100% PURE COCONUT WATER (transparant) ══ */
+  .s-lockup .lock { position:absolute; left:50%; top:42%; width:400px; transform:translate(-50%,-50%);
+    animation:lk-pop var(--dur) ease-in-out infinite; }
+  @keyframes lk-pop { 0%,100%{transform:translate(-50%,-50%) scale(.96) rotate(-1.5deg)} 50%{transform:translate(-50%,-50%) scale(1.04) rotate(1.5deg)} }
+  .s-lockup .nut { position:absolute; width:130px; left:24px; bottom:52px; transform:rotate(-8deg);
+    animation:lk-bob var(--dur) ease-in-out infinite; }
+  .s-lockup .palm { position:absolute; width:150px; right:6px; top:8px; transform:rotate(150deg);
+    animation:lk-sway var(--dur) ease-in-out infinite; }
+  @keyframes lk-bob { 0%,100%{translate:0 0} 50%{translate:0 -8px} }
+  @keyframes lk-sway { 0%,100%{rotate:0deg} 50%{rotate:6deg} }
+  .s-lockup .st-brand { bottom:26px; height:38px; }
+
+  /* Gedeelde quote-sticker helpers */
+  .s-quote .txt { position:absolute; left:50%; top:44%; transform:translate(-50%,-50%); text-align:center;
+    color:var(--green); font-size:74px; line-height:.86; white-space:nowrap;
+    animation:q-wob var(--dur) ease-in-out infinite; }
+  @keyframes q-wob { 0%,100%{transform:translate(-50%,-50%) rotate(-4deg) scale(.97)} 50%{transform:translate(-50%,-50%) rotate(3deg) scale(1.04)} }
+  .s-quote .nut { position:absolute; width:120px; }
+  .s-quote .palm { position:absolute; width:140px; }
+  .s-quote .st-brand { bottom:28px; }
+  .s-quote .emoji { position:absolute; font-size:52px; }
+
+  /* sip sip hooray — bruisende bubbels */
+  .s-sip .nut { left:50%; top:70%; transform:translate(-50%,-50%) rotate(-6deg);
+    animation:c-bounce var(--dur) cubic-bezier(.36,0,.64,1) infinite; }
+  .s-sip .txt { top:32%; }
+  .s-sip .bub { position:absolute; left:50%; bottom:120px; width:16px; height:16px; border-radius:50%;
+    background:rgba(120,220,160,.9); border:3px solid #fff; opacity:0; }
+  .s-sip .b1 { animation:bub var(--dur) ease-in infinite; }
+  .s-sip .b2 { animation:bub var(--dur) ease-in infinite; animation-delay:calc(var(--dur)*-.3); margin-left:-40px; }
+  .s-sip .b3 { animation:bub var(--dur) ease-in infinite; animation-delay:calc(var(--dur)*-.6); margin-left:36px; width:11px; height:11px; }
+  @keyframes bub { 0%{opacity:0; transform:translateY(0) scale(.5)} 20%{opacity:1} 80%{opacity:1} 100%{opacity:0; transform:translateY(-150px) scale(1)} }
+
+  /* taste the tropics — twee wiegende palmen */
+  .s-trop .palm.a { top:6px; left:-30px; transform:rotate(-150deg) scaleX(-1); animation:lk-sway var(--dur) ease-in-out infinite; }
+  .s-trop .palm.b { bottom:66px; right:-24px; transform:rotate(24deg); animation:lk-sway var(--dur) ease-in-out infinite reverse; }
+  .s-trop .txt { font-size:66px; }
+
+  /* coco loco — tollende kokosnoot */
+  .s-loco .txt { top:36%; font-size:92px; }
+  .s-loco .nut { left:50%; top:70%; width:150px; transform:translate(-50%,-50%);
+    animation:loco-spin var(--dur) ease-in-out infinite; }
+  @keyframes loco-spin { 0%,100%{transform:translate(-50%,-50%) rotate(-16deg)} 50%{transform:translate(-50%,-50%) rotate(16deg)} }
+
+  /* beach please — palm + zon */
+  .s-beach .txt { font-size:70px; }
+  .s-beach .sun { position:absolute; right:40px; top:44px; width:90px; height:90px; border-radius:50%;
+    background:#ffd23f; border:6px solid #fff; animation:sun-pulse var(--dur) ease-in-out infinite; }
+  .s-beach .palm { bottom:60px; left:-20px; transform:rotate(-40deg); animation:lk-sway var(--dur) ease-in-out infinite; }
+
   /* ══ 8. sea — vitamin sea ══ (dupe marker verwijderd) ══ */
 
   /* ══ 8. sea — vitamin sea ══ */
@@ -276,7 +326,8 @@
 <script>
 const PACK = '/elan-bottle.png'
 const PALM = '/palm-leaf.png'
-const NUT = '/kokosnoot.png'
+const NUT = '/coconut.png'
+const LOCKUP = '/pure-lockup.png'
 const LOGO_L = '/elan-logo-light.svg'
 const LOGO_D = '/elan-logo-black.svg'
 
@@ -342,6 +393,30 @@ const SCENES = {
   'sticker-pure': { dur: 2600, transparent: true, html: `
     <div class="badge"><div class="n serif">100%</div><div class="w serif">PURE</div><div class="s script">coconut water</div></div>
     <img class="st-brand st-outline" src="${LOGO_D}">` },
+  // Officiële 100% PURE COCONUT WATER lockup
+  'sticker-lockup': { dur: 2800, transparent: true, html: `
+    <img class="palm st-outline" src="${PALM}">
+    <img class="nut st-outline" src="${NUT}">
+    <img class="lock st-outline" src="${LOCKUP}">
+    <img class="st-brand st-outline" src="${LOGO_D}">` },
+  'sticker-sip': { dur: 2600, transparent: true, cls: 'quote', html: `
+    <div class="txt script st-text">sip sip<br>hooray!</div>
+    <div class="bub b1"></div><div class="bub b2"></div><div class="bub b3"></div>
+    <img class="nut st-outline" src="${NUT}">
+    <img class="st-brand st-outline" src="${LOGO_D}">` },
+  'sticker-tropics': { dur: 2800, transparent: true, cls: 'quote', html: `
+    <img class="palm a st-outline" src="${PALM}"><img class="palm b st-outline" src="${PALM}">
+    <div class="txt script st-text">taste the<br>tropics</div>
+    <img class="st-brand st-outline" src="${LOGO_D}">` },
+  'sticker-loco': { dur: 2400, transparent: true, cls: 'quote', html: `
+    <div class="txt script st-text">coco loco</div>
+    <img class="nut st-outline" src="${NUT}">
+    <img class="st-brand st-outline" src="${LOGO_D}">` },
+  'sticker-beach': { dur: 2800, transparent: true, cls: 'quote', html: `
+    <div class="sun"></div>
+    <img class="palm st-outline" src="${PALM}">
+    <div class="txt script st-text">beach please</div>
+    <img class="st-brand st-outline" src="${LOGO_D}">` },
   'sticker-thirsty': { dur: 2200, transparent: true, html: `
     <div class="txt script st-text">thirsty?</div>
     <img class="st-brand st-outline" src="${LOGO_D}">` },
@@ -375,8 +450,11 @@ const cls = {
   'sticker-pack':'stpack', 'sticker-hydrated':'sthydr', 'sticker-coconut':'stcoco',
   'sticker-pure':'stpure', 'sticker-thirsty':'stthirsty',
   'sticker-splash':'splash', 'sticker-sunny':'sunny', 'sticker-cheers':'cheers', 'sticker-fresh':'fresh',
+  'sticker-lockup':'lockup',
+  'sticker-sip':'quote sip', 'sticker-tropics':'quote trop',
+  'sticker-loco':'quote loco', 'sticker-beach':'quote beach',
 }[name]
-stage.className = 'stage s-' + cls
+stage.className = 'stage ' + cls.split(' ').map((c) => 's-' + c).join(' ')
 stage.style.setProperty('--dur', scene.dur + 'ms')
 stage.innerHTML = scene.html
 if (scene.transparent) { document.body.style.background = 'none'; stage.style.background = 'none' }
