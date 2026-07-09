@@ -151,6 +151,109 @@
     font-weight:800; font-size:26px; letter-spacing:.06em; animation:l-blink var(--dur) linear infinite; }
   @keyframes l-blink { 0%,80%{opacity:.55} 84%,92%{opacity:1} 96%,100%{opacity:.55} }
 
+  /* ══ Stickers (transparant) — witte outline, geen zachte schaduwen ══ */
+  .st-outline { filter:
+    drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff)
+    drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff); }
+  .st-text { -webkit-text-stroke:10px #fff; paint-order:stroke fill; }
+  /* ÉLAN-logo in elke sticker: zwart met witte outline, onderin gecentreerd */
+  .st-brand { position:absolute; left:50%; transform:translateX(-50%); height:44px; }
+
+  .s-stpack .pack { position:absolute; left:50%; top:50%; height:400px;
+    animation:stp-bob var(--dur) ease-in-out infinite; }
+  @keyframes stp-bob { 0%,100%{transform:translate(-50%,-50%) rotate(-4deg)} 50%{transform:translate(-50%,-54%) rotate(4deg)} }
+
+  .s-sthydr .txt { position:absolute; left:50%; top:34%; transform:translate(-50%,-50%); color:var(--green-dark);
+    font-size:80px; white-space:nowrap; animation:sth-wob var(--dur) ease-in-out infinite; }
+  @keyframes sth-wob { 0%,100%{transform:translate(-50%,-50%) rotate(-3deg) scale(.97)} 50%{transform:translate(-50%,-50%) rotate(3deg) scale(1.03)} }
+  .s-sthydr .drop { position:absolute; left:50%; top:52%; width:34px; height:44px; background:var(--green);
+    border:4px solid #fff; border-radius:50% 50% 50% 50%/62% 62% 40% 40%;
+    animation:sth-drop var(--dur) cubic-bezier(.36,0,.64,1) infinite; }
+  @keyframes sth-drop { 0%,100%{transform:translate(-50%,0) scale(1,1)} 30%{transform:translate(-50%,-46px) scale(.94,1.06)} 55%{transform:translate(-50%,0) scale(1.08,.9)} 70%{transform:translate(-50%,-10px) scale(1,1)} }
+  .s-sthydr .st-brand { bottom:70px; }
+
+  .s-stcoco .nut { position:absolute; left:50%; top:52%; width:250px; transform:translate(-50%,-50%);
+    animation:c-bounce var(--dur) cubic-bezier(.36,0,.64,1) infinite; }
+  .s-stcoco .drop { position:absolute; left:50%; top:58%; width:16px; height:21px; background:var(--green);
+    border:3px solid #fff; border-radius:50% 50% 50% 50%/60% 60% 40% 40%; opacity:0; }
+  .s-stcoco .drop.a { animation:c-dropA var(--dur) ease-out infinite; }
+  .s-stcoco .drop.b { animation:c-dropB var(--dur) ease-out infinite; }
+  .s-stcoco .nut { top:44%; }
+  .s-stcoco .st-brand { bottom:52px; }
+
+  .s-stpure .badge { position:absolute; left:50%; top:44%; width:300px; height:300px; margin:-150px 0 0 -150px;
+    border-radius:50%; background:var(--green); border:10px solid #fff;
+    display:grid; place-content:center; text-align:center; color:var(--ivory);
+    animation:stp-pulse var(--dur) ease-in-out infinite; }
+  @keyframes stp-pulse { 0%,100%{transform:rotate(-6deg) scale(.96)} 50%{transform:rotate(6deg) scale(1.04)} }
+  .s-stpure .n { font-size:88px; line-height:.95; }
+  .s-stpure .w { font-size:48px; letter-spacing:.12em; }
+  .s-stpure .s { font-size:26px; margin-top:6px; color:#eaffdf; }
+  .s-stpure .st-brand { bottom:36px; }
+
+  .s-stthirsty .txt { position:absolute; left:50%; top:42%; transform:translate(-50%,-50%); color:var(--green);
+    font-size:104px; white-space:nowrap; animation:stt-wob var(--dur) ease-in-out infinite; }
+  @keyframes stt-wob { 0%,100%{transform:translate(-50%,-50%) rotate(-4deg) scale(.96)} 50%{transform:translate(-50%,-48%) rotate(4deg) scale(1.05)} }
+  .s-stthirsty .st-brand { bottom:80px; }
+
+  /* ══ 9. splash — pak met opspattende druppels (transparant) ══ */
+  .s-splash .pack { position:absolute; left:50%; top:48%; height:340px; transform:translate(-50%,-50%);
+    animation:sp2-shake var(--dur) ease-in-out infinite; }
+  @keyframes sp2-shake { 0%,100%{transform:translate(-50%,-50%) rotate(-3deg)} 25%{transform:translate(-51%,-50%) rotate(3deg)} 60%{transform:translate(-49%,-51%) rotate(-2deg)} }
+  .s-splash .d { position:absolute; left:50%; top:50%; width:26px; height:32px; background:#9fe0ff;
+    border:4px solid #fff; border-radius:50% 50% 50% 50%/62% 62% 40% 40%; opacity:0; }
+  .s-splash .d1 { animation:spl1 var(--dur) ease-out infinite; }
+  .s-splash .d2 { animation:spl2 var(--dur) ease-out infinite; }
+  .s-splash .d3 { animation:spl3 var(--dur) ease-out infinite; width:18px; height:22px; }
+  .s-splash .d4 { animation:spl4 var(--dur) ease-out infinite; width:18px; height:22px; }
+  @keyframes spl1 { 0%,40%{opacity:0; transform:translate(-10px,-10px) scale(.4)} 50%{opacity:1} 78%{opacity:1; transform:translate(-150px,-120px) scale(1)} 100%{opacity:0; transform:translate(-180px,-30px)} }
+  @keyframes spl2 { 0%,40%{opacity:0; transform:translate(-10px,-10px) scale(.4)} 50%{opacity:1} 78%{opacity:1; transform:translate(140px,-130px) scale(1)} 100%{opacity:0; transform:translate(170px,-40px)} }
+  @keyframes spl3 { 0%,45%{opacity:0; transform:translate(-10px,-10px) scale(.4)} 55%{opacity:1} 80%{opacity:1; transform:translate(-180px,20px) scale(1)} 100%{opacity:0; transform:translate(-200px,90px)} }
+  @keyframes spl4 { 0%,45%{opacity:0; transform:translate(-10px,-10px) scale(.4)} 55%{opacity:1} 80%{opacity:1; transform:translate(170px,10px) scale(1)} 100%{opacity:0; transform:translate(200px,80px)} }
+  .s-splash .st-brand { bottom:30px; }
+
+  /* ══ 10. sunny — zon met pak (transparant) ══ */
+  .s-sunny .sun { position:absolute; left:50%; top:46%; width:230px; height:230px; margin:-115px 0 0 -115px;
+    border-radius:50%; background:#ffd23f; border:8px solid #fff;
+    animation:sun-pulse var(--dur) ease-in-out infinite; }
+  @keyframes sun-pulse { 0%,100%{transform:scale(.97)} 50%{transform:scale(1.05)} }
+  .s-sunny .ray { position:absolute; left:50%; top:46%; width:8px; height:44px; margin-left:-4px; border-radius:4px;
+    background:#ffd23f; box-shadow:0 0 0 3px #fff; transform-origin:4px 158px; }
+  .s-sunny .rays { position:absolute; inset:0; animation:sun-rot var(--dur) linear infinite; }
+  @keyframes sun-rot { from{transform:rotate(0)} to{transform:rotate(45deg)} }
+  .s-sunny .pack { position:absolute; left:50%; top:47%; height:220px; transform:translate(-50%,-50%);
+    animation:sun-bob var(--dur) ease-in-out infinite; }
+  @keyframes sun-bob { 0%,100%{transform:translate(-50%,-50%) rotate(-3deg)} 50%{transform:translate(-50%,-54%) rotate(3deg)} }
+  .s-sunny .txt { position:absolute; left:50%; bottom:44px; transform:translateX(-50%); color:#f5a623;
+    font-size:44px; white-space:nowrap; }
+
+  /* ══ 11. cheers — twee pakken proosten (transparant) ══ */
+  .s-cheers .pack { position:absolute; top:50%; height:280px; }
+  .s-cheers .l { left:50%; transform-origin:60% 90%; animation:ch-l var(--dur) ease-in-out infinite; }
+  .s-cheers .r { left:50%; transform-origin:40% 90%; animation:ch-r var(--dur) ease-in-out infinite; }
+  @keyframes ch-l { 0%,100%{transform:translate(-96%,-50%) rotate(-14deg)} 45%,55%{transform:translate(-92%,-50%) rotate(-24deg)} }
+  @keyframes ch-r { 0%,100%{transform:translate(-4%,-50%) rotate(14deg)} 45%,55%{transform:translate(-8%,-50%) rotate(24deg)} }
+  .s-cheers .spark { position:absolute; left:50%; top:34%; transform:translateX(-50%); color:#ffd23f; font-size:40px;
+    opacity:0; animation:ch-spark var(--dur) ease-in-out infinite; }
+  @keyframes ch-spark { 0%,44%{opacity:0; scale:.4} 50%{opacity:1; scale:1.2} 58%{opacity:0; scale:1.5} 100%{opacity:0} }
+  .s-cheers .txt { position:absolute; left:50%; bottom:40px; transform:translateX(-50%); color:var(--green-dark);
+    font-size:50px; white-space:nowrap; }
+  .s-cheers .st-brand { display:none; }
+
+  /* ══ 12. fresh — tekst met wiegende palm (transparant) ══ */
+  .s-fresh .txt { position:absolute; left:50%; top:42%; transform:translate(-50%,-50%) rotate(-4deg); color:var(--green);
+    font-size:76px; white-space:nowrap; text-align:center; line-height:.9;
+    animation:fr-b var(--dur) ease-in-out infinite; }
+  @keyframes fr-b { 0%,100%{transform:translate(-50%,-50%) rotate(-5deg) scale(.98)} 50%{transform:translate(-50%,-50%) rotate(-1deg) scale(1.02)} }
+  .s-fresh .palm { position:absolute; width:150px; top:20px; right:16px; transform:rotate(150deg);
+    animation:fr-sway var(--dur) ease-in-out infinite; }
+  .s-fresh .palm2 { position:absolute; width:130px; bottom:70px; left:10px; transform:rotate(-30deg);
+    animation:fr-sway var(--dur) ease-in-out infinite reverse; }
+  @keyframes fr-sway { 0%,100%{rotate:0deg} 50%{rotate:6deg} }
+  .s-fresh .st-brand { bottom:28px; }
+
+  /* ══ 8. sea — vitamin sea ══ (dupe marker verwijderd) ══ */
+
   /* ══ 8. sea — vitamin sea ══ */
   .s-sea { background:linear-gradient(180deg, #bfe4d9 0%, #79c4b0 46%, #3f9e8c 100%); }
   .s-sea .wave { position:absolute; left:-40%; width:180%; height:150px; border-radius:46% 54% 0 0/100% 100% 0 0; }
@@ -224,15 +327,61 @@ const SCENES = {
     <img class="pack" src="${PACK}">
     <div class="wave w1"></div><div class="wave w2"></div>
     <img class="logo" src="${LOGO_L}">` },
+
+  /* Stickers — transparante achtergrond, witte outline */
+  'sticker-pack': { dur: 3000, transparent: true, html: `
+    <img class="pack st-outline" src="${PACK}">` },
+  'sticker-hydrated': { dur: 2600, transparent: true, html: `
+    <div class="txt script st-text">stay hydrated</div>
+    <div class="drop"></div>
+    <img class="st-brand st-outline" src="${LOGO_D}">` },
+  'sticker-coconut': { dur: 1900, transparent: true, html: `
+    <img class="nut st-outline" src="${NUT}">
+    <div class="drop a"></div><div class="drop b"></div>
+    <img class="st-brand st-outline" src="${LOGO_D}">` },
+  'sticker-pure': { dur: 2600, transparent: true, html: `
+    <div class="badge"><div class="n serif">100%</div><div class="w serif">PURE</div><div class="s script">coconut water</div></div>
+    <img class="st-brand st-outline" src="${LOGO_D}">` },
+  'sticker-thirsty': { dur: 2200, transparent: true, html: `
+    <div class="txt script st-text">thirsty?</div>
+    <img class="st-brand st-outline" src="${LOGO_D}">` },
+  'sticker-splash': { dur: 2400, transparent: true, html: `
+    <div class="d d3"></div><div class="d d4"></div>
+    <div class="d d1"></div><div class="d d2"></div>
+    <img class="pack st-outline" src="${PACK}">
+    <img class="st-brand st-outline" src="${LOGO_D}">` },
+  'sticker-sunny': { dur: 3200, transparent: true, html: `
+    <div class="rays">${Array.from({length:12}).map((_,i)=>`<div class="ray" style="transform:rotate(${i*30}deg)"></div>`).join('')}</div>
+    <div class="sun"></div>
+    <img class="pack st-outline" src="${PACK}">
+    <div class="txt script st-text">soak up the sun</div>` },
+  'sticker-cheers': { dur: 2600, transparent: true, html: `
+    <div class="spark">✦</div>
+    <img class="pack st-outline l" src="${PACK}">
+    <img class="pack st-outline r" src="${PACK}">
+    <div class="txt script st-text">cheers!</div>` },
+  'sticker-fresh': { dur: 2800, transparent: true, html: `
+    <img class="palm st-outline" src="${PALM}"><img class="palm2 st-outline" src="${PALM}">
+    <div class="txt script st-text">stay fresh<br>stay tropical</div>
+    <img class="st-brand st-outline" src="${LOGO_D}">` },
 }
 
 const name = new URLSearchParams(location.search).get('scene') || 'float'
 const scene = SCENES[name]
 const stage = document.getElementById('stage')
-stage.className = 'stage s-' + { float:'float', pure:'pure', coconut:'coco', morning:'morning', thirsty:'thirsty', sparkle:'sparkle', loading:'loading', sea:'sea' }[name]
+const cls = {
+  float:'float', pure:'pure', coconut:'coco', morning:'morning', thirsty:'thirsty',
+  sparkle:'sparkle', loading:'loading', sea:'sea',
+  'sticker-pack':'stpack', 'sticker-hydrated':'sthydr', 'sticker-coconut':'stcoco',
+  'sticker-pure':'stpure', 'sticker-thirsty':'stthirsty',
+  'sticker-splash':'splash', 'sticker-sunny':'sunny', 'sticker-cheers':'cheers', 'sticker-fresh':'fresh',
+}[name]
+stage.className = 'stage s-' + cls
 stage.style.setProperty('--dur', scene.dur + 'ms')
 stage.innerHTML = scene.html
+if (scene.transparent) { document.body.style.background = 'none'; stage.style.background = 'none' }
 window.SCENE_DUR = scene.dur
+window.SCENE_TRANSPARENT = !!scene.transparent
 window.SCENE_LIST = Object.keys(SCENES)
 
 // Alle animaties pauzeren en exact op tijdstip t (ms) zetten — voor frame-capture.

@@ -24,6 +24,7 @@ for (const name of scenes) {
   await p.evaluate(() => document.fonts.ready)
   await p.waitForTimeout(400)
   const dur = await p.evaluate(() => window.SCENE_DUR)
+  const transparent = await p.evaluate(() => window.SCENE_TRANSPARENT)
   const frames = Math.round((dur / 1000) * FPS)
   const dir = `/tmp/gif-${name}`
   rmSync(dir, { recursive: true, force: true })
@@ -32,7 +33,11 @@ for (const name of scenes) {
     const t = (f / frames) * dur
     await p.evaluate((t) => window.seek(t), t)
     await p.waitForTimeout(20)
-    await p.screenshot({ path: `${dir}/f${String(f).padStart(3, '0')}.png`, clip: { x: 0, y: 0, width: 480, height: 480 } })
+    await p.screenshot({
+      path: `${dir}/f${String(f).padStart(3, '0')}.png`,
+      clip: { x: 0, y: 0, width: 480, height: 480 },
+      omitBackground: transparent,
+    })
   }
   execSync(
     `ffmpeg -v error -framerate ${FPS} -i ${dir}/f%03d.png ` +
