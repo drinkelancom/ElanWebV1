@@ -237,19 +237,19 @@ ul { list-style: none; }
 
 /* Palm-lagen: a = middenlaag links, b = middenlaag rechts, c = dichtbij (blur) */
 .hero-palm-a {
-  width: clamp(220px, 26vw, 420px); top: -6%; left: -7%; z-index: 2;
-  transform: rotate(-142deg) scaleX(-1) translate(calc(var(--my) * 10px), calc(var(--mx) * 14px));
+  width: clamp(220px, 26vw, 420px); top: -9%; left: -13%; z-index: 2;
+  transform: rotate(-142deg) translate(calc(var(--my) * 10px), calc(var(--mx) * 14px));
   transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.3, 1);
   animation: palmsway 9s ease-in-out infinite alternate;
 }
 .hero-palm-b {
-  width: clamp(200px, 23vw, 380px); bottom: 4%; right: -6%; z-index: 2;
+  width: clamp(200px, 23vw, 380px); bottom: 3%; right: -11%; z-index: 2;
   transform: rotate(24deg) translate(calc(var(--mx) * -16px), calc(var(--my) * -10px));
   transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.3, 1);
   animation: palmsway 11s ease-in-out infinite alternate-reverse;
 }
 .hero-palm-c {
-  width: clamp(320px, 40vw, 640px); top: -14%; right: -12%; z-index: 5; opacity: 0.92;
+  width: clamp(320px, 40vw, 640px); top: -16%; right: -16%; z-index: 5; opacity: 0.92;
   transform: rotate(158deg) scaleX(-1) translate(calc(var(--mx) * -34px), calc(var(--my) * -22px));
   transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.3, 1);
 }
@@ -850,15 +850,27 @@ ul { list-style: none; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 960px) {
-  .orbit-stage { height: auto; padding: 10px 6% 0; }
-  .orbit-bottle-wrap { position: relative; top: auto; left: auto; margin: 0 auto 30px; width: fit-content; }
+  .orbit-stage { height: auto; padding: 10px 6% 0; text-align: center; }
+  .orbit-bottle-wrap { position: relative; top: auto; left: auto; margin: 0 auto 26px; width: fit-content; }
   .orbit-bottle { height: clamp(320px, 46vh, 440px); transform: none; }
+  /* Labels als leesbare pill-chips i.p.v. losse cursieftekst rond het pak */
   .orbit-label, .orbit-label.p1, .orbit-label.p2, .orbit-label.p3, .orbit-label.p4,
   .orbit-label.p5, .orbit-label.p6, .orbit-label.p7, .orbit-label.p8, .orbit-label.p9 {
-    position: static; display: inline-flex; margin: 6px 12px; align-items: center;
+    position: static; display: inline-flex; align-items: center; margin: 5px 4px;
+    background: rgba(255,250,238,0.12);
+    border: 1px solid rgba(255,250,238,0.26);
+    border-radius: 999px; padding: 8px 15px;
+    backdrop-filter: blur(6px); text-shadow: none; vertical-align: middle;
   }
   .orbit-label .arrow { display: none; }
-  .orbit-coconut { position: static; margin: 20px auto 0; }
+  .orbit-label .script {
+    font-family: 'Cabinet Grotesk', system-ui, sans-serif;
+    font-size: 13.5px; font-weight: 600; letter-spacing: 0.01em;
+    color: var(--ivory); line-height: 1.15;
+  }
+  .orbit-label .script span { display: inline; }
+  .orbit-label .script span:not(:last-child)::after { content: ' '; }
+  .orbit-coconut { position: static; margin: 18px auto 0; }
 }
 
 @media (max-width: 860px) {
@@ -874,6 +886,9 @@ ul { list-style: none; }
   .split, .meaning-grid, .nutrition-grid { grid-template-columns: 1fr; gap: 44px; }
   .split.reverse .fridge-media { order: 0; }
   .hero-palm-c { display: none; }
+  /* Onderste leaf laag houden zodat hij de Discover-knop niet overlapt */
+  .hero-palm-b { width: clamp(150px, 42vw, 240px); bottom: -14%; right: -18%; }
+  .hero-palm-a { width: clamp(150px, 44vw, 240px); }
   .hero-script { right: 4vw; bottom: 8%; }
 
   /* Mobiele hero: content bovenaan uitlijnen zodat de badge vrij van de
