@@ -1,9 +1,27 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react'
 import {
   images, videos, nav, hero, marquee, orbit, videoBand, meaning,
-  nutrition, beach, fridge, story, contact,
+  nutrition, beach, fridge, story, contact, socials,
 } from './data.js'
 import BottleScroll from './BottleScroll.jsx'
+
+/* Social iconen */
+function IgIcon({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
+      <rect x="2.5" y="2.5" width="19" height="19" rx="5.4" stroke="currentColor" strokeWidth="1.8" />
+      <circle cx="12" cy="12" r="4.2" stroke="currentColor" strokeWidth="1.8" />
+      <circle cx="17.4" cy="6.6" r="1.25" fill="currentColor" />
+    </svg>
+  )
+}
+function TtIcon({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M16.5 3c.3 2.2 1.7 3.9 3.9 4.2v2.8c-1.4.1-2.7-.3-3.9-1v5.9c0 3.4-2.6 5.9-5.9 5.9-3 0-5.6-2.3-5.6-5.5 0-3.4 3-6 6.5-5.4v2.9c-.4-.1-.9-.2-1.3-.2-1.6 0-2.6 1.3-2.4 2.9.2 1.3 1.4 2 2.5 2 1.5 0 2.6-1.1 2.6-2.7V3h3.1z" />
+    </svg>
+  )
+}
 
 const FindUs = lazy(() => import('./FindUs.jsx'))
 
@@ -499,6 +517,42 @@ function Contact() {
   )
 }
 
+function Social() {
+  return (
+    <section className="sec-social" id="social">
+      <div className="container social-head reveal">
+        <span className="script script-lg">{socials.script}</span>
+        <h2 className="display light">{socials.title}</h2>
+        <p className="lead light">{socials.body}</p>
+        <div className="social-handles">
+          <a className="social-btn" href={socials.instagram.url} target="_blank" rel="noopener noreferrer">
+            <IgIcon className="social-ico" /> {socials.instagram.handle}
+          </a>
+          <a className="social-btn" href={socials.tiktok.url} target="_blank" rel="noopener noreferrer">
+            <TtIcon className="social-ico" /> {socials.tiktok.handle}
+          </a>
+        </div>
+      </div>
+
+      <div className="social-feed reveal">
+        {socials.feed.map((post, i) => (
+          <a
+            key={i}
+            className="social-post"
+            href={socials.instagram.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ '--d': `${i * 80}ms` }}
+          >
+            <img src={post.img} alt={`ÉLAN op Instagram — ${post.cap}`} loading="lazy" />
+            <span className="social-post-ig"><IgIcon /></span>
+          </a>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 function Footer() {
   return (
     <footer className="footer">
@@ -506,8 +560,17 @@ function Footer() {
         <a href="#top" className="logo" aria-label="ÉLAN — home">
           <img src="/elan-logo-light.svg" alt="ÉLAN" />
         </a>
+        <div className="footer-socials">
+          <a href={socials.instagram.url} target="_blank" rel="noopener noreferrer" aria-label="Instagram — @drink.elan">
+            <IgIcon /> <span>{socials.instagram.handle}</span>
+          </a>
+          <a href={socials.tiktok.url} target="_blank" rel="noopener noreferrer" aria-label="TikTok — @drinkelan">
+            <TtIcon /> <span>{socials.tiktok.handle}</span>
+          </a>
+        </div>
         <nav className="footer-nav">
           {nav.map((item) => <a key={item.label} href={item.href}>{item.label}</a>)}
+          <a href="#social">Social</a>
           <a href="#">Privacy policy</a>
         </nav>
         <p className="footer-copy">© 2026 ELAN WORLD BV — 100% Pure Coconut Water</p>
@@ -546,6 +609,7 @@ export default function App() {
         <Fridge />
         <Story />
         <Contact />
+        <Social />
       </main>
       <Footer />
     </>

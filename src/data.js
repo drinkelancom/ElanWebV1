@@ -162,3 +162,19 @@ export const contact = {
   email: 'Info@drinkelan.com',
   phone: '+31 6 4273 0763',
 }
+
+export const socials = {
+  script: 'join the journey',
+  title: 'Volg ÉLAN op social',
+  body: 'Proef de tropen mee — je dagelijkse dosis frisheid, kokoswater en zon.',
+  instagram: { handle: '@drink.elan', url: 'https://www.instagram.com/drink.elan/' },
+  tiktok: { handle: '@drinkelan', url: 'https://www.tiktok.com/@drinkelan' },
+  // Echte Instagram-posts als "feed"
+  feed: [
+    { img: '/insta-jungle.jpg', cap: 'born from purity' },
+    { img: '/insta-coconuts.jpg', cap: 'what is ÉLAN' },
+    { img: '/insta-beach.jpg', cap: 'also for children' },
+    { img: '/insta-meaning.jpg', cap: 'the meaning' },
+    { img: '/insta-fridge.jpg', cap: 'always fresh' },
+  ],
+}

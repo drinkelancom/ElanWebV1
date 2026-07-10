@@ -734,13 +734,102 @@ ul { list-style: none; }
 .contact-sent p { color: var(--grey); }
 .contact-sent .btn { margin-top: 12px; }
 
+/* ============================================================
+   SOCIAL — volg ÉLAN + story-feed
+   ============================================================ */
+.sec-social {
+  position: relative; overflow: hidden;
+  padding: clamp(84px, 11vw, 150px) 0 clamp(70px, 9vw, 120px);
+  color: var(--ivory);
+  background:
+    radial-gradient(90% 70% at 15% 0%, rgba(81,184,62,0.20), transparent 55%),
+    radial-gradient(80% 70% at 100% 100%, rgba(197,138,109,0.22), transparent 55%),
+    var(--green-forest);
+}
+.social-head { text-align: center; max-width: 720px; margin: 0 auto clamp(40px, 5vw, 60px); }
+.social-head .script-lg { color: #cfeec2; }
+.social-head .display { margin-bottom: 14px; }
+.social-handles { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 26px; }
+.social-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-weight: 700; font-size: 16px;
+  padding: 13px 24px; border-radius: 999px;
+  background: rgba(255, 250, 238, 0.08);
+  border: 1.5px solid rgba(255, 250, 238, 0.3);
+  backdrop-filter: blur(6px);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s var(--ease);
+}
+.social-btn:hover { background: rgba(255,250,238,0.16); border-color: var(--ivory); transform: translateY(-2px); }
+.social-ico { width: 22px; height: 22px; }
+
+.social-feed {
+  display: grid; grid-auto-flow: column;
+  grid-auto-columns: minmax(220px, 1fr);
+  gap: 18px;
+  width: min(1240px, 92%); margin: 0 auto;
+}
+.social-post {
+  position: relative; display: block;
+  aspect-ratio: 4 / 5; overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: 0 26px 50px -24px rgba(4, 16, 10, 0.7);
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  transition-delay: var(--d, 0ms);
+}
+.social-post img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.5s var(--ease);
+}
+.social-post::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(6,22,14,0) 55%, rgba(6,22,14,0.55));
+  pointer-events: none;
+}
+.social-post:hover { transform: translateY(-6px); box-shadow: 0 34px 60px -22px rgba(4,16,10,0.8); }
+.social-post:hover img { transform: scale(1.06); }
+.social-post-ig {
+  position: absolute; top: 12px; right: 12px; z-index: 2;
+  width: 34px; height: 34px; display: grid; place-items: center;
+  color: #fff; opacity: 0; transform: translateY(-6px);
+  background: rgba(6,22,14,0.4); border-radius: 50%; backdrop-filter: blur(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.social-post-ig svg { width: 19px; height: 19px; }
+.social-post:hover .social-post-ig { opacity: 1; transform: translateY(0); }
+.social-post-cap {
+  position: absolute; left: 14px; bottom: 12px; z-index: 2;
+  font-family: 'Sacramento', cursive; font-size: 24px; color: var(--ivory);
+  text-shadow: 0 3px 12px rgba(0,0,0,0.5);
+}
+
 /* ---------- Footer ---------- */
-.footer { background: var(--green-forest); color: var(--ivory); padding: 60px 0 40px; }
-.footer-inner { display: flex; flex-direction: column; align-items: center; gap: 22px; text-align: center; }
+.footer { background: var(--ink); color: var(--ivory); padding: 56px 0 40px; }
+.footer-inner { display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center; }
+.footer-socials { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.footer-socials a {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 14px; font-weight: 600;
+  padding: 9px 16px; border-radius: 999px;
+  border: 1px solid rgba(255,250,238,0.2);
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.footer-socials a svg { width: 18px; height: 18px; }
+.footer-socials a:hover { background: var(--green); border-color: var(--green); color: #fff; }
 .footer-nav { display: flex; flex-wrap: wrap; gap: 26px; justify-content: center; }
 .footer-nav a { font-size: 15px; opacity: 0.82; }
 .footer-nav a:hover { opacity: 1; color: var(--green); }
 .footer-copy { font-size: 13px; opacity: 0.6; }
+
+@media (max-width: 860px) {
+  .social-feed {
+    grid-auto-columns: 62vw;
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 10px;
+  }
+  .social-post { scroll-snap-align: center; }
+}
 
 /* ---------- Scroll-reveal ---------- */
 .reveal {
