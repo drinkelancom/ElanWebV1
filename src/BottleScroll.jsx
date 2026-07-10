@@ -164,14 +164,14 @@ export default function BottleScroll() {
           // op desktop links ernaast met -30°.
           const heroOffX = (mobile ? -0.02 : -0.26) * vw
           const hx = geo.heroCX - vw / 2 + heroOffX
-          const hy = geo.heroCY - sy - vh / 2 + (mobile ? 0.05 : 0.09) * vh
+          const hy = geo.heroCY - sy - vh / 2 + (mobile ? -0.13 : 0.09) * vh
           const jy = topRef.current + sideY.center * vh / 100
           const e = smooth(stickT)
           const gx = lerp(hx, 0, e)
           const gy = lerp(hy, jy, e) + floatIdle
           const grot = lerp(mobile ? -14 : -30, 0, e)
           // in de hero iets kleiner; groeit tijdens de reis naar vol formaat
-          const gs = lerp(mobile ? 0.62 : 0.68, 1.0, e)
+          const gs = lerp(mobile ? 0.56 : 0.68, 1.0, e)
           if (!seeded) { tx = gx; ty = gy; tr = grot; ts = gs; seeded = true }
           tx = lerp(tx, gx, kFast); ty = lerp(ty, gy, kFast)
           tr = lerp(tr, grot, kFast); ts = lerp(ts, gs, kFast)

@@ -37,8 +37,10 @@ function useHashRoute() {
   return hash
 }
 
-/* Scroll-reveal */
-function useScrollReveal() {
+/* Scroll-reveal. `route` als dependency zodat de observer na een route-wissel
+   (bijv. terug van Find Us/Shop) de opnieuw ge-mounte .reveal-elementen weer
+   observeert — anders blijven die op opacity:0 hangen (onzichtbare hero). */
+function useScrollReveal(route) {
   useEffect(() => {
     const io = new IntersectionObserver(
       (entries) => {
@@ -50,14 +52,14 @@ function useScrollReveal() {
     )
     document.querySelectorAll('.reveal').forEach((el) => io.observe(el))
     return () => io.disconnect()
-  }, [])
+  }, [route])
 }
 
 /* Diepte-parallax: elementen met [data-depth] schuiven t.o.v. het schermmidden.
    Positief = achtergrond (beweegt mee), negatief = voorgrond (beweegt tegen —
    voelt dichterbij). data-depth-extra plakt een vaste transform (bv. rotate)
    achter de berekende translatie. */
-function useDepth() {
+function useDepth(route) {
   useEffect(() => {
     const els = [...document.querySelectorAll('[data-depth]')]
     let ticking = false
@@ -83,11 +85,11 @@ function useDepth() {
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onScroll)
     }
-  }, [])
+  }, [route])
 }
 
 /* Voortgangsbalk bovenaan de pagina */
-function useScrollBar() {
+function useScrollBar(route) {
   useEffect(() => {
     const bar = document.querySelector('.scrollbar')
     if (!bar) return
@@ -102,7 +104,7 @@ function useScrollBar() {
     window.addEventListener('scroll', onScroll, { passive: true })
     update()
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  }, [route])
 }
 
 /* Handgetekende pijl (Insta-stijl) */
@@ -581,9 +583,12 @@ export function Footer() {
 
 export default function App() {
   const hash = useHashRoute()
-  useScrollReveal()
-  useDepth()
-  useScrollBar()
+  // Route-key: alleen wisselen tussen main/find-us/shop triggert re-init van de
+  // scroll-hooks (niet in-page ankers zoals #product).
+  const route = hash.startsWith('#/find-us') ? 'findus' : hash.startsWith('#/shop') ? 'shop' : 'main'
+  useScrollReveal(route)
+  useDepth(route)
+  useScrollBar(route)
 
   if (hash.startsWith('#/find-us')) {
     return (

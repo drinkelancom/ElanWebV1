@@ -306,7 +306,7 @@ ul { list-style: none; }
 }
 .hero-script {
   position: absolute; z-index: 4;
-  top: -4%; left: clamp(-30px, -2vw, 0px);
+  top: 3%; left: clamp(-30px, -2vw, 0px);
   display: flex; flex-direction: column; align-items: flex-start; gap: 0;
   color: var(--ivory);
   text-shadow: 0 8px 26px rgba(0,0,0,0.5);
@@ -876,21 +876,29 @@ ul { list-style: none; }
   .hero-palm-c { display: none; }
   .hero-script { right: 4vw; bottom: 8%; }
 
+  /* Mobiele hero: content bovenaan uitlijnen zodat de badge vrij van de
+     vaste header (Shop/Find us) valt; fles erboven, logo eronder. */
+  .hero { align-items: start; }
+  .hero-content { padding-top: 96px; }
+  .hero-stage { min-height: clamp(300px, 44vh, 400px); }
+  .hero-stage .wordmark { transform: translateY(7vh); }
+  .hero-eyebrow { margin-bottom: 2px; }
+
   .scroll-cue { display: none; }
   /* Mobiele GPU sparen: kleinere/goedkopere glows, geen animerende blur-laag */
   .travel-bottle::before { width: 32vh; height: 42vh; filter: blur(22px); }
   .journey-glow { filter: blur(26px); }
   .journey-atmos { display: none; }
   .palm-blur { filter: blur(3px) drop-shadow(0 20px 26px rgba(10, 30, 18, 0.4)); }
-  .hero-script { left: 10px; top: 0; }
+  .hero-script { left: 10px; right: auto; top: 9%; bottom: auto; }
   .hero-script .script { font-size: 26px; }
   .hero-script .arrow { width: 54px; margin-left: 64px; }
   /* extra inzoomen zodat de ingebakken Insta-tekst buiten beeld blijft */
   .nutrition-bg img { transform: scale(2.1); transform-origin: 95% 60%; }
 
   .journey { height: 420vh; }
-  .journey-bottle { height: 48vh; }
-  .travel-bottle img { height: 48vh; }
+  .journey-bottle { height: 42vh; }
+  .travel-bottle img { height: 42vh; }
   .journey-panel, .journey-panel.side-left, .journey-panel.side-right {
     left: 50%; right: auto; top: auto; bottom: 9vh;
     transform: translateX(-50%); text-align: center; width: min(90vw, 470px);
@@ -1143,6 +1151,13 @@ ul { list-style: none; }
 .shop-trust-item { display: flex; flex-direction: column; gap: 3px; text-align: center; }
 .shop-trust-item strong { font-weight: 700; font-size: 15px; color: var(--ink); }
 .shop-trust-item span { font-size: 13.5px; color: var(--grey); }
+/* Mobiele auto-scroll variant (zie @media hieronder) */
+.shop-trust-marquee { display: none; overflow: hidden; white-space: nowrap; padding: 15px 0; }
+.shop-trust-track { display: inline-flex; align-items: baseline; animation: marquee 20s linear infinite; }
+.shop-trust-track .tw-item { display: inline-flex; align-items: baseline; gap: 8px; padding: 0 16px; }
+.shop-trust-track .tw-item strong { font-weight: 700; font-size: 14px; color: var(--ink); }
+.shop-trust-track .tw-item em { font-style: normal; font-size: 13px; color: var(--grey); }
+.shop-trust-track .tw-item b { color: var(--clay); font-size: 12px; margin-left: 8px; }
 
 /* ---- Productgrid ---- */
 .shop-grid-sec { padding-top: clamp(56px, 7vw, 96px); }
@@ -1278,4 +1293,13 @@ ul { list-style: none; }
   .shop-detail { grid-template-columns: 1fr; }
   .shop-detail-media { max-width: 440px; margin: 0 auto; }
   .shop-trust-inner { grid-template-columns: 1fr; gap: 14px; }
+  /* Portret-fles komt beter tot z'n recht in een vierkanter, minder plat vak */
+  .product-card-media { aspect-ratio: 1/1; padding: 20px; }
+  .product-card-media img { max-width: 68%; }
+}
+
+/* Mobiel: trust-strip als auto-scroll marquee i.p.v. gestapelde kolom */
+@media (max-width: 560px) {
+  .shop-trust-inner { display: none; }
+  .shop-trust-marquee { display: block; }
 }

@@ -155,12 +155,23 @@ function ShopLanding() {
       </section>
 
       <div className="shop-trust">
+        {/* Desktop/tablet: nette 3-koloms strip */}
         <div className="container shop-trust-inner">
           {shop.trust.map(([a, b]) => (
             <div key={a} className="shop-trust-item reveal">
               <strong>{a}</strong><span>{b}</span>
             </div>
           ))}
+        </div>
+        {/* Mobiel: auto-scroll marquee (content verdubbeld voor naadloze loop) */}
+        <div className="shop-trust-marquee" aria-hidden>
+          <div className="shop-trust-track">
+            {[...shop.trust, ...shop.trust].map(([a, b], i) => (
+              <span key={i} className="tw-item">
+                <strong>{a}</strong><em>{b}</em><b>✦</b>
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 
