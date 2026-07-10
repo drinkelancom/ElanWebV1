@@ -6,18 +6,22 @@ export const images = {
   jungleInsta: '/insta-jungle.jpg',
   coconuts: '/insta-coconuts.jpg',
   beach: '/insta-beach.jpg',
-  meaning: '/insta-meaning.jpg',
+  meaning: '/meaning-yoga.jpg',
   fridge: '/insta-fridge.jpg',
-  palm: '/palm-leaf.png',
-  coconut: '/coconut.png',
+  palm: '/palm-leaf.webp',
+  coconut: '/coconut.webp',
   kokosnoot: '/kokosnoot.png',
-  bottle: '/elan-bottle.png',
+  bottle: '/elan-bottle.webp',
 }
 
+// Web-geoptimaliseerd: H.264 mp4 met bitrate-cap (klein én universeel compatibel).
 export const videos = {
-  ocean: { src: '/video-ocean.mp4', poster: '/poster-ocean.jpg' },
-  jungle: { src: '/video-jungle.mp4', poster: '/poster-jungle.jpg' },
-  coast: { src: '/video-coast.mp4', poster: '/poster-coast.jpg' },
+  ocean:    { src: '/video-ocean.mp4',         poster: '/poster-ocean.jpg' },
+  coconut:  { src: '/video-coconut-palms.mp4', poster: '/poster-coconut-palms.jpg' },
+  movement: { src: '/movement.mp4',            poster: '/movement-poster.jpg' },
+  journeyDesktop: { src: '/journey-desktop.mp4', poster: '/journey-desktop-poster.jpg' },
+  journeyMobile:  { src: '/journey-mobile.mp4',  poster: '/journey-mobile-poster.jpg' },
+  coconut: { src: '/video-coconut-palms.mp4', poster: '/poster-coconut-palms.jpg' },
 }
 
 export const nav = [

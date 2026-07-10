@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react'
-import { journey, images } from './data.js'
+import { useEffect, useRef, useState } from 'react'
+import { journey, images, videos } from './data.js'
 
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v))
 const lerp = (a, b, t) => a + (b - a) * t
@@ -36,13 +36,24 @@ export default function BottleScroll() {
   const topRef = useRef(Infinity)
   const bottomRef = useRef(Infinity)
 
+  // Achtergrondvideo wisselt tussen landschap (desktop) en portret (mobiel).
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches
+  )
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 768px)')
+    const on = (e) => setIsMobile(e.matches)
+    mq.addEventListener('change', on)
+    return () => mq.removeEventListener('change', on)
+  }, [])
+  const jv = isMobile ? videos.journeyMobile : videos.journeyDesktop
+
   useEffect(() => {
     const section = sectionRef.current
     const bottle = bottleRef.current
     const travel = travelRef.current
     const glow = glowRef.current
     const stage = stageRef.current
-    const bg = bgRef.current
     if (!section || !bottle) return
 
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -232,8 +243,10 @@ export default function BottleScroll() {
         glow.style.transform = `translate3d(calc(-50% + ${cx.toFixed(2)}vw), calc(-50% + ${cy.toFixed(2)}vh), 0) scale(${cscale.toFixed(3)})`
       }
       // Achtergrond zoomt traag en drijft licht tegen de scrollrichting in.
-      if (bg) {
-        bg.style.transform = `scale(${(1.12 + p * 0.10).toFixed(4)}) translateY(${(p * -3).toFixed(2)}%)`
+      // bgRef vers uitlezen zodat het ook klopt na een desktop/mobiel-wissel.
+      const bgEl = bgRef.current
+      if (bgEl) {
+        bgEl.style.transform = `scale(${(1.12 + p * 0.10).toFixed(4)}) translateY(${(p * -3).toFixed(2)}%)`
       }
 
       // Sfeerkleur interpoleren tussen twee chapters.
@@ -285,9 +298,15 @@ export default function BottleScroll() {
       </div>
       <section className="journey" ref={sectionRef}>
       <div className="journey-stage" ref={stageRef}>
-        {/* Echte jungle-fotografie als basis */}
+        {/* Kokospalmen-landschap: landschap op desktop, portret op mobiel */}
         <div className="journey-bg">
-          <img ref={bgRef} src={images.jungle} alt="" draggable="false" />
+          <video
+            key={isMobile ? 'm' : 'd'}
+            ref={bgRef}
+            src={jv.src}
+            poster={jv.poster}
+            autoPlay muted loop playsInline
+          />
         </div>
         <div className="journey-tint" aria-hidden />
         <div className="journey-atmos" aria-hidden />

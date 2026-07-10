@@ -24,6 +24,7 @@ function TtIcon({ className }) {
 }
 
 const FindUs = lazy(() => import('./FindUs.jsx'))
+const Shop = lazy(() => import('./Shop.jsx'))
 
 /* Lichte hash-routing */
 function useHashRoute() {
@@ -129,21 +130,23 @@ function Palm({ className, depth, extra, blur }) {
   )
 }
 
-function Header() {
+export function Header({ forceSolid = false }) {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   useEffect(() => {
+    if (forceSolid) { setScrolled(true); return }
     const onScroll = () => setScrolled(window.scrollY > 60)
     window.addEventListener('scroll', onScroll, { passive: true })
     onScroll()
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  }, [forceSolid])
+  const solid = forceSolid || scrolled
   return (
-    <header className={`header ${scrolled ? 'solid' : 'transparent'}`}>
+    <header className={`header ${solid ? 'solid' : 'transparent'}`}>
       <div className="scrollbar" />
       <div className="container header-inner">
         <a href="#top" className="logo" aria-label="ÉLAN — home">
-          <img src={scrolled ? '/elan-logo-black.svg' : '/elan-logo-light.svg'} alt="ÉLAN" />
+          <img src={solid ? '/elan-logo-black.svg' : '/elan-logo-light.svg'} alt="ÉLAN" />
         </a>
         <nav className={`nav ${open ? 'open' : ''}`}>
           {nav.map((item) => (
@@ -151,6 +154,7 @@ function Header() {
           ))}
         </nav>
         <div className="header-actions">
+          <a href="#/shop" className="btn btn-primary btn-sm">Shop</a>
           <a href="#/find-us" className="btn btn-outline btn-sm">Find us</a>
           <button className="menu-toggle" aria-label="Menu" onClick={() => setOpen((o) => !o)}>☰</button>
         </div>
@@ -182,11 +186,7 @@ function Hero() {
   return (
     <section className="hero" id="top" ref={ref}>
       <div className="hero-media">
-        <video
-          src={videos.ocean.src}
-          poster={videos.ocean.poster}
-          autoPlay muted loop playsInline
-        />
+        <video src={videos.ocean.src} poster={videos.ocean.poster} autoPlay muted loop playsInline />
         <div className="hero-rays" aria-hidden />
         <div className="hero-overlay" aria-hidden />
       </div>
@@ -210,8 +210,8 @@ function Hero() {
         <p className="hero-tag">{hero.tagline}</p>
         <p className="hero-sub">{hero.sub}</p>
         <div className="hero-cta">
-          <a href="#product" className="btn btn-light">{hero.cta}</a>
-          <a href="#/find-us" className="btn btn-ghost">Vind ÉLAN →</a>
+          <a href="#/shop" className="btn btn-light">Shop ÉLAN</a>
+          <a href="#product" className="btn btn-ghost">{hero.cta} →</a>
         </div>
       </div>
       <a href="#product" className="scroll-cue" aria-label="Scroll">
@@ -300,7 +300,7 @@ function VideoBand() {
     <section className="vband" ref={secRef}>
       <div className="vband-sticky">
         <div className="vband-frame" ref={frameRef}>
-          <video src={videos.jungle.src} poster={videos.jungle.poster} autoPlay muted loop playsInline />
+          <video src={videos.coconut.src} poster={videos.coconut.poster} autoPlay muted loop playsInline />
           <div className="vband-shade" />
           <div className="vband-caption" ref={capRef}>
             <span className="script script-lg">{videoBand.script}</span>
@@ -333,7 +333,7 @@ function Meaning() {
           <div className="frame" data-depth="0.05">
             <img src={images.meaning} alt="ÉLAN — the meaning" />
           </div>
-          <Palm className="meaning-palm" depth="-0.09" extra="rotate(-38deg)" />
+          <Palm className="meaning-palm" depth="-0.09" extra="rotate(206deg)" />
         </div>
       </div>
     </section>
@@ -382,7 +382,7 @@ function Beach() {
   return (
     <section className="beach">
       <div className="beach-media" aria-hidden data-depth="0.08">
-        <video src={videos.coast.src} poster={videos.coast.poster} autoPlay muted loop playsInline />
+        <video src={videos.movement.src} poster={videos.movement.poster} autoPlay muted loop playsInline />
       </div>
       <div className="beach-shade" aria-hidden />
       <div className="container beach-inner">
@@ -430,7 +430,7 @@ function Story() {
   return (
     <section className="section sec-story" id="story">
       <div className="story-bg" aria-hidden>
-        <img src="/poster-jungle2.jpg" alt="" data-depth="0.08" />
+        <img src="/story-plantation.jpg" alt="" data-depth="0.08" />
       </div>
       <div className="container story-inner reveal">
         <span className="script script-xl">{story.script}</span>
@@ -553,7 +553,7 @@ function Social() {
   )
 }
 
-function Footer() {
+export function Footer() {
   return (
     <footer className="footer">
       <div className="container footer-inner">
@@ -589,6 +589,14 @@ export default function App() {
     return (
       <Suspense fallback={<div className="globe-loading">De globe wordt geladen…</div>}>
         <FindUs />
+      </Suspense>
+    )
+  }
+
+  if (hash.startsWith('#/shop')) {
+    return (
+      <Suspense fallback={<div className="globe-loading">De shop wordt geladen…</div>}>
+        <Shop hash={hash} />
       </Suspense>
     )
   }
