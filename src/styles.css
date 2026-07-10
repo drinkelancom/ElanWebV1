@@ -722,7 +722,17 @@ ul { list-style: none; }
 }
 .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--green); }
 .contact-form .btn { justify-content: center; margin-top: 4px; }
+.contact-form .btn:disabled { opacity: 0.7; cursor: default; transform: none; }
 .form-note { font-size: 13px; color: var(--grey); text-align: center; }
+.form-error { color: #b0553a; font-weight: 600; }
+.contact-sent {
+  align-content: center; text-align: center; gap: 8px; min-height: 280px;
+  place-items: center;
+}
+.contact-sent .script-lg { color: var(--green-dark); }
+.contact-sent h3 { font-family: 'Zodiak', serif; font-size: 26px; }
+.contact-sent p { color: var(--grey); }
+.contact-sent .btn { margin-top: 12px; }
 
 /* ---------- Footer ---------- */
 .footer { background: var(--green-forest); color: var(--ivory); padding: 60px 0 40px; }

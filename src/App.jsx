@@ -423,7 +423,37 @@ function Story() {
   )
 }
 
+// Web3Forms access key (drinkelan.com → Info@drinkelan.com)
+const WEB3FORMS_KEY = '25c97098-16a2-42ba-ad85-603bf65fc024'
+
 function Contact() {
+  const [status, setStatus] = useState('idle') // idle | sending | ok | error
+
+  const onSubmit = async (e) => {
+    e.preventDefault()
+    if (status === 'sending') return
+    const form = e.currentTarget
+    const payload = Object.fromEntries(new FormData(form))
+    // honeypot tegen spam
+    if (payload.botcheck) return
+    payload.access_key = WEB3FORMS_KEY
+    payload.subject = 'Nieuw bericht via drinkelan.com'
+    payload.from_name = 'ÉLAN website'
+    setStatus('sending')
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      const json = await res.json()
+      if (json.success) { setStatus('ok'); form.reset() }
+      else setStatus('error')
+    } catch {
+      setStatus('error')
+    }
+  }
+
   return (
     <section className="section sec-contact" id="contact">
       <div className="container split">
@@ -437,13 +467,30 @@ function Contact() {
             <p><a href={`tel:${contact.phone.replace(/\s/g, '')}`}>{contact.phone}</a></p>
           </div>
         </div>
-        <form className="contact-form reveal" onSubmit={(e) => e.preventDefault()}>
-          <input type="text" placeholder="Name" required />
-          <input type="email" placeholder="Email" required />
-          <textarea placeholder="Message" rows="4" />
-          <button className="btn btn-primary" type="submit">Send message</button>
-          <span className="form-note">You agree to our friendly privacy policy.</span>
-        </form>
+        {status === 'ok' ? (
+          <div className="contact-form contact-sent">
+            <span className="script script-lg">bedankt!</span>
+            <h3>Je bericht is verstuurd.</h3>
+            <p>We nemen zo snel mogelijk contact met je op.</p>
+            <button className="btn btn-outline" onClick={() => setStatus('idle')}>Nog een bericht</button>
+          </div>
+        ) : (
+          <form className="contact-form reveal" onSubmit={onSubmit}>
+            <input type="text" name="name" placeholder="Name" required />
+            <input type="email" name="email" placeholder="Email" required />
+            <textarea name="message" placeholder="Message" rows="4" required />
+            <input type="checkbox" name="botcheck" tabIndex="-1" autoComplete="off" style={{ display: 'none' }} />
+            <button className="btn btn-primary" type="submit" disabled={status === 'sending'}>
+              {status === 'sending' ? 'Versturen…' : 'Send message'}
+            </button>
+            {status === 'error' && (
+              <span className="form-note form-error">Er ging iets mis — probeer het opnieuw of mail ons direct.</span>
+            )}
+            {status !== 'error' && (
+              <span className="form-note">You agree to our friendly privacy policy.</span>
+            )}
+          </form>
+        )}
       </div>
     </section>
   )
