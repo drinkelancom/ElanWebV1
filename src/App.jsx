@@ -484,7 +484,10 @@ function Contact() {
               {status === 'sending' ? 'Versturen…' : 'Send message'}
             </button>
             {status === 'error' && (
-              <span className="form-note form-error">Er ging iets mis — probeer het opnieuw of mail ons direct.</span>
+              <span className="form-note form-error">
+                Er ging iets mis — probeer het opnieuw of mail ons direct via{' '}
+                <a href={`mailto:${contact.email}`}>{contact.email}</a>.
+              </span>
             )}
             {status !== 'error' && (
               <span className="form-note">You agree to our friendly privacy policy.</span>
