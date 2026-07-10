@@ -325,10 +325,18 @@
   .card .logo-in { height:34px; margin-top:8px; }
   .card .row { display:flex; align-items:center; gap:14px; }
 
-  /* pak dat achter de badge uitpiept */
-  .poke { position:absolute; z-index:1; height:300px; left:50%; top:50%;
-    animation:poke-bob var(--dur) ease-in-out infinite; }
-  @keyframes poke-bob { 0%,100%{transform:translate(var(--px,40%),-52%) rotate(8deg)} 50%{transform:translate(var(--px,40%),-58%) rotate(12deg)} }
+  /* Decoratief accent (kokosnoot/palm) dat vanuit een hoek uitpiept —
+     grotendeels zichtbaar, niet volledig achter de badge. */
+  .accent { position:absolute; z-index:1; pointer-events:none;
+    animation:acc-bob var(--dur) ease-in-out infinite; }
+  @keyframes acc-bob { 0%,100%{translate:0 0; rotate:var(--r,0deg)} 50%{translate:0 -9px; rotate:calc(var(--r,0deg) + 4deg)} }
+  .accent.coco { width:150px; filter:drop-shadow(0 12px 14px rgba(20,19,15,.28)); }
+  .accent.leaf { width:196px; filter:drop-shadow(0 16px 18px rgba(20,19,15,.22)); }
+  .acc-bl { left:-6px; bottom:0; }     /* onder-links */
+  .acc-br { right:-6px; bottom:0; }    /* onder-rechts */
+  .acc-tr { right:-24px; top:-14px; }  /* boven-rechts */
+  .leaf.acc-bl { left:-34px; bottom:-18px; }
+  .leaf.acc-tr { right:-40px; top:-24px; }
 
   /* 1. hier verkrijgbaar — locatiepin-badge */
   .s-hier .pin { width:46px; height:46px; background:var(--ivory); border-radius:50% 50% 50% 0;
@@ -499,7 +507,7 @@ const SCENES = {
 
   /* Badge-stickers — gevulde labels, andere stijl */
   'sticker-hier': { dur: 2600, transparent: true, cls: 'badge hier', html: `
-    <img class="poke" style="--px:38%" src="${PACK}">
+    <img class="accent coco acc-bl" style="--r:-8deg" src="${NUT}">
     <div class="card green">
       <div class="pin"></div>
       <div class="big">HIER</div>
@@ -508,27 +516,29 @@ const SCENES = {
     </div>` },
   'sticker-nu': { dur: 3000, transparent: true, cls: 'badge nu', html: `
     <div class="burst"></div>
-    <img class="poke" style="--px:40%" src="${PACK}">
+    <img class="accent coco acc-br" style="--r:8deg" src="${NUT}">
     <div class="card ivory">
       <div class="scr" style="color:var(--green-dark)">nu</div>
       <div class="big">VERKRIJG&shy;BAAR</div>
       <img class="logo-in" src="${LOGO_D}">
     </div>` },
   'sticker-verfrissend': { dur: 2800, transparent: true, cls: 'badge verfr', html: `
-    <img class="poke" style="--px:44%" src="${PACK}">
+    <img class="accent leaf acc-tr" style="--r:150deg" src="${PALM}">
+    <img class="accent coco acc-bl" style="--r:-6deg" src="${NUT}">
     <div class="card clay">
       <div class="scr">heerlijk</div>
       <div class="big">VERFRISSEND</div>
       <img class="logo-in" src="${LOGO_L}">
     </div>` },
   'sticker-drink': { dur: 2400, transparent: true, cls: 'badge', html: `
+    <img class="accent leaf acc-bl" style="--r:-40deg" src="${PALM}">
     <div class="card green">
       <div class="kicker">drink</div>
       <img src="${LOGO_L}" style="height:78px">
       <div class="scr" style="margin-top:6px">stay refreshed</div>
     </div>` },
   'sticker-repeat': { dur: 2600, transparent: true, cls: 'badge repeat', html: `
-    <img class="poke" style="--px:42%" src="${PACK}">
+    <img class="accent coco acc-br" style="--r:8deg" src="${NUT}">
     <div class="card deep">
       <div class="big">DRINK</div>
       <div class="big">HYDRATE</div>
@@ -537,14 +547,14 @@ const SCENES = {
     </div>` },
   'sticker-glow': { dur: 3000, transparent: true, cls: 'badge glow', html: `
     <div class="halo"></div>
-    <img class="poke" style="--px:42%" src="${PACK}">
+    <img class="accent leaf acc-bl" style="--r:-38deg" src="${PALM}">
     <div class="card ivory">
       <div class="kicker" style="color:var(--clay-deep)">feed your</div>
       <div class="big" style="font-size:96px; color:var(--clay-deep)">GLOW</div>
       <img class="logo-in" src="${LOGO_D}">
     </div>` },
   'sticker-mood': { dur: 2400, transparent: true, cls: 'badge mood', html: `
-    <img class="poke" style="--px:46%" src="${PACK}">
+    <img class="accent coco acc-bl" style="--r:-8deg" src="${NUT}">
     <div class="card green">
       <div class="kicker">current</div>
       <div class="big">mood</div>
