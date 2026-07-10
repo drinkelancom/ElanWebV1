@@ -21,7 +21,6 @@ export const videos = {
   movement: { src: '/movement.mp4',            poster: '/movement-poster.jpg' },
   journeyDesktop: { src: '/journey-desktop.mp4', poster: '/journey-desktop-poster.jpg' },
   journeyMobile:  { src: '/journey-mobile.mp4',  poster: '/journey-mobile-poster.jpg' },
-  coconut: { src: '/video-coconut-palms.mp4', poster: '/poster-coconut-palms.jpg' },
 }
 
 export const nav = [
