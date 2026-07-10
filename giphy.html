@@ -8,7 +8,7 @@
 <style>
   :root {
     --ivory:#fffaee; --forest:#0c2c1b; --deep:#123a24; --green:#51b83e;
-    --green-dark:#3f9430; --clay:#c58a6d; --sand:#efe4d3; --ink:#14130f;
+    --green-dark:#3f9430; --clay:#c58a6d; --clay-deep:#a2624a; --sand:#efe4d3; --ink:#14130f;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   body { background:#222; }
@@ -302,6 +302,63 @@
     background:#ffd23f; border:6px solid #fff; animation:sun-pulse var(--dur) ease-in-out infinite; }
   .s-beach .palm { bottom:60px; left:-20px; transform:rotate(-40deg); animation:lk-sway var(--dur) ease-in-out infinite; }
 
+  /* ══════════════════════════════════════════════════════════════
+     BADGE-STICKERS — gevulde labels, witte rand + harde offset-schaduw.
+     Bewust een ANDERE stijl dan de cutout-stickers.
+     ══════════════════════════════════════════════════════════════ */
+  .s-badge { }
+  .card {
+    position:absolute; left:50%; top:50%; z-index:3;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; gap:2px; max-width:412px;
+    border:6px solid #fff; border-radius:34px; padding:30px 38px;
+    animation:bd-pop var(--dur) ease-in-out infinite;
+  }
+  @keyframes bd-pop { 0%,100%{transform:translate(-50%,-50%) rotate(-2.2deg) scale(.98)} 50%{transform:translate(-50%,-50%) rotate(2.2deg) scale(1.03)} }
+  .card.green { background:var(--green); box-shadow:10px 10px 0 var(--forest); color:var(--ivory); }
+  .card.ivory { background:var(--ivory); box-shadow:10px 10px 0 var(--clay);   color:var(--ink); }
+  .card.clay  { background:var(--clay);  box-shadow:10px 10px 0 #7a4632;        color:var(--ivory); }
+  .card.deep  { background:var(--deep);  box-shadow:10px 10px 0 #061c11;        color:var(--ivory); }
+  .card .kicker { font-size:22px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; opacity:.85; }
+  .card .big { font-family:'Zodiak',serif; font-weight:800; font-size:78px; line-height:.9; letter-spacing:-.01em; }
+  .card .scr { font-family:'Sacramento',cursive; font-size:58px; line-height:.8; }
+  .card .logo-in { height:34px; margin-top:8px; }
+  .card .row { display:flex; align-items:center; gap:14px; }
+
+  /* pak dat achter de badge uitpiept */
+  .poke { position:absolute; z-index:1; height:300px; left:50%; top:50%;
+    animation:poke-bob var(--dur) ease-in-out infinite; }
+  @keyframes poke-bob { 0%,100%{transform:translate(var(--px,40%),-52%) rotate(8deg)} 50%{transform:translate(var(--px,40%),-58%) rotate(12deg)} }
+
+  /* 1. hier verkrijgbaar — locatiepin-badge */
+  .s-hier .pin { width:46px; height:46px; background:var(--ivory); border-radius:50% 50% 50% 0;
+    transform:rotate(-45deg); display:grid; place-items:center; margin-bottom:10px; }
+  .s-hier .pin::after { content:''; width:16px; height:16px; border-radius:50%; background:var(--green); transform:rotate(45deg); }
+
+  /* 2. nu verkrijgbaar — spikey sunburst achter de badge */
+  .s-nu .burst { position:absolute; left:50%; top:50%; width:600px; height:600px; margin:-300px 0 0 -300px; z-index:0;
+    background:repeating-conic-gradient(var(--green) 0deg 8deg, transparent 8deg 16deg);
+    animation:burst-rot var(--dur) linear infinite; }
+  @keyframes burst-rot { from{transform:rotate(0)} to{transform:rotate(16deg)} }
+  .s-nu .big { font-size:56px; }
+
+  /* 3. heerlijk verfrissend — lang woord kleiner */
+  .s-verfr .big { font-size:50px; }
+
+  /* 5. drink hydrate repeat — laatste woord knippert */
+  .s-repeat .big { font-size:56px; }
+  .s-repeat .rep { color:#9fe08a; animation:rep-blink var(--dur) steps(1) infinite; }
+  @keyframes rep-blink { 0%,60%{opacity:1} 62%,74%{opacity:.25} 76%,100%{opacity:1} }
+
+  /* 6. feed your glow — warme gloed */
+  .s-glow .halo { position:absolute; left:50%; top:50%; width:460px; height:460px; margin:-230px 0 0 -230px; z-index:0;
+    background:radial-gradient(circle, rgba(255,210,120,.85), rgba(255,210,120,0) 68%);
+    animation:halo-p var(--dur) ease-in-out infinite; }
+  @keyframes halo-p { 0%,100%{transform:scale(.9); opacity:.7} 50%{transform:scale(1.08); opacity:1} }
+
+  /* 7. mood — groot woord, pak ernaast */
+  .s-mood .card .big { font-size:104px; }
+
   /* ══ 8. sea — vitamin sea ══ (dupe marker verwijderd) ══ */
 
   /* ══ 8. sea — vitamin sea ══ */
@@ -399,20 +456,20 @@ const SCENES = {
     <img class="nut st-outline" src="${NUT}">
     <img class="lock st-outline" src="${LOCKUP}">
     <img class="st-brand st-outline" src="${LOGO_D}">` },
-  'sticker-sip': { dur: 2600, transparent: true, cls: 'quote', html: `
+  'sticker-sip': { dur: 2600, transparent: true, cls: 'quote sip', html: `
     <div class="txt script st-text">sip sip<br>hooray!</div>
     <div class="bub b1"></div><div class="bub b2"></div><div class="bub b3"></div>
     <img class="nut st-outline" src="${NUT}">
     <img class="st-brand st-outline" src="${LOGO_D}">` },
-  'sticker-tropics': { dur: 2800, transparent: true, cls: 'quote', html: `
+  'sticker-tropics': { dur: 2800, transparent: true, cls: 'quote trop', html: `
     <img class="palm a st-outline" src="${PALM}"><img class="palm b st-outline" src="${PALM}">
     <div class="txt script st-text">taste the<br>tropics</div>
     <img class="st-brand st-outline" src="${LOGO_D}">` },
-  'sticker-loco': { dur: 2400, transparent: true, cls: 'quote', html: `
+  'sticker-loco': { dur: 2400, transparent: true, cls: 'quote loco', html: `
     <div class="txt script st-text">coco loco</div>
     <img class="nut st-outline" src="${NUT}">
     <img class="st-brand st-outline" src="${LOGO_D}">` },
-  'sticker-beach': { dur: 2800, transparent: true, cls: 'quote', html: `
+  'sticker-beach': { dur: 2800, transparent: true, cls: 'quote beach', html: `
     <div class="sun"></div>
     <img class="palm st-outline" src="${PALM}">
     <div class="txt script st-text">beach please</div>
@@ -439,12 +496,66 @@ const SCENES = {
     <img class="palm st-outline" src="${PALM}"><img class="palm2 st-outline" src="${PALM}">
     <div class="txt script st-text">stay fresh<br>stay tropical</div>
     <img class="st-brand st-outline" src="${LOGO_D}">` },
+
+  /* Badge-stickers — gevulde labels, andere stijl */
+  'sticker-hier': { dur: 2600, transparent: true, cls: 'badge hier', html: `
+    <img class="poke" style="--px:38%" src="${PACK}">
+    <div class="card green">
+      <div class="pin"></div>
+      <div class="big">HIER</div>
+      <div class="scr">verkrijgbaar</div>
+      <img class="logo-in" src="${LOGO_L}">
+    </div>` },
+  'sticker-nu': { dur: 3000, transparent: true, cls: 'badge nu', html: `
+    <div class="burst"></div>
+    <img class="poke" style="--px:40%" src="${PACK}">
+    <div class="card ivory">
+      <div class="scr" style="color:var(--green-dark)">nu</div>
+      <div class="big">VERKRIJG&shy;BAAR</div>
+      <img class="logo-in" src="${LOGO_D}">
+    </div>` },
+  'sticker-verfrissend': { dur: 2800, transparent: true, cls: 'badge verfr', html: `
+    <img class="poke" style="--px:44%" src="${PACK}">
+    <div class="card clay">
+      <div class="scr">heerlijk</div>
+      <div class="big">VERFRISSEND</div>
+      <img class="logo-in" src="${LOGO_L}">
+    </div>` },
+  'sticker-drink': { dur: 2400, transparent: true, cls: 'badge', html: `
+    <div class="card green">
+      <div class="kicker">drink</div>
+      <img src="${LOGO_L}" style="height:78px">
+      <div class="scr" style="margin-top:6px">stay refreshed</div>
+    </div>` },
+  'sticker-repeat': { dur: 2600, transparent: true, cls: 'badge repeat', html: `
+    <img class="poke" style="--px:42%" src="${PACK}">
+    <div class="card deep">
+      <div class="big">DRINK</div>
+      <div class="big">HYDRATE</div>
+      <div class="big rep">REPEAT</div>
+      <img class="logo-in" src="${LOGO_L}" style="margin-top:12px">
+    </div>` },
+  'sticker-glow': { dur: 3000, transparent: true, cls: 'badge glow', html: `
+    <div class="halo"></div>
+    <img class="poke" style="--px:42%" src="${PACK}">
+    <div class="card ivory">
+      <div class="kicker" style="color:var(--clay-deep)">feed your</div>
+      <div class="big" style="font-size:96px; color:var(--clay-deep)">GLOW</div>
+      <img class="logo-in" src="${LOGO_D}">
+    </div>` },
+  'sticker-mood': { dur: 2400, transparent: true, cls: 'badge mood', html: `
+    <img class="poke" style="--px:46%" src="${PACK}">
+    <div class="card green">
+      <div class="kicker">current</div>
+      <div class="big">mood</div>
+      <img class="logo-in" src="${LOGO_L}">
+    </div>` },
 }
 
 const name = new URLSearchParams(location.search).get('scene') || 'float'
 const scene = SCENES[name]
 const stage = document.getElementById('stage')
-const cls = {
+const cls = scene.cls || {
   float:'float', pure:'pure', coconut:'coco', morning:'morning', thirsty:'thirsty',
   sparkle:'sparkle', loading:'loading', sea:'sea',
   'sticker-pack':'stpack', 'sticker-hydrated':'sthydr', 'sticker-coconut':'stcoco',
