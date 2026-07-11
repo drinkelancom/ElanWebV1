@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react'
-import {
-  images, videos, nav, hero, marquee, orbit, videoBand, meaning,
-  nutrition, beach, fridge, story, contact, socials,
-} from './data.js'
+import { images, videos, socialFeedImages, WEB3FORMS_KEY } from './data.js'
+import { useLang } from './lang.jsx'
 import BottleScroll from './BottleScroll.jsx'
 
 /* Social iconen */
@@ -19,6 +17,13 @@ function TtIcon({ className }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
       <path d="M16.5 3c.3 2.2 1.7 3.9 3.9 4.2v2.8c-1.4.1-2.7-.3-3.9-1v5.9c0 3.4-2.6 5.9-5.9 5.9-3 0-5.6-2.3-5.6-5.5 0-3.4 3-6 6.5-5.4v2.9c-.4-.1-.9-.2-1.3-.2-1.6 0-2.6 1.3-2.4 2.9.2 1.3 1.4 2 2.5 2 1.5 0 2.6-1.1 2.6-2.7V3h3.1z" />
+    </svg>
+  )
+}
+function FbIcon({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12z" />
     </svg>
   )
 }
@@ -55,10 +60,7 @@ function useScrollReveal(route) {
   }, [route])
 }
 
-/* Diepte-parallax: elementen met [data-depth] schuiven t.o.v. het schermmidden.
-   Positief = achtergrond (beweegt mee), negatief = voorgrond (beweegt tegen —
-   voelt dichterbij). data-depth-extra plakt een vaste transform (bv. rotate)
-   achter de berekende translatie. */
+/* Diepte-parallax: elementen met [data-depth] schuiven t.o.v. het schermmidden. */
 function useDepth(route) {
   useEffect(() => {
     const els = [...document.querySelectorAll('[data-depth]')]
@@ -107,6 +109,11 @@ function useScrollBar(route) {
   }, [route])
 }
 
+/* Naar boven scrollen bij routewissel (subpagina's). */
+function useScrollTop(dep) {
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' }) }, [dep])
+}
+
 /* Handgetekende pijl (Insta-stijl) */
 function Arrow({ dir = 'r', className = '' }) {
   return (
@@ -132,7 +139,20 @@ function Palm({ className, depth, extra, blur }) {
   )
 }
 
+/* Taal-schakelaar NL / EN */
+function LangToggle({ solid }) {
+  const { lang, setLang } = useLang()
+  return (
+    <div className={`lang-toggle ${solid ? 'solid' : 'light'}`} role="group" aria-label="Taal / Language">
+      <button className={lang === 'nl' ? 'active' : ''} onClick={() => setLang('nl')} aria-pressed={lang === 'nl'}>NL</button>
+      <span aria-hidden>/</span>
+      <button className={lang === 'en' ? 'active' : ''} onClick={() => setLang('en')} aria-pressed={lang === 'en'}>EN</button>
+    </div>
+  )
+}
+
 export function Header({ forceSolid = false }) {
+  const { t } = useLang()
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   useEffect(() => {
@@ -151,13 +171,14 @@ export function Header({ forceSolid = false }) {
           <img src={solid ? '/elan-logo-black.svg' : '/elan-logo-light.svg'} alt="ÉLAN" />
         </a>
         <nav className={`nav ${open ? 'open' : ''}`}>
-          {nav.map((item) => (
+          {t.nav.map((item) => (
             <a key={item.label} href={item.href} onClick={() => setOpen(false)}>{item.label}</a>
           ))}
         </nav>
         <div className="header-actions">
-          <a href="#/shop" className="btn btn-primary btn-sm">Shop</a>
-          <a href="#/find-us" className="btn btn-outline btn-sm">Find us</a>
+          <LangToggle solid={solid} />
+          <a href="#/shop" className="btn btn-primary btn-sm">{t.ui.shop}</a>
+          <a href="#/find-us" className="btn btn-outline btn-sm">{t.ui.findUs}</a>
           <button className="menu-toggle" aria-label="Menu" onClick={() => setOpen((o) => !o)}>☰</button>
         </div>
       </div>
@@ -167,6 +188,7 @@ export function Header({ forceSolid = false }) {
 
 /* ============ HERO — oceaanvideo + muis/scroll-diepte ============ */
 function Hero() {
+  const { t } = useLang()
   const ref = useRef(null)
   useEffect(() => {
     const el = ref.current
@@ -193,42 +215,42 @@ function Hero() {
         <div className="hero-overlay" aria-hidden />
       </div>
 
-      {/* Voorgrond-palmen: dichtbij (blurred) en middenlaag — echte diepte */}
       <img src={images.palm} alt="" aria-hidden className="palm hero-palm-a" draggable="false" />
       <img src={images.palm} alt="" aria-hidden className="palm hero-palm-b" draggable="false" />
       <img src={images.palm} alt="" aria-hidden className="palm hero-palm-c palm-blur" draggable="false" />
 
       <div className="hero-content reveal">
-        <span className="hero-eyebrow">100% Pure Coconut Water</span>
+        <span className="hero-eyebrow">{t.hero.eyebrow}</span>
         <div className="hero-stage">
           <h1 className="wordmark">
             <img src="/elan-logo-light.svg" alt="ÉLAN" />
           </h1>
           <div className="hero-script">
-            <span className="script">{hero.script}</span>
+            <span className="script">{t.hero.script}</span>
             <Arrow dir="rd" />
           </div>
         </div>
-        <p className="hero-tag">{hero.tagline}</p>
-        <p className="hero-sub">{hero.sub}</p>
+        <p className="hero-tag">{t.hero.tagline}</p>
+        <p className="hero-sub">{t.hero.sub}</p>
         <div className="hero-cta">
-          <a href="#/shop" className="btn btn-light">Shop ÉLAN</a>
-          <a href="#product" className="btn btn-ghost">{hero.cta} →</a>
+          <a href="#/shop" className="btn btn-light">{t.ui.shopElan}</a>
+          <a href="#product" className="btn btn-ghost">{t.hero.cta} →</a>
         </div>
       </div>
-      <a href="#product" className="scroll-cue" aria-label="Scroll">
-        <span>Scroll</span><i>↓</i>
+      <a href="#product" className="scroll-cue" aria-label={t.ui.scroll}>
+        <span>{t.ui.scroll}</span><i>↓</i>
       </a>
     </section>
   )
 }
 
 function Marquee() {
+  const { t } = useLang()
   return (
     <div className="marquee" aria-hidden>
       <div className="marquee-track">
-        {[...marquee, ...marquee].map((t, i) => (
-          <span key={i} className={i % 2 ? 'script' : 'serif'}>{t}<b>✦</b></span>
+        {[...t.marquee, ...t.marquee].map((txt, i) => (
+          <span key={i} className={i % 2 ? 'script' : 'serif'}>{txt}<b>✦</b></span>
         ))}
       </div>
     </div>
@@ -237,18 +259,19 @@ function Marquee() {
 
 /* ============ Benefits-constellatie (Insta-stijl) ============ */
 function Orbit() {
+  const { t } = useLang()
   return (
     <section className="orbit" id="why">
       <Palm className="orbit-palm-a" depth="-0.10" extra="rotate(148deg) scaleX(-1)" blur />
       <div className="orbit-head reveal">
-        <span className="script script-lg">{orbit.script}</span>
-        <h2 className="display">{orbit.title}</h2>
+        <span className="script script-lg">{t.orbit.script}</span>
+        <h2 className="display">{t.orbit.title}</h2>
       </div>
       <div className="orbit-stage">
         <div className="orbit-bottle-wrap" data-depth="-0.04">
           <img className="orbit-bottle" src={images.bottle} alt="ÉLAN pak met benefits" />
         </div>
-        {orbit.labels.map((l, i) => (
+        {t.orbit.labels.map((l, i) => (
           <div key={l.pos} className={`orbit-label ${l.pos} reveal`} style={{ '--d': `${i * 90}ms` }}>
             <span className="script">
               {l.text.split('\n').map((line, k) => <span key={k}>{line}</span>)}
@@ -264,6 +287,7 @@ function Orbit() {
 
 /* ============ Video-band die uitvouwt tijdens scroll ============ */
 function VideoBand() {
+  const { t } = useLang()
   const secRef = useRef(null)
   const frameRef = useRef(null)
   const capRef = useRef(null)
@@ -305,9 +329,9 @@ function VideoBand() {
           <video src={videos.coconut.src} poster={videos.coconut.poster} autoPlay muted loop playsInline />
           <div className="vband-shade" />
           <div className="vband-caption" ref={capRef}>
-            <span className="script script-lg">{videoBand.script}</span>
-            <h2 className="display light">{videoBand.title}</h2>
-            <p className="lead light">{videoBand.body}</p>
+            <span className="script script-lg">{t.videoBand.script}</span>
+            <h2 className="display light">{t.videoBand.title}</h2>
+            <p className="lead light">{t.videoBand.body}</p>
           </div>
         </div>
       </div>
@@ -317,23 +341,24 @@ function VideoBand() {
 
 /* ============ The Meaning (plaster/terracotta split) ============ */
 function Meaning() {
+  const { t } = useLang()
   return (
     <section className="section sec-meaning" id="meaning">
       <div className="container meaning-grid">
         <div className="meaning-copy reveal">
-          <span className="script script-xl">{meaning.script}</span>
-          <h2 className="display">{meaning.title}</h2>
-          <p className="lead">{meaning.body}</p>
-          <p className="lead">{meaning.body2}</p>
+          <span className="script script-xl">{t.meaning.script}</span>
+          <h2 className="display">{t.meaning.title}</h2>
+          <p className="lead">{t.meaning.body}</p>
+          <p className="lead">{t.meaning.body2}</p>
           <div className="stats">
-            {meaning.stats.map(([a, b]) => (
+            {t.meaning.stats.map(([a, b]) => (
               <div key={a}><strong>{a}</strong><span>{b}</span></div>
             ))}
           </div>
         </div>
         <div className="meaning-media reveal">
           <div className="frame" data-depth="0.05">
-            <img src={images.meaning} alt="ÉLAN — the meaning" />
+            <img src={images.meaning} alt="ÉLAN — Bryan & Isabel" />
           </div>
           <Palm className="meaning-palm" depth="-0.09" extra="rotate(206deg)" />
         </div>
@@ -344,6 +369,8 @@ function Meaning() {
 
 /* ============ Nutrition — donker glas op jungle ============ */
 function Nutrition() {
+  const { t } = useLang()
+  const n = t.nutrition
   return (
     <section className="section sec-nutrition">
       <div className="nutrition-bg" aria-hidden data-depth="0.08">
@@ -352,26 +379,26 @@ function Nutrition() {
       <div className="nutrition-shade" aria-hidden />
       <div className="container nutrition-grid">
         <div className="nutrition-copy reveal">
-          <span className="script script-lg">{nutrition.script}</span>
-          <h2 className="display light">{nutrition.title}</h2>
-          <p className="lead light">Straight from the coconut: pure and transparent in origin — niets meer, niets minder.</p>
+          <span className="script script-lg">{n.script}</span>
+          <h2 className="display light">{n.title}</h2>
+          <p className="lead light">{n.lead}</p>
           <div className="stats light">
-            <div><strong>100%</strong><span>Puur kokoswater</span></div>
-            <div><strong>0g</strong><span>Toegevoegde suikers</span></div>
-            <div><strong>250mg</strong><span>Kalium / 100 ml</span></div>
+            {n.stats.map(([a, b]) => (
+              <div key={a}><strong>{a}</strong><span>{b}</span></div>
+            ))}
           </div>
         </div>
         <div className="glass-card nutrition-card reveal">
           <div className="nc-head">
-            <span>{nutrition.eyebrow}</span>
-            <small>{nutrition.per}</small>
+            <span>{n.eyebrow}</span>
+            <small>{n.per}</small>
           </div>
           <ul className="nc-rows">
-            {nutrition.rows.map((r) => (
+            {n.rows.map((r) => (
               <li key={r[0]}><span>{r[0]}</span><b>{r[1]}</b></li>
             ))}
           </ul>
-          <span className="nc-badge">{nutrition.badge}</span>
+          <span className="nc-badge">{n.badge}</span>
         </div>
       </div>
       <Palm className="nutrition-palm" depth="-0.13" extra="rotate(132deg)" blur />
@@ -381,6 +408,7 @@ function Nutrition() {
 
 /* ============ Beach band (hammock) ============ */
 function Beach() {
+  const { t } = useLang()
   return (
     <section className="beach">
       <div className="beach-media" aria-hidden data-depth="0.08">
@@ -389,10 +417,10 @@ function Beach() {
       <div className="beach-shade" aria-hidden />
       <div className="container beach-inner">
         <div className="glass-card beach-card reveal">
-          <span className="script script-xl">{beach.script}</span>
-          <h2 className="display light">{beach.title}</h2>
-          <p className="lead light">{beach.body}</p>
-          <a href="#contact" className="btn btn-light">{beach.cta}</a>
+          <span className="script script-xl">{t.beach.script}</span>
+          <h2 className="display light">{t.beach.title}</h2>
+          <p className="lead light">{t.beach.body}</p>
+          <a href="#contact" className="btn btn-light">{t.beach.cta}</a>
         </div>
       </div>
     </section>
@@ -401,6 +429,7 @@ function Beach() {
 
 /* ============ Fridge — dagelijks ritueel ============ */
 function Fridge() {
+  const { t } = useLang()
   return (
     <section className="section sec-fridge">
       <div className="container split reverse">
@@ -411,42 +440,83 @@ function Fridge() {
           <img src={images.coconut} alt="" aria-hidden className="fridge-coconut" data-depth="-0.14" draggable="false" />
         </div>
         <div className="split-text reveal">
-          <span className="eyebrow">{fridge.eyebrow}</span>
-          <span className="script script-lg clay">{fridge.script}</span>
-          <h2 className="display">{fridge.title}</h2>
-          <p className="lead">{fridge.body}</p>
+          <span className="eyebrow">{t.fridge.eyebrow}</span>
+          <span className="script script-lg clay">{t.fridge.script}</span>
+          <h2 className="display">{t.fridge.title}</h2>
+          <p className="lead">{t.fridge.body}</p>
           <ul className="benefits">
-            {fridge.benefits.map((b) => (
+            {t.fridge.benefits.map((b) => (
               <li key={b}><span className="tick">✓</span>{b}</li>
             ))}
           </ul>
-          <a href="#/find-us" className="btn btn-primary" style={{ marginTop: 28 }}>{fridge.cta}</a>
+          <a href="#/find-us" className="btn btn-primary" style={{ marginTop: 28 }}>{t.fridge.cta}</a>
         </div>
       </div>
     </section>
   )
 }
 
-/* ============ Story ============ */
-function Story() {
+/* ============ ÉLAN in cijfers (social proof) ============ */
+function Stats() {
+  const { t } = useLang()
+  return (
+    <section className="section sec-figures">
+      <div className="container figures-inner reveal">
+        <span className="script script-lg clay">{t.stats.script}</span>
+        <h2 className="display">{t.stats.title}</h2>
+        <div className="figures-grid">
+          {t.stats.items.map(([a, b], i) => (
+            <div key={i} className="figure" style={{ '--d': `${i * 90}ms` }}>
+              <strong>{a}</strong><span>{b}</span>
+            </div>
+          ))}
+        </div>
+        <p className="figures-foot">{t.stats.foot}</p>
+      </div>
+    </section>
+  )
+}
+
+/* ============ Verkrijgbaarheid — Beschikbaar bij ============ */
+function Availability() {
+  const { t } = useLang()
+  return (
+    <section className="section sec-availability">
+      <div className="container availability-inner reveal">
+        <span className="script script-lg">{t.availability.script}</span>
+        <h2 className="display">{t.availability.title}</h2>
+        <ul className="availability-list">
+          {t.availability.items.map((it, i) => (
+            <li key={i} style={{ '--d': `${i * 70}ms` }}><span className="tick">✓</span>{it}</li>
+          ))}
+        </ul>
+        <a href="#/find-us" className="btn btn-primary">{t.availability.cta} →</a>
+      </div>
+    </section>
+  )
+}
+
+/* ============ Story-teaser → linkt naar Ons verhaal ============ */
+function StoryTeaser() {
+  const { t } = useLang()
   return (
     <section className="section sec-story" id="story">
       <div className="story-bg" aria-hidden>
         <img src="/story-plantation.jpg" alt="" data-depth="0.08" />
       </div>
       <div className="container story-inner reveal">
-        <span className="script script-xl">{story.script}</span>
-        <h2 className="display center light">{story.title}</h2>
-        <p className="lead center narrow light">{story.body}</p>
+        <span className="script script-xl">{t.story.script}</span>
+        <h2 className="display center light">{t.story.title}</h2>
+        <p className="lead center narrow light">{t.story.body}</p>
+        <a href="#/ons-verhaal" className="btn btn-light" style={{ marginTop: 26 }}>{t.story.cta} →</a>
       </div>
     </section>
   )
 }
 
-// Web3Forms access key (drinkelan.com → Info@drinkelan.com)
-const WEB3FORMS_KEY = '25c97098-16a2-42ba-ad85-603bf65fc024'
-
 function Contact() {
+  const { t } = useLang()
+  const c = t.contact
   const [status, setStatus] = useState('idle') // idle | sending | ok | error
 
   const onSubmit = async (e) => {
@@ -454,7 +524,6 @@ function Contact() {
     if (status === 'sending') return
     const form = e.currentTarget
     const payload = Object.fromEntries(new FormData(form))
-    // honeypot tegen spam
     if (payload.botcheck) return
     payload.access_key = WEB3FORMS_KEY
     payload.subject = 'Nieuw bericht via drinkelan.com'
@@ -478,39 +547,44 @@ function Contact() {
     <section className="section sec-contact" id="contact">
       <div className="container split">
         <div className="split-text reveal">
-          <span className="eyebrow">{contact.title}</span>
-          <h2 className="display">{hero.tagline}</h2>
+          <span className="eyebrow">{c.title}</span>
+          <h2 className="display">{c.heading}</h2>
           <div className="contact-details">
-            <p><strong>{contact.company}</strong></p>
-            {contact.address.map((l) => <p key={l}>{l}</p>)}
-            <p><a href={`mailto:${contact.email}`}>{contact.email}</a></p>
-            <p><a href={`tel:${contact.phone.replace(/\s/g, '')}`}>{contact.phone}</a></p>
+            <p><strong>{c.company}</strong></p>
+            {c.address.map((l) => <p key={l}>{l}</p>)}
+            <p><a href={`mailto:${c.email}`}>{c.email}</a></p>
+            <p><a href={`tel:${c.phone.replace(/\s/g, '')}`}>{c.phone}</a></p>
+            <p className="contact-legal">{c.kvk} · {c.vestiging}</p>
+          </div>
+          <div className="contact-socials">
+            <a href={t.socials.instagram.url} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><IgIcon className="social-ico" /></a>
+            <a href={t.socials.tiktok.url} target="_blank" rel="noopener noreferrer" aria-label="TikTok"><TtIcon className="social-ico" /></a>
+            <a href={t.socials.facebook.url} target="_blank" rel="noopener noreferrer" aria-label="Facebook"><FbIcon className="social-ico" /></a>
           </div>
         </div>
         {status === 'ok' ? (
           <div className="contact-form contact-sent">
-            <span className="script script-lg">bedankt!</span>
-            <h3>Je bericht is verstuurd.</h3>
-            <p>We nemen zo snel mogelijk contact met je op.</p>
-            <button className="btn btn-outline" onClick={() => setStatus('idle')}>Nog een bericht</button>
+            <span className="script script-lg">{c.form.okScript}</span>
+            <h3>{c.form.okTitle}</h3>
+            <p>{c.form.okBody}</p>
+            <button className="btn btn-outline" onClick={() => setStatus('idle')}>{c.form.okAgain}</button>
           </div>
         ) : (
           <form className="contact-form reveal" onSubmit={onSubmit}>
-            <input type="text" name="name" placeholder="Name" required />
-            <input type="email" name="email" placeholder="Email" required />
-            <textarea name="message" placeholder="Message" rows="4" required />
+            <input type="text" name="name" placeholder={c.form.name} required />
+            <input type="email" name="email" placeholder={c.form.email} required />
+            <textarea name="message" placeholder={c.form.message} rows="4" required />
             <input type="checkbox" name="botcheck" tabIndex="-1" autoComplete="off" style={{ display: 'none' }} />
             <button className="btn btn-primary" type="submit" disabled={status === 'sending'}>
-              {status === 'sending' ? 'Versturen…' : 'Send message'}
+              {status === 'sending' ? c.form.sending : c.form.send}
             </button>
             {status === 'error' && (
               <span className="form-note form-error">
-                Er ging iets mis — probeer het opnieuw of mail ons direct via{' '}
-                <a href={`mailto:${contact.email}`}>{contact.email}</a>.
+                {c.form.errorPre}<a href={`mailto:${c.email}`}>{c.email}</a>.
               </span>
             )}
             {status !== 'error' && (
-              <span className="form-note">You agree to our friendly privacy policy.</span>
+              <span className="form-note">{c.form.privacy}</span>
             )}
           </form>
         )}
@@ -520,33 +594,38 @@ function Contact() {
 }
 
 function Social() {
+  const { t } = useLang()
+  const s = t.socials
   return (
     <section className="sec-social" id="social">
       <div className="container social-head reveal">
-        <span className="script script-lg">{socials.script}</span>
-        <h2 className="display light">{socials.title}</h2>
-        <p className="lead light">{socials.body}</p>
+        <span className="script script-lg">{s.script}</span>
+        <h2 className="display light">{s.title}</h2>
+        <p className="lead light">{s.body}</p>
         <div className="social-handles">
-          <a className="social-btn" href={socials.instagram.url} target="_blank" rel="noopener noreferrer">
-            <IgIcon className="social-ico" /> {socials.instagram.handle}
+          <a className="social-btn" href={s.instagram.url} target="_blank" rel="noopener noreferrer">
+            <IgIcon className="social-ico" /> {s.instagram.handle}
           </a>
-          <a className="social-btn" href={socials.tiktok.url} target="_blank" rel="noopener noreferrer">
-            <TtIcon className="social-ico" /> {socials.tiktok.handle}
+          <a className="social-btn" href={s.tiktok.url} target="_blank" rel="noopener noreferrer">
+            <TtIcon className="social-ico" /> {s.tiktok.handle}
+          </a>
+          <a className="social-btn" href={s.facebook.url} target="_blank" rel="noopener noreferrer">
+            <FbIcon className="social-ico" /> {s.facebook.handle}
           </a>
         </div>
       </div>
 
       <div className="social-feed reveal">
-        {socials.feed.map((post, i) => (
+        {s.feed.map((post, i) => (
           <a
             key={i}
             className="social-post"
-            href={socials.instagram.url}
+            href={s.instagram.url}
             target="_blank"
             rel="noopener noreferrer"
             style={{ '--d': `${i * 80}ms` }}
           >
-            <img src={post.img} alt={`ÉLAN op Instagram — ${post.cap}`} loading="lazy" />
+            <img src={socialFeedImages[i]} alt={`ÉLAN op Instagram — ${post.cap}`} loading="lazy" />
             <span className="social-post-ig"><IgIcon /></span>
           </a>
         ))}
@@ -556,6 +635,9 @@ function Social() {
 }
 
 export function Footer() {
+  const { t } = useLang()
+  const f = t.footer
+  const year = new Date().getFullYear()
   return (
     <footer className="footer">
       <div className="container footer-inner">
@@ -563,36 +645,141 @@ export function Footer() {
           <img src="/elan-logo-light.svg" alt="ÉLAN" />
         </a>
         <div className="footer-socials">
-          <a href={socials.instagram.url} target="_blank" rel="noopener noreferrer" aria-label="Instagram — @drink.elan">
-            <IgIcon /> <span>{socials.instagram.handle}</span>
+          <a href={t.socials.instagram.url} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <IgIcon /> <span>{t.socials.instagram.handle}</span>
           </a>
-          <a href={socials.tiktok.url} target="_blank" rel="noopener noreferrer" aria-label="TikTok — @drinkelan">
-            <TtIcon /> <span>{socials.tiktok.handle}</span>
+          <a href={t.socials.tiktok.url} target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+            <TtIcon /> <span>{t.socials.tiktok.handle}</span>
+          </a>
+          <a href={t.socials.facebook.url} target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <FbIcon /> <span>{t.socials.facebook.handle}</span>
           </a>
         </div>
         <nav className="footer-nav">
-          {nav.map((item) => <a key={item.label} href={item.href}>{item.label}</a>)}
+          {t.nav.map((item) => <a key={item.label} href={item.href}>{item.label}</a>)}
           <a href="#social">Social</a>
-          <a href="#">Privacy policy</a>
         </nav>
-        <p className="footer-copy">© 2026 ELAN WORLD BV — 100% Pure Coconut Water</p>
+        <nav className="footer-legal">
+          {f.legal.map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}
+        </nav>
+        <p className="footer-company">{f.company}</p>
+        <p className="footer-copy">{f.copy(year)}</p>
       </div>
     </footer>
   )
 }
 
+/* ============ Ons verhaal — aparte pagina ============ */
+function OurStory() {
+  const { t } = useLang()
+  const o = t.ourStory
+  useScrollTop('story')
+  return (
+    <>
+      <div className="grain" aria-hidden />
+      <Header forceSolid />
+      <main className="story-page">
+        <section className="story-hero">
+          <div className="story-hero-media" aria-hidden>
+            <img src={images.story} alt="Bryan & Isabel — ÉLAN" />
+            <div className="story-hero-shade" />
+          </div>
+          <img src={images.palm} alt="" aria-hidden className="palm story-hero-palm" draggable="false" />
+          <div className="container story-hero-inner reveal">
+            <span className="script script-xl">{o.script}</span>
+            <h1 className="display light">{o.title}</h1>
+            <p className="lead light narrow">{o.lead}</p>
+          </div>
+        </section>
+
+        <section className="section story-body">
+          <div className="container narrow-col">
+            {o.intro.map((p, i) => (
+              <p key={i} className={`story-para reveal ${i === 2 ? 'story-accent' : ''}`}>{p}</p>
+            ))}
+
+            {o.sections.map((sec, i) => (
+              <div key={i} className="story-block reveal">
+                <h2 className="story-h2">{sec.heading}</h2>
+                {sec.body.map((p, k) => <p key={k} className="story-para">{p}</p>)}
+                {sec.list && (
+                  <ul className="benefits story-list">
+                    {sec.list.map((li) => <li key={li}><span className="tick">✓</span>{li}</li>)}
+                  </ul>
+                )}
+                {sec.after && sec.after.map((p, k) => <p key={k} className="story-para story-accent">{p}</p>)}
+              </div>
+            ))}
+
+            <div className="story-block reveal">
+              {o.outro.map((p, k) => <p key={k} className="story-para">{p}</p>)}
+              <p className="story-closer script script-lg">{o.closer}</p>
+              <a href="#/shop" className="btn btn-primary" style={{ marginTop: 8 }}>{o.cta} →</a>
+            </div>
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </>
+  )
+}
+
+/* ============ Juridische mockup-pagina ============ */
+function LegalPage({ data }) {
+  const { t } = useLang()
+  useScrollTop(data.title)
+  return (
+    <>
+      <div className="grain" aria-hidden />
+      <Header forceSolid />
+      <main className="legal-page">
+        <section className="section">
+          <div className="container narrow-col">
+            <a href="#top" className="shop-back">← {t.ui.home}</a>
+            <h1 className="display legal-title">{data.title}</h1>
+            <p className="legal-updated">{data.updated}</p>
+            {data.mock && <p className="legal-mock">{data.intro}</p>}
+            {data.sections.map(([h, body], i) => (
+              <div key={i} className="legal-block reveal">
+                <h2 className="story-h2">{h}</h2>
+                <p className="story-para">{body}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </>
+  )
+}
+
+const LEGAL_ROUTES = {
+  '#/privacy': 'privacy',
+  '#/voorwaarden': 'voorwaarden',
+  '#/retourbeleid': 'retourbeleid',
+  '#/cookiebeleid': 'cookiebeleid',
+}
+
 export default function App() {
+  const { t } = useLang()
   const hash = useHashRoute()
-  // Route-key: alleen wisselen tussen main/find-us/shop triggert re-init van de
-  // scroll-hooks (niet in-page ankers zoals #product).
-  const route = hash.startsWith('#/find-us') ? 'findus' : hash.startsWith('#/shop') ? 'shop' : 'main'
+  const base = hash.split('?')[0]
+  const isStory = base.startsWith('#/ons-verhaal') || base.startsWith('#/our-story')
+  const legalKey = LEGAL_ROUTES[base]
+
+  const route = hash.startsWith('#/find-us') ? 'findus'
+    : hash.startsWith('#/shop') ? 'shop'
+    : isStory ? 'story'
+    : legalKey ? 'legal'
+    : 'main'
+
   useScrollReveal(route)
   useDepth(route)
   useScrollBar(route)
 
   if (hash.startsWith('#/find-us')) {
     return (
-      <Suspense fallback={<div className="globe-loading">De globe wordt geladen…</div>}>
+      <Suspense fallback={<div className="globe-loading">{t.findus.loading}</div>}>
         <FindUs />
       </Suspense>
     )
@@ -600,11 +787,14 @@ export default function App() {
 
   if (hash.startsWith('#/shop')) {
     return (
-      <Suspense fallback={<div className="globe-loading">De shop wordt geladen…</div>}>
+      <Suspense fallback={<div className="globe-loading">{t.shop.loading}</div>}>
         <Shop hash={hash} />
       </Suspense>
     )
   }
+
+  if (isStory) return <OurStory />
+  if (legalKey) return <LegalPage data={t.legal[legalKey]} />
 
   return (
     <>
@@ -618,9 +808,11 @@ export default function App() {
         <VideoBand />
         <Meaning />
         <Nutrition />
+        <Stats />
         <Beach />
         <Fridge />
-        <Story />
+        <Availability />
+        <StoryTeaser />
         <Contact />
         <Social />
       </main>

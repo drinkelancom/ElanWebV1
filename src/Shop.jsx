@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react'
 import { Header, Footer } from './App.jsx'
-import {
-  shop, products, resellers, getProduct, euro, WEB3FORMS_KEY,
-} from './shop.js'
+import { productMeta, WEB3FORMS_KEY } from './data.js'
+import { euro } from './content.js'
+import { useLang } from './lang.jsx'
+
+/* Voegt taal-onafhankelijke productmeta (prijs, beeld, koopmodus) samen met
+   de vertaalde producttekst uit de content. */
+function withMeta(p) { return { ...p, ...productMeta[p.slug] } }
 
 /* Lokale scroll-reveal (de globale hook in App draait al vóór deze lazy route
    mount, dus we observeren hier onze eigen .reveal-elementen). */
@@ -19,21 +23,19 @@ function useLocalReveal(dep) {
   }, [dep])
 }
 
-/* Boven aan de subpagina scrollen bij routewissel. */
 function useScrollTop(dep) {
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' }) }, [dep])
 }
 
 /* ---------- Koopblok: gedrag hangt af van product.buyMode ---------- */
 function ResellerBlock() {
-  // Alleen wederverkopers met een echte link tonen; zolang die er niet zijn,
-  // tonen we enkel de knop naar de Find Us-kaart.
-  const active = resellers.filter((r) => r.url && r.url !== '#')
+  const { t } = useLang()
+  const active = t.resellers.filter((r) => r.url && r.url !== '#')
   return (
     <div className="buy-block reveal">
       {active.length > 0 && (
         <>
-          <p className="buy-lead">Nu verkrijgbaar bij onze wederverkopers:</p>
+          <p className="buy-lead">{t.shop.buyResellerLead}</p>
           <ul className="reseller-list">
             {active.map((r) => (
               <li key={r.name}>
@@ -46,13 +48,14 @@ function ResellerBlock() {
           </ul>
         </>
       )}
-      <a href="#/find-us" className="btn btn-primary btn-block">Vind ÉLAN bij jou in de buurt →</a>
+      <a href="#/find-us" className="btn btn-primary btn-block">{t.shop.buyFindCta} →</a>
     </div>
   )
 }
 
 function PreorderBlock({ product }) {
-  const [status, setStatus] = useState('idle') // idle | sending | ok | error
+  const { t } = useLang()
+  const [status, setStatus] = useState('idle')
   const onSubmit = async (e) => {
     e.preventDefault()
     if (status === 'sending') return
@@ -79,43 +82,43 @@ function PreorderBlock({ product }) {
   if (status === 'ok') {
     return (
       <div className="buy-block buy-notified reveal">
-        <span className="script script-lg">op de hoogte!</span>
-        <p>Je staat op de lijst. We laten het je als eerste weten zodra <strong>{product.name}</strong> te bestellen is.</p>
+        <span className="script script-lg">{t.shop.preorderOkScript}</span>
+        <p>{t.shop.preorderSub}</p>
       </div>
     )
   }
   return (
     <form className="buy-block reveal" onSubmit={onSubmit}>
-      <p className="buy-lead"><strong>Binnenkort te bestellen.</strong> Laat je e-mail achter en wees als eerste op de hoogte.</p>
+      <p className="buy-lead"><strong>{t.shop.preorderLead}</strong> {t.shop.preorderSub}</p>
       <div className="notify-row">
-        <input type="email" name="email" placeholder="Je e-mailadres" required />
+        <input type="email" name="email" placeholder={t.shop.preorderPlaceholder} required />
         <input type="checkbox" name="botcheck" tabIndex="-1" autoComplete="off" style={{ display: 'none' }} />
         <button className="btn btn-primary" type="submit" disabled={status === 'sending'}>
-          {status === 'sending' ? 'Versturen…' : 'Hou me op de hoogte'}
+          {status === 'sending' ? t.shop.preorderSending : t.shop.preorderBtn}
         </button>
       </div>
       {status === 'error' && (
-        <span className="form-note form-error">Er ging iets mis — probeer het opnieuw of mail ons via <a href="mailto:Info@drinkelan.com">Info@drinkelan.com</a>.</span>
+        <span className="form-note form-error">{t.contact.form.errorPre}<a href="mailto:Info@drinkelan.com">Info@drinkelan.com</a>.</span>
       )}
     </form>
   )
 }
 
 function BuyBlock({ product }) {
+  const { t } = useLang()
   if (product.buyMode === 'reseller') return <ResellerBlock />
   if (product.buyMode === 'preorder') return <PreorderBlock product={product} />
-  // 'live' (Fase 1): hier komt de Stripe Checkout-knop. Zolang er geen prijs-id is,
-  // vallen we terug op pre-order zodat de knop nooit dood is.
   if (!product.stripePriceId) return <PreorderBlock product={product} />
   return (
     <div className="buy-block reveal">
-      <a href={`#/checkout/${product.slug}`} className="btn btn-primary btn-block">In winkelmand — {euro(product.price)}</a>
+      <a href={`#/checkout/${product.slug}`} className="btn btn-primary btn-block">{t.shop.cart} — {euro(product.price)}</a>
     </div>
   )
 }
 
 /* ---------- Productkaart in het grid ---------- */
 function ProductCard({ product, i }) {
+  const { t } = useLang()
   return (
     <a href={`#/shop/${product.slug}`} className="product-card reveal" style={{ '--d': `${i * 90}ms` }}>
       {product.badge && <span className="product-badge">{product.badge}</span>}
@@ -129,7 +132,7 @@ function ProductCard({ product, i }) {
           <span className="product-price">
             {euro(product.price)} <small>{product.unit}</small>
           </span>
-          <span className="product-card-cta">Bekijk →</span>
+          <span className="product-card-cta">{t.shop.view} →</span>
         </div>
       </div>
     </a>
@@ -138,6 +141,8 @@ function ProductCard({ product, i }) {
 
 /* ---------- Shop-landing ---------- */
 function ShopLanding() {
+  const { t } = useLang()
+  const products = t.products.map(withMeta)
   return (
     <>
       <section className="shop-hero">
@@ -147,26 +152,24 @@ function ShopLanding() {
         </div>
         <img src="/palm-leaf.png" alt="" aria-hidden className="palm shop-hero-palm" draggable="false" />
         <div className="container shop-hero-inner reveal">
-          <span className="eyebrow light">{shop.eyebrow}</span>
-          <span className="script script-xl">{shop.script}</span>
-          <h1 className="display light">{shop.title}</h1>
-          <p className="lead light narrow">{shop.body}</p>
+          <span className="eyebrow light">{t.shop.eyebrow}</span>
+          <span className="script script-xl">{t.shop.script}</span>
+          <h1 className="display light">{t.shop.title}</h1>
+          <p className="lead light narrow">{t.shop.body}</p>
         </div>
       </section>
 
       <div className="shop-trust">
-        {/* Desktop/tablet: nette 3-koloms strip */}
         <div className="container shop-trust-inner">
-          {shop.trust.map(([a, b]) => (
+          {t.shop.trust.map(([a, b]) => (
             <div key={a} className="shop-trust-item reveal">
               <strong>{a}</strong><span>{b}</span>
             </div>
           ))}
         </div>
-        {/* Mobiel: auto-scroll marquee (content verdubbeld voor naadloze loop) */}
         <div className="shop-trust-marquee" aria-hidden>
           <div className="shop-trust-track">
-            {[...shop.trust, ...shop.trust].map(([a, b], i) => (
+            {[...t.shop.trust, ...t.shop.trust].map(([a, b], i) => (
               <span key={i} className="tw-item">
                 <strong>{a}</strong><em>{b}</em><b>✦</b>
               </span>
@@ -185,10 +188,10 @@ function ShopLanding() {
 
       <section className="shop-reseller">
         <div className="container shop-reseller-inner reveal">
-          <span className="script script-lg clay">liever in de winkel?</span>
-          <h2 className="display">Vind ÉLAN bij jou in de buurt.</h2>
-          <p className="lead">Ontdek op de kaart waar je ÉLAN los kunt kopen — supermarkten, horeca en speciaalzaken door heel Nederland.</p>
-          <a href="#/find-us" className="btn btn-primary">Open de kaart →</a>
+          <span className="script script-lg clay">{t.shop.resellerScript}</span>
+          <h2 className="display">{t.shop.resellerTitle}</h2>
+          <p className="lead">{t.shop.resellerBody}</p>
+          <a href="#/find-us" className="btn btn-primary">{t.shop.resellerCta} →</a>
         </div>
       </section>
     </>
@@ -197,10 +200,11 @@ function ShopLanding() {
 
 /* ---------- Productdetail ---------- */
 function ProductDetail({ product }) {
+  const { t } = useLang()
   return (
     <section className="section shop-detail-sec">
       <div className="container">
-        <a href="#/shop" className="shop-back">← Terug naar de shop</a>
+        <a href="#/shop" className="shop-back">← {t.shop.backToShop}</a>
         <div className="shop-detail">
           <div className="shop-detail-media reveal">
             <div className="shop-detail-frame">
@@ -233,9 +237,10 @@ function ProductDetail({ product }) {
 
 /* ---------- Root ---------- */
 export default function Shop({ hash = '' }) {
-  // '#/shop' → landing, '#/shop/<slug>' → detail
+  const { t } = useLang()
   const slug = hash.replace(/^#\/shop\/?/, '').split('?')[0]
-  const product = slug ? getProduct(slug) : null
+  const base = slug ? t.products.find((p) => p.slug === slug) : null
+  const product = base ? withMeta(base) : null
   useScrollTop(hash)
   useLocalReveal(hash)
 
