@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { journey, images, videos } from './data.js'
+import { images, videos } from './data.js'
+import { useLang } from './lang.jsx'
 
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v))
 const lerp = (a, b, t) => a + (b - a) * t
@@ -10,7 +11,6 @@ function hexToRgb(h) {
   const n = parseInt(h.slice(1), 16)
   return [(n >> 16) & 255, (n >> 8) & 255, n & 255]
 }
-const TINTS = journey.map((c) => hexToRgb(c.tint))
 
 // Horizontale rustplek van het pak per chapter (in vw, 0 = midden).
 const sideX = { center: 0, right: 20, left: -20 }
@@ -25,6 +25,8 @@ const sideY = { center: -11, right: 0, left: 0 }
  * de sticky journey-bottle die de vier hoofdstukken doorloopt.
  */
 export default function BottleScroll() {
+  const { t } = useLang()
+  const journey = t.journey
   const sectionRef = useRef(null)
   const stageRef = useRef(null)
   const bottleRef = useRef(null)
@@ -58,6 +60,8 @@ export default function BottleScroll() {
 
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const N = journey.length
+    // Sfeerkleur per hoofdstuk (taal-onafhankelijk).
+    const TINTS = journey.map((c) => hexToRgb(c.tint))
     // Ankers buiten de sectie: hero (start) en orbit-bottle (eindbestemming).
     const heroStage = document.querySelector('.hero-stage')
     const orbitImg = document.querySelector('.orbit-bottle')

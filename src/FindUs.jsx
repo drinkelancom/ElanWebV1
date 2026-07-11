@@ -5,6 +5,7 @@ import L from 'leaflet'
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import { locations, typeColors, typeLabels } from './locations.js'
+import { useLang } from './lang.jsx'
 
 // Camera-standen voor de globe.
 const NL_POV = { lat: 52.15, lng: 5.3, altitude: 0.55 } // ingezoomd op Nederland
@@ -29,6 +30,8 @@ function MapController({ onReady }) {
 }
 
 export default function FindUs() {
+  const { t } = useLang()
+  const fu = t.findus
   const globeEl = useRef()
   const wrapRef = useRef()
   const mapRef = useRef(null)
@@ -199,7 +202,7 @@ export default function FindUs() {
   const groups = useMemo(() => {
     if (userPos) {
       const sorted = [...filtered].sort((a, b) => distKm(userPos, a) - distKm(userPos, b))
-      return [['Dichtstbij jou', sorted]]
+      return [[fu.nearest, sorted]]
     }
     const m = {}
     filtered.forEach((l) => { (m[l.city] = m[l.city] || []).push(l) })
@@ -218,10 +221,10 @@ export default function FindUs() {
           <a href="#top" className="findus-logo" aria-label="ÉLAN — home">
             <img src="/elan-logo-black.svg" alt="ÉLAN" />
           </a>
-          <a href="#top" className="findus-back">← Home</a>
+          <a href="#top" className="findus-back">← {t.ui.home}</a>
         </div>
-        <span className="script findus-script">find your refreshment</span>
-        <h1 className="findus-title">Vind ÉLAN bij jou</h1>
+        <span className="script findus-script">{fu.script}</span>
+        <h1 className="findus-title">{fu.title}</h1>
 
         <div className="findus-toggle" role="tablist" aria-label="Weergave">
           <button
@@ -229,27 +232,27 @@ export default function FindUs() {
             aria-selected={view === 'map'}
             className={view === 'map' ? 'active' : ''}
             onClick={() => goToMap()}
-          >Nederland</button>
+          >{fu.viewNL}</button>
           <button
             role="tab"
             aria-selected={view === 'globe'}
             className={view === 'globe' ? 'active' : ''}
             onClick={goToGlobe}
-          >Wereld</button>
+          >{fu.viewWorld}</button>
         </div>
 
         <div className="findus-actions">
           <input
             className="findus-search"
-            placeholder="Zoek op stad, winkel of adres…"
+            placeholder={fu.search}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
           <button
             className={`findus-locate ${geoState}`}
             onClick={locate}
-            title="Gebruik mijn locatie"
-            aria-label="Gebruik mijn locatie"
+            title={fu.locate}
+            aria-label={fu.locate}
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="12" cy="12" r="7" />
@@ -390,9 +393,9 @@ export default function FindUs() {
                 href={`https://www.google.com/maps/dir/?api=1&destination=${selected.lat},${selected.lng}`}
                 target="_blank"
                 rel="noopener noreferrer"
-              >Route →</a>
+              >{fu.route} →</a>
               {view === 'globe' && (
-                <button className="btn btn-outline btn-sm" onClick={() => goToMap(selected)}>Op de kaart</button>
+                <button className="btn btn-outline btn-sm" onClick={() => goToMap(selected)}>{fu.viewNL}</button>
               )}
             </div>
           </div>
