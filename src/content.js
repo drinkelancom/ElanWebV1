@@ -130,9 +130,6 @@ export const content = {
 
     beach: {
       script: 'zon in een pak',
-      title: 'Doe mee.',
-      body: 'Voor iedereen die kiest voor natuurlijke verfrissing — bewust, stijlvol en vol energie.',
-      cta: 'Doe vandaag mee',
     },
 
     fridge: {
@@ -153,8 +150,8 @@ export const content = {
       script: 'in cijfers',
       title: 'ÉLAN in cijfers',
       items: [
-        ['40+', 'verkooppunten in Nederland'],
-        ['1.000+', 'verpakkingen verkocht in één PLUS in 8 weken'],
+        ['150+', 'verkooppunten in Nederland'],
+        ['100.000+', 'verpakkingen verkocht in 3 maanden'],
         ['100%', 'puur kokoswater'],
         ['500 ml', 'hersluitbaar pak met dop'],
       ],
@@ -241,7 +238,6 @@ export const content = {
       email: 'Info@drinkelan.com',
       phone: '+31 6 4273 0763',
       kvk: 'KVK 97952338',
-      vestiging: 'Vestigingsnr. 000063144085',
       form: {
         name: 'Naam',
         email: 'E-mailadres',
@@ -281,7 +277,7 @@ export const content = {
         { label: 'Retourbeleid', href: '#/retourbeleid' },
         { label: 'Cookiebeleid', href: '#/cookiebeleid' },
       ],
-      company: 'ELAN WORLD BV · KVK 97952338 · Vestigingsnr. 000063144085',
+      company: 'ELAN WORLD BV · KVK 97952338',
       copy: (y) => `© ${y} ELAN WORLD BV — 100% Puur Kokoswater`,
     },
 
@@ -543,9 +539,6 @@ export const content = {
 
     beach: {
       script: 'sunshine in a carton',
-      title: 'Join in.',
-      body: 'For everyone who chooses natural refreshment — consciously, stylishly and full of energy.',
-      cta: 'Join us today',
     },
 
     fridge: {
@@ -565,8 +558,8 @@ export const content = {
       script: 'by the numbers',
       title: 'ÉLAN by the numbers',
       items: [
-        ['40+', 'stockists across the Netherlands'],
-        ['1,000+', 'cartons sold in a single PLUS in 8 weeks'],
+        ['150+', 'stockists across the Netherlands'],
+        ['100,000+', 'cartons sold in 3 months'],
         ['100%', 'pure coconut water'],
         ['500 ml', 'resealable carton with cap'],
       ],
@@ -650,7 +643,6 @@ export const content = {
       email: 'Info@drinkelan.com',
       phone: '+31 6 4273 0763',
       kvk: 'Chamber of Commerce 97952338',
-      vestiging: 'Establishment no. 000063144085',
       form: {
         name: 'Name',
         email: 'Email',
@@ -690,7 +682,7 @@ export const content = {
         { label: 'Return policy', href: '#/retourbeleid' },
         { label: 'Cookie policy', href: '#/cookiebeleid' },
       ],
-      company: 'ELAN WORLD BV · CoC 97952338 · Establishment no. 000063144085',
+      company: 'ELAN WORLD BV · CoC 97952338',
       copy: (y) => `© ${y} ELAN WORLD BV — 100% Pure Coconut Water`,
     },
 

@@ -406,7 +406,7 @@ function Nutrition() {
   )
 }
 
-/* ============ Beach band (hammock) ============ */
+/* ============ Beach band (hammock) — met ÉLAN in cijfers ============ */
 function Beach() {
   const { t } = useLang()
   return (
@@ -416,11 +416,17 @@ function Beach() {
       </div>
       <div className="beach-shade" aria-hidden />
       <div className="container beach-inner">
-        <div className="glass-card beach-card reveal">
+        <div className="glass-card beach-card beach-figures reveal">
           <span className="script script-xl">{t.beach.script}</span>
-          <h2 className="display light">{t.beach.title}</h2>
-          <p className="lead light">{t.beach.body}</p>
-          <a href="#contact" className="btn btn-light">{t.beach.cta}</a>
+          <h2 className="display light">{t.stats.title}</h2>
+          <div className="figures-grid">
+            {t.stats.items.map(([a, b], i) => (
+              <div key={i} className="figure" style={{ '--d': `${i * 90}ms` }}>
+                <strong>{a}</strong><span>{b}</span>
+              </div>
+            ))}
+          </div>
+          <p className="figures-foot">{t.stats.foot}</p>
         </div>
       </div>
     </section>
@@ -451,27 +457,6 @@ function Fridge() {
           </ul>
           <a href="#/find-us" className="btn btn-primary" style={{ marginTop: 28 }}>{t.fridge.cta}</a>
         </div>
-      </div>
-    </section>
-  )
-}
-
-/* ============ ÉLAN in cijfers (social proof) ============ */
-function Stats() {
-  const { t } = useLang()
-  return (
-    <section className="section sec-figures">
-      <div className="container figures-inner reveal">
-        <span className="script script-lg clay">{t.stats.script}</span>
-        <h2 className="display">{t.stats.title}</h2>
-        <div className="figures-grid">
-          {t.stats.items.map(([a, b], i) => (
-            <div key={i} className="figure" style={{ '--d': `${i * 90}ms` }}>
-              <strong>{a}</strong><span>{b}</span>
-            </div>
-          ))}
-        </div>
-        <p className="figures-foot">{t.stats.foot}</p>
       </div>
     </section>
   )
@@ -554,7 +539,7 @@ function Contact() {
             {c.address.map((l) => <p key={l}>{l}</p>)}
             <p><a href={`mailto:${c.email}`}>{c.email}</a></p>
             <p><a href={`tel:${c.phone.replace(/\s/g, '')}`}>{c.phone}</a></p>
-            <p className="contact-legal">{c.kvk} · {c.vestiging}</p>
+            <p className="contact-legal">{c.kvk}</p>
           </div>
           <div className="contact-socials">
             <a href={t.socials.instagram.url} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><IgIcon className="social-ico" /></a>
@@ -687,8 +672,7 @@ function OurStory() {
           <img src={images.palm} alt="" aria-hidden className="palm story-hero-palm" draggable="false" />
           <div className="container story-hero-inner reveal">
             <span className="script script-xl">{o.script}</span>
-            <h1 className="display light">{o.title}</h1>
-            <p className="lead light narrow">{o.lead}</p>
+            <h1 className="display light">{o.lead}</h1>
           </div>
         </section>
 
@@ -808,7 +792,6 @@ export default function App() {
         <VideoBand />
         <Meaning />
         <Nutrition />
-        <Stats />
         <Beach />
         <Fridge />
         <Availability />

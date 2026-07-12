@@ -1085,6 +1085,26 @@ export const locations = [
     lng: 4.337267,
     type: 'store',
   },
+  {
+    id: 'nl-boons-markt-barendrecht',
+    name: "Boon's Markt Barendrecht",
+    country: 'Netherlands',
+    city: 'Barendrecht',
+    address: 'Marijkesingel 18, 2991 BK',
+    lat: 51.850835,
+    lng: 4.548933,
+    type: 'store',
+  },
+  {
+    id: 'nl-boons-markt-rhoon',
+    name: "Boon's Markt Rhoon",
+    country: 'Netherlands',
+    city: 'Rhoon',
+    address: 'Tsjaikovskistraat 3, 3161 WH',
+    lat: 51.856222,
+    lng: 4.420851,
+    type: 'store',
+  },
 ]
 
 export const typeColors = {

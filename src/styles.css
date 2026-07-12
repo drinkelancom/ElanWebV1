@@ -664,6 +664,21 @@ ul { list-style: none; }
 .beach-card .display { margin-bottom: 14px; }
 .beach-card .btn { margin-top: 26px; }
 
+/* In cijfers — binnen de beach-band */
+.beach-card.beach-figures {
+  max-width: 1020px; width: 100%;
+  margin: 0 auto; text-align: center;
+  padding: 48px clamp(24px, 4vw, 56px);
+}
+.beach-figures .figures-grid { margin-top: 40px; }
+.beach-figures .figure {
+  background: rgba(255,250,238,0.1);
+  border-color: rgba(255,250,238,0.22);
+}
+.beach-figures .figure strong { color: var(--ivory); }
+.beach-figures .figure span { color: rgba(255,250,238,0.85); }
+.beach-figures .figures-foot { color: rgba(255,250,238,0.92); }
+
 /* ============================================================
    FRIDGE
    ============================================================ */
