@@ -334,7 +334,7 @@ export default function Carton3D() {
   }, [])
 
   const captions = [
-    { t: '100% Puur', s: 'Niet uit concentraat — alleen kokoswater.' },
+    { t: '100% Puur', s: 'Niet uit concentraat, alleen kokoswater.' },
     { t: 'Van nature verfrissend', s: 'Licht zoet en vol elektrolyten.' },
     { t: 'Onderweg', s: '500 ml hersluitbaar pak met dop.' },
   ]

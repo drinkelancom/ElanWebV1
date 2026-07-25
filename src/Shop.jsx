@@ -63,7 +63,7 @@ function PreorderBlock({ product }) {
     const payload = Object.fromEntries(new FormData(form))
     if (payload.botcheck) return
     payload.access_key = WEB3FORMS_KEY
-    payload.subject = `ÉLAN pre-order interesse — ${product.name}`
+    payload.subject = `ÉLAN pre-order interesse: ${product.name}`
     payload.from_name = 'ÉLAN shop'
     payload.product = product.name
     setStatus('sending')
@@ -104,14 +104,27 @@ function PreorderBlock({ product }) {
   )
 }
 
+function ExternalBuyBlock({ product }) {
+  const { t } = useLang()
+  return (
+    <div className="buy-block reveal">
+      <p className="buy-lead">{t.shop.buyExternalLead}</p>
+      <a href={product.buyUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-block">
+        {t.shop.buyExternal} →
+      </a>
+    </div>
+  )
+}
+
 function BuyBlock({ product }) {
   const { t } = useLang()
+  if (product.buyMode === 'external' && product.buyUrl) return <ExternalBuyBlock product={product} />
   if (product.buyMode === 'reseller') return <ResellerBlock />
   if (product.buyMode === 'preorder') return <PreorderBlock product={product} />
   if (!product.stripePriceId) return <PreorderBlock product={product} />
   return (
     <div className="buy-block reveal">
-      <a href={`#/checkout/${product.slug}`} className="btn btn-primary btn-block">{t.shop.cart} — {euro(product.price)}</a>
+      <a href={`#/checkout/${product.slug}`} className="btn btn-primary btn-block">{t.shop.cart} · {euro(product.price)}</a>
     </div>
   )
 }
@@ -121,17 +134,21 @@ function ProductCard({ product, i }) {
   const { t } = useLang()
   return (
     <a href={`#/shop/${product.slug}`} className="product-card reveal" style={{ '--d': `${i * 90}ms` }}>
-      {product.badge && <span className="product-badge">{product.badge}</span>}
-      <div className="product-card-media">
+      {product.badge && <span className={`product-badge ${product.comingSoon ? 'badge-soon' : ''}`}>{product.badge}</span>}
+      <div className={`product-card-media ${product.mediaFit === 'cover' ? 'is-photo' : ''}`}>
         <img src={product.image} alt={product.name} loading="lazy" />
       </div>
       <div className="product-card-body">
         <h3>{product.name}</h3>
         <p>{product.subtitle}</p>
         <div className="product-card-foot">
-          <span className="product-price">
-            {euro(product.price)} <small>{product.unit}</small>
-          </span>
+          {product.price != null ? (
+            <span className="product-price">
+              {euro(product.price)} <small>{product.unit}</small>
+            </span>
+          ) : (
+            <span className="product-soon">{product.note}</span>
+          )}
           <span className="product-card-cta">{t.shop.view} →</span>
         </div>
       </div>
@@ -143,6 +160,8 @@ function ProductCard({ product, i }) {
 function ShopLanding() {
   const { t } = useLang()
   const products = t.products.map(withMeta)
+  const cards = products.filter((p) => !p.teaser)
+  const teasers = products.filter((p) => p.teaser)
   return (
     <>
       <section className="shop-hero">
@@ -159,30 +178,22 @@ function ShopLanding() {
         </div>
       </section>
 
-      <div className="shop-trust">
-        <div className="container shop-trust-inner">
-          {t.shop.trust.map(([a, b]) => (
-            <div key={a} className="shop-trust-item reveal">
-              <strong>{a}</strong><span>{b}</span>
-            </div>
-          ))}
-        </div>
-        <div className="shop-trust-marquee" aria-hidden>
-          <div className="shop-trust-track">
-            {[...t.shop.trust, ...t.shop.trust].map(([a, b], i) => (
-              <span key={i} className="tw-item">
-                <strong>{a}</strong><em>{b}</em><b>✦</b>
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-
       <section className="section shop-grid-sec">
         <div className="container">
           <div className="product-grid">
-            {products.map((p, i) => <ProductCard key={p.slug} product={p} i={i} />)}
+            {cards.map((p, i) => <ProductCard key={p.slug} product={p} i={i} />)}
           </div>
+
+          {teasers.map((p) => (
+            <a key={p.slug} href={`#/shop/${p.slug}`} className="shop-soon-banner reveal">
+              <span className="shop-soon-badge">{t.shop.soonBadge}</span>
+              <span className="shop-soon-text">
+                <strong>{p.name}</strong>
+                <small>{p.subtitle}</small>
+              </span>
+              <span className="shop-soon-cta">{t.shop.soonTeaserCta} →</span>
+            </a>
+          ))}
         </div>
       </section>
 
@@ -207,7 +218,7 @@ function ProductDetail({ product }) {
         <a href="#/shop" className="shop-back">← {t.shop.backToShop}</a>
         <div className="shop-detail">
           <div className="shop-detail-media reveal">
-            <div className="shop-detail-frame">
+            <div className={`shop-detail-frame ${product.mediaFit === 'cover' ? 'is-photo' : ''}`}>
               <img src={product.image} alt={product.name} />
             </div>
             <img src="/coconut.png" alt="" aria-hidden className="shop-detail-coconut" draggable="false" />
@@ -217,9 +228,15 @@ function ProductDetail({ product }) {
             <h1 className="display">{product.name}</h1>
             <p className="shop-detail-sub">{product.subtitle}</p>
             <div className="shop-detail-price">
-              <span className="product-price">{euro(product.price)}</span>
-              {product.priceCompare && <s>{euro(product.priceCompare)}</s>}
-              <small>{product.unit}</small>
+              {product.price != null ? (
+                <>
+                  <span className="product-price">{euro(product.price)}</span>
+                  {product.priceCompare && <s>{euro(product.priceCompare)}</s>}
+                  <small>{product.unit}</small>
+                </>
+              ) : (
+                <span className="product-soon product-soon-lg">{product.note}</span>
+              )}
             </div>
             <p className="lead">{product.short}</p>
             <ul className="benefits">

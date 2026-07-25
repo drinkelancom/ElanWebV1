@@ -218,7 +218,7 @@ export default function FindUs() {
     <div className="findus">
       <aside className="findus-panel">
         <div className="findus-top">
-          <a href="#top" className="findus-logo" aria-label="ÉLAN — home">
+          <a href="#top" className="findus-logo" aria-label="ÉLAN home">
             <img src="/elan-logo-black.svg" alt="ÉLAN" />
           </a>
           <a href="#top" className="findus-back">← {t.ui.home}</a>
@@ -261,7 +261,7 @@ export default function FindUs() {
             </svg>
           </button>
         </div>
-        {geoState === 'error' && <p className="findus-geo-error">Locatie niet beschikbaar — check je browserinstellingen.</p>}
+        {geoState === 'error' && <p className="findus-geo-error">Locatie niet beschikbaar. Check je browserinstellingen.</p>}
 
         <div className="findus-chips" role="group" aria-label="Filter op type">
           {presentTypes.map((t) => (

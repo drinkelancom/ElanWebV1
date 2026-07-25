@@ -167,7 +167,7 @@ export function Header({ forceSolid = false }) {
     <header className={`header ${solid ? 'solid' : 'transparent'}`}>
       <div className="scrollbar" />
       <div className="container header-inner">
-        <a href="#top" className="logo" aria-label="ÉLAN — home">
+        <a href="#top" className="logo" aria-label="ÉLAN home">
           <img src={solid ? '/elan-logo-black.svg' : '/elan-logo-light.svg'} alt="ÉLAN" />
         </a>
         <nav className={`nav ${open ? 'open' : ''}`}>
@@ -356,11 +356,8 @@ function Meaning() {
             ))}
           </div>
         </div>
-        <div className="meaning-media reveal">
-          <div className="frame" data-depth="0.05">
-            <img src={images.meaning} alt="ÉLAN — Bryan & Isabel" />
-          </div>
-          <Palm className="meaning-palm" depth="-0.09" extra="rotate(206deg)" />
+        <div className="meaning-media meaning-media-logo reveal">
+          <img src="/elan-logo-black.svg" alt="ÉLAN" className="meaning-logo" data-depth="0.05" />
         </div>
       </div>
     </section>
@@ -427,6 +424,7 @@ function Beach() {
             ))}
           </div>
           <p className="figures-foot">{t.stats.foot}</p>
+          {t.stats.sub && <p className="figures-sub">{t.stats.sub}</p>}
         </div>
       </div>
     </section>
@@ -443,7 +441,7 @@ function Fridge() {
           <div className="frame" data-depth="0.05">
             <img src={images.fridge} alt="ÉLAN in de koelkast" data-depth="0.07" />
           </div>
-          <img src={images.coconut} alt="" aria-hidden className="fridge-coconut" data-depth="-0.14" draggable="false" />
+          <img src={images.coconut} alt="" aria-hidden className="fridge-coconut" data-depth="-0.05" draggable="false" />
         </div>
         <div className="split-text reveal">
           <span className="eyebrow">{t.fridge.eyebrow}</span>
@@ -462,6 +460,18 @@ function Fridge() {
   )
 }
 
+/* Verkooppunt-logo's (taal-onafhankelijk). Zwarte line-art én full-color logo's
+   staan op de lichte ivoor-tegels. */
+const availabilityLogos = [
+  { src: '/logos/plus.png', alt: 'PLUS' },
+  { src: '/logos/spar.png', alt: 'SPAR' },
+  { src: '/logos/boons-markt.svg', alt: "Boon's Markt" },
+  { src: '/logos/warung-mini.png', alt: 'Warung Mini' },
+  { src: '/logos/supergym.png', alt: 'SuperGym' },
+  { src: '/logos/ballinfit.png', alt: 'Ballin Fit' },
+  { src: '/logos/bgs-nutrition.avif', alt: 'BGS Nutrition' },
+]
+
 /* ============ Verkrijgbaarheid — Beschikbaar bij ============ */
 function Availability() {
   const { t } = useLang()
@@ -470,9 +480,11 @@ function Availability() {
       <div className="container availability-inner reveal">
         <span className="script script-lg">{t.availability.script}</span>
         <h2 className="display">{t.availability.title}</h2>
-        <ul className="availability-list">
-          {t.availability.items.map((it, i) => (
-            <li key={i} style={{ '--d': `${i * 70}ms` }}><span className="tick">✓</span>{it}</li>
+        <ul className="availability-logos">
+          {availabilityLogos.map((logo, i) => (
+            <li key={logo.alt} style={{ '--d': `${i * 70}ms` }}>
+              <img src={logo.src} alt={logo.alt} loading="lazy" />
+            </li>
           ))}
         </ul>
         <a href="#/find-us" className="btn btn-primary">{t.availability.cta} →</a>
@@ -610,7 +622,7 @@ function Social() {
             rel="noopener noreferrer"
             style={{ '--d': `${i * 80}ms` }}
           >
-            <img src={socialFeedImages[i]} alt={`ÉLAN op Instagram — ${post.cap}`} loading="lazy" />
+            <img src={socialFeedImages[i]} alt={`ÉLAN op Instagram: ${post.cap}`} loading="lazy" />
             <span className="social-post-ig"><IgIcon /></span>
           </a>
         ))}
@@ -626,7 +638,7 @@ export function Footer() {
   return (
     <footer className="footer">
       <div className="container footer-inner">
-        <a href="#top" className="logo" aria-label="ÉLAN — home">
+        <a href="#top" className="logo" aria-label="ÉLAN home">
           <img src="/elan-logo-light.svg" alt="ÉLAN" />
         </a>
         <div className="footer-socials">
@@ -666,7 +678,7 @@ function OurStory() {
       <main className="story-page">
         <section className="story-hero">
           <div className="story-hero-media" aria-hidden>
-            <img src={images.story} alt="Bryan & Isabel — ÉLAN" />
+            <img src={images.story} alt="Bryan & Isabel, ÉLAN" />
             <div className="story-hero-shade" />
           </div>
           <img src={images.palm} alt="" aria-hidden className="palm story-hero-palm" draggable="false" />

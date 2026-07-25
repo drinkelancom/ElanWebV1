@@ -44,6 +44,7 @@ export const SHOP_MODE = 'prelaunch' // 'prelaunch' | 'live'
 // content.js → products, samengevoegd op `slug` in de shop.
 export const productMeta = {
   'elan-500':     { price: 2.95,  image: '/elan-bottle.webp', buyMode: 'reseller', stripePriceId: null },
-  'elan-case-12': { price: 29.95, priceCompare: 35.4, image: '/elan-bottle.webp', buyMode: 'preorder', stripePriceId: null },
-  'elan-abo':     { price: 27.95, image: '/elan-bottle.webp', buyMode: 'preorder', stripePriceId: null },
+  'elan-case-12': { price: 29.95, priceCompare: 35.4, image: '/elan-case.webp', mediaFit: 'cover', buyMode: 'external', buyUrl: 'https://bgsnutrition.nl/products/elan-kokoswater?_pos=1&_psq=elan&_psid=abc91343a&_ss=e', stripePriceId: null },
+  'elan-abo':     { price: 27.95, image: '/elan-bottle.webp', buyMode: 'preorder', teaser: true, comingSoon: true, stripePriceId: null },
+  'elan-1l':      { price: null, image: '/elan-1l.webp', buyMode: 'preorder', comingSoon: true, mediaFit: 'cover', stripePriceId: null },
 }

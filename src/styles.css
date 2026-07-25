@@ -424,7 +424,7 @@ ul { list-style: none; }
   position: absolute; top: 50%; transform: translateY(-50%);
   width: min(520px, 42vw);
   color: var(--ivory); opacity: 0; will-change: transform, opacity;
-  text-shadow: 0 3px 14px rgba(4, 16, 10, 0.75), 0 14px 44px rgba(4, 16, 10, 0.55);
+  text-shadow: 0 2px 10px rgba(4, 16, 10, 0.9), 0 6px 22px rgba(4, 16, 10, 0.7), 0 16px 46px rgba(4, 16, 10, 0.5);
 }
 .journey-panel.side-right { left: 12vw; }
 .journey-panel.side-left  { right: 12vw; text-align: right; }
@@ -443,7 +443,10 @@ ul { list-style: none; }
   margin: 4px 0 14px;
   text-wrap: balance;
 }
-.j-body { font-size: clamp(15px, 1.35vw, 17.5px); color: rgba(255,250,238,0.88); max-width: 48ch; }
+.j-body {
+  font-size: clamp(15.5px, 1.4vw, 18px); font-weight: 600; line-height: 1.5;
+  color: rgba(255,250,238,0.98); max-width: 48ch;
+}
 .journey-panel.side-left .j-body { margin-left: auto; }
 .journey-panel.side-center .j-body { margin-inline: auto; }
 
@@ -571,11 +574,12 @@ ul { list-style: none; }
 .meaning-copy .script-xl { color: var(--green-deep); }
 .meaning-copy .display { margin-bottom: 18px; }
 .meaning-media { position: relative; }
-.meaning-palm {
-  width: clamp(160px, 17vw, 280px); bottom: -46px; right: -58px; z-index: 3;
-}
 /* yoga-portret vrijwel 1:1 met frame-ratio → volledig tonen, licht naar boven uitgelijnd */
 .meaning-media .frame img { inset: 0; height: 100%; object-position: 50% 28%; }
+
+/* Groot ÉLAN-wordmerk i.p.v. foto */
+.meaning-media-logo { display: grid; place-items: center; min-height: 320px; }
+.meaning-logo { width: min(100%, 460px); height: auto; display: block; }
 
 .frame {
   position: relative;
@@ -678,6 +682,7 @@ ul { list-style: none; }
 .beach-figures .figure strong { color: var(--ivory); }
 .beach-figures .figure span { color: rgba(255,250,238,0.85); }
 .beach-figures .figures-foot { color: rgba(255,250,238,0.92); }
+.beach-figures .figures-sub { color: rgba(255,250,238,0.72); }
 
 /* ============================================================
    FRIDGE
@@ -687,8 +692,8 @@ ul { list-style: none; }
 .split.reverse .fridge-media { order: 2; }
 .fridge-media { position: relative; }
 .fridge-coconut {
-  position: absolute; width: clamp(120px, 13vw, 190px);
-  bottom: -30px; left: -40px; z-index: 3;
+  position: absolute; width: clamp(110px, 12vw, 172px);
+  bottom: -26px; left: -30px; z-index: 3;
   filter: drop-shadow(0 26px 30px rgba(18,40,25,0.4));
 }
 .sec-fridge .script-lg { display: block; margin: -6px 0 6px; }
@@ -1172,23 +1177,6 @@ ul { list-style: none; }
 .shop-hero-inner .script-xl { color: rgba(255,250,238,0.96); }
 .shop-hero-inner .display { margin-bottom: 16px; }
 
-/* ---- Trust-strip ---- */
-.shop-trust { background: var(--cream); border-bottom: 1px solid var(--line); }
-.shop-trust-inner {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 24px; padding: 26px 0;
-}
-.shop-trust-item { display: flex; flex-direction: column; gap: 3px; text-align: center; }
-.shop-trust-item strong { font-weight: 700; font-size: 15px; color: var(--ink); }
-.shop-trust-item span { font-size: 13.5px; color: var(--grey); }
-/* Mobiele auto-scroll variant (zie @media hieronder) */
-.shop-trust-marquee { display: none; overflow: hidden; white-space: nowrap; padding: 15px 0; }
-.shop-trust-track { display: inline-flex; align-items: baseline; animation: marquee 20s linear infinite; }
-.shop-trust-track .tw-item { display: inline-flex; align-items: baseline; gap: 8px; padding: 0 16px; }
-.shop-trust-track .tw-item strong { font-weight: 700; font-size: 14px; color: var(--ink); }
-.shop-trust-track .tw-item em { font-style: normal; font-size: 13px; color: var(--grey); }
-.shop-trust-track .tw-item b { color: var(--clay); font-size: 12px; margin-left: 8px; }
-
 /* ---- Productgrid ---- */
 .shop-grid-sec { padding-top: clamp(56px, 7vw, 96px); }
 .product-grid {
@@ -1217,10 +1205,10 @@ ul { list-style: none; }
   box-shadow: 0 10px 22px -10px rgba(81,184,62,0.7);
 }
 .product-card-media {
-  aspect-ratio: 4/3.4;
+  aspect-ratio: 1/1;
   display: grid; place-items: center;
   background: radial-gradient(120% 100% at 50% 15%, var(--plaster), var(--cream));
-  padding: 26px;
+  padding: 26px; overflow: hidden;
 }
 .product-card-media img {
   max-height: 100%; max-width: 78%; width: auto;
@@ -1228,7 +1216,14 @@ ul { list-style: none; }
   filter: drop-shadow(0 24px 30px rgba(18,40,25,0.28));
   transition: transform 0.5s var(--ease);
 }
+/* Fotografische packshot (eigen achtergrond) vult het hele vierkant */
+.product-card-media.is-photo { padding: 0; }
+.product-card-media.is-photo img {
+  max-width: 100%; max-height: none;
+  width: 100%; height: 100%; object-fit: cover; filter: none;
+}
 .product-card:hover .product-card-media img { transform: translateY(-4px) scale(1.03); }
+.product-card:hover .product-card-media.is-photo img { transform: scale(1.04); }
 .product-card-body { padding: 22px 24px 24px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
 .product-card-body h3 { font-family: 'Zodiak', Georgia, serif; font-size: 22px; font-weight: 800; }
 .product-card-body p { color: var(--grey); font-size: 14.5px; }
@@ -1239,6 +1234,37 @@ ul { list-style: none; }
 .product-price { font-weight: 800; font-size: 20px; color: var(--ink); }
 .product-price small { font-weight: 500; font-size: 12.5px; color: var(--grey); }
 .product-card-cta { font-weight: 700; color: var(--green-dark); font-size: 14.5px; }
+.product-badge.badge-soon { background: var(--ink); box-shadow: 0 10px 22px -10px rgba(20,19,15,0.6); }
+.product-soon {
+  font-weight: 800; font-size: 15px; color: var(--green-dark);
+  letter-spacing: 0.01em;
+}
+.product-soon-lg { font-size: 20px; }
+
+/* ---- Subtiele 'binnenkort'-teaser (abonnement, nog niet te koop) ---- */
+.shop-soon-banner {
+  margin-top: 26px;
+  display: flex; align-items: center; gap: 18px;
+  padding: 18px 24px;
+  background: rgba(20, 19, 15, 0.03);
+  border: 1px dashed var(--line); border-radius: var(--radius);
+  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease),
+    background 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+.shop-soon-banner:hover { background: rgba(20, 19, 15, 0.05); border-color: rgba(20,19,15,0.2); }
+.shop-soon-badge {
+  flex: none; font-size: 11.5px; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--grey);
+  padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px;
+}
+.shop-soon-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.shop-soon-text strong { font-family: 'Zodiak', Georgia, serif; font-size: 17px; font-weight: 800; }
+.shop-soon-text small { color: var(--grey); font-size: 13.5px; }
+.shop-soon-cta { margin-left: auto; flex: none; font-weight: 700; color: var(--green-dark); font-size: 14px; }
+@media (max-width: 560px) {
+  .shop-soon-banner { flex-wrap: wrap; gap: 10px 14px; }
+  .shop-soon-cta { margin-left: 0; }
+}
 
 /* ---- Reseller-CTA ---- */
 .shop-reseller { background: var(--sand); padding: clamp(64px, 9vw, 120px) 0; text-align: center; }
@@ -1272,6 +1298,11 @@ ul { list-style: none; }
   max-height: 100%; max-width: 72%; width: auto;
   object-fit: contain;
   filter: drop-shadow(0 34px 40px rgba(18,40,25,0.32));
+}
+/* Fotografische packshot (eigen achtergrond) vult het hele vlak */
+.shop-detail-frame.is-photo { aspect-ratio: 1/1; padding: 0; }
+.shop-detail-frame.is-photo img {
+  max-width: 100%; width: 100%; height: 100%; object-fit: cover; filter: none;
 }
 .shop-detail-coconut {
   position: absolute; width: 34%; right: -7%; bottom: -6%;
@@ -1322,16 +1353,9 @@ ul { list-style: none; }
 @media (max-width: 860px) {
   .shop-detail { grid-template-columns: 1fr; }
   .shop-detail-media { max-width: 440px; margin: 0 auto; }
-  .shop-trust-inner { grid-template-columns: 1fr; gap: 14px; }
   /* Portret-fles komt beter tot z'n recht in een vierkanter, minder plat vak */
   .product-card-media { aspect-ratio: 1/1; padding: 20px; }
   .product-card-media img { max-width: 68%; }
-}
-
-/* Mobiel: trust-strip als auto-scroll marquee i.p.v. gestapelde kolom */
-@media (max-width: 560px) {
-  .shop-trust-inner { display: none; }
-  .shop-trust-marquee { display: block; }
 }
 
 /* ============================================================
@@ -1366,48 +1390,55 @@ ul { list-style: none; }
 .figures-inner .display { margin-top: 2px; }
 .figures-grid {
   margin-top: 46px;
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px;
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 22px;
 }
 .figure {
+  flex: 1 1 220px; min-width: 180px; max-width: 300px;
   display: flex; flex-direction: column; align-items: center; gap: 8px;
-  padding: 30px 18px;
+  padding: 30px 22px;
   background: rgba(255,255,255,0.6);
   border: 1px solid var(--line); border-radius: var(--radius);
   transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
   transition-delay: var(--d, 0ms);
 }
 .figure strong {
-  font-family: 'Zodiak', serif; font-weight: 800;
-  font-size: clamp(34px, 4.4vw, 54px); line-height: 0.95; color: var(--green-dark);
+  font-family: 'Zodiak', serif; font-weight: 800; white-space: nowrap;
+  font-size: clamp(30px, 3.2vw, 46px); line-height: 0.95; color: var(--green-dark);
 }
 .figure span { font-size: 14px; color: var(--grey); line-height: 1.35; max-width: 22ch; }
 .figures-foot {
   margin-top: 30px; font-family: 'Zodiak', serif; font-style: italic;
   font-size: 18px; color: var(--ink-soft);
 }
+.figures-sub {
+  margin-top: 8px; font-size: 14px; color: var(--grey);
+  line-height: 1.4; max-width: 46ch; margin-left: auto; margin-right: auto;
+}
 
 /* ============================================================
    Verkrijgbaarheid — Beschikbaar bij
    ============================================================ */
 .sec-availability { background: var(--ivory); text-align: center; overflow: hidden; }
-.availability-inner { max-width: 820px; margin: 0 auto; }
-.availability-list {
-  margin: 32px auto 34px; display: flex; flex-wrap: wrap;
-  gap: 14px; justify-content: center;
+.availability-inner { max-width: 960px; margin: 0 auto; }
+.availability-logos {
+  margin: 38px auto 38px; display: flex; flex-wrap: wrap;
+  gap: 18px; justify-content: center; list-style: none; padding: 0;
 }
-.availability-list li {
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 13px 24px; font-weight: 600; font-size: 17px;
-  background: var(--plaster); border: 1px solid var(--line);
-  border-radius: 999px;
-  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+.availability-logos li {
+  display: grid; place-items: center;
+  width: 178px; height: 108px; padding: 18px 22px;
+  background: #fff; border: 1px solid var(--line);
+  border-radius: 18px;
+  transition: opacity 0.8s var(--ease), transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
   transition-delay: var(--d, 0ms);
 }
-.availability-list .tick {
-  color: var(--green); font-weight: 800;
-  width: 22px; height: 22px; border-radius: 50%;
-  display: inline-grid; place-items: center;
-  background: rgba(81,184,62,0.14); font-size: 13px;
+.availability-logos li:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(20, 19, 15, 0.09);
+}
+.availability-logos img {
+  max-width: 100%; max-height: 56px; width: auto; height: auto;
+  object-fit: contain; display: block;
 }
 
 /* ============================================================
@@ -1490,12 +1521,14 @@ ul { list-style: none; }
 .footer-company { font-size: 12.5px; opacity: 0.5; letter-spacing: 0.01em; }
 
 @media (max-width: 860px) {
-  .figures-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
-  .figure { padding: 24px 14px; }
+  .figures-grid { gap: 16px; }
+  .figure { flex-basis: 150px; min-width: 140px; padding: 24px 14px; }
   .story-hero { min-height: 54vh; }
 }
 @media (max-width: 560px) {
-  .availability-list li { font-size: 15px; padding: 11px 18px; }
+  .availability-logos { gap: 12px; }
+  .availability-logos li { width: 45%; max-width: 168px; height: 92px; padding: 14px 16px; }
+  .availability-logos img { max-height: 46px; }
   .header-actions { gap: 9px; }
   .lang-toggle { font-size: 12px; }
 }

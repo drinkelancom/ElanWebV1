@@ -35,7 +35,7 @@ export const content = {
       eyebrow: '100% Puur Kokoswater',
       script: 'puur van nature',
       tagline: '100% puur kokoswater. Meer niet.',
-      sub: 'Verfrissing zonder concessies. ÉLAN hydrateert je van binnenuit met de zachte, natuurlijke smaak van jong kokoswater.',
+      sub: 'ÉLAN hydrateert je van binnenuit met de zachte, natuurlijke smaak van jong kokoswater.',
       cta: 'Ontdek ÉLAN',
     },
 
@@ -49,7 +49,7 @@ export const content = {
       {
         n: '01', eyebrow: 'Recht uit de kokosnoot',
         title: '100% puur.\nNiets erbij.',
-        body: 'Geen concentraat, geen toegevoegde suikers, geen conserveermiddelen. Alleen kokoswater zoals de natuur het bedoelde — helder, licht en eerlijk.',
+        body: 'Geen concentraat, geen toegevoegde suikers, geen conserveermiddelen. Gewoon puur kokoswater: helder, licht en eerlijk.',
         side: 'center', tint: '#123324',
       },
       {
@@ -61,13 +61,13 @@ export const content = {
       {
         n: '03', eyebrow: 'Licht & guilt-free',
         title: 'Guilt-free\ndorstlesser.',
-        body: 'Slechts 12 kcal per 100 ml. Lichtzoet, verfrissend en laag in calorieën — het heldere alternatief voor alles wat te zwaar of te zoet is.',
+        body: 'Slechts 12 kcal per 100 ml. Lichtzoet en verfrissend, een fijn alternatief voor alles wat te zwaar of te zoet is.',
         side: 'left', tint: '#175a33',
       },
       {
         n: '04', eyebrow: 'Altijd bij de hand',
         title: 'Gemaakt\nvoor onderweg.',
-        body: 'Een hersluitbaar pak van 500 ml met dop. In de gym, op het festival of onderweg — ÉLAN gaat mee en blijft fris.',
+        body: 'Een hersluitbaar pak van 500 ml met dop. In de gym, op het festival of onderweg: ÉLAN gaat mee en blijft fris.',
         side: 'center', tint: '#1e6e35',
       },
     ],
@@ -91,13 +91,13 @@ export const content = {
     videoBand: {
       script: 'recht uit de bron',
       title: 'Getapt uit jonge groene kokosnoten.',
-      body: 'Eén ingrediënt. Nul concessies. Gebotteld op het moment dat de natuur er klaar voor is.',
+      body: 'Eén ingrediënt, meer niet. Gebotteld op het moment dat de natuur er klaar voor is.',
     },
 
     meaning: {
       script: 'de betekenis',
       title: 'Energie, flair & enthousiasme.',
-      body: 'ÉLAN staat voor energie, flair en enthousiasme. Het symboliseert vitaliteit en een positieve levenshouding — precies waar ons kokoswater voor staat.',
+      body: 'ÉLAN staat voor energie, flair en enthousiasme. Het staat voor vitaliteit en een positieve levenshouding, precies waar ons kokoswater voor staat.',
       body2: 'ÉLAN kokoswater is 100% puur en niet uit concentraat, zonder toegevoegde suikers of conserveermiddelen. Vegan en glutenvrij.',
       stats: [
         ['100%', 'Puur kokoswater'],
@@ -110,13 +110,13 @@ export const content = {
       eyebrow: 'Voedingswaarde',
       script: 'puur & transparant',
       title: 'Wat je proeft is precies wat erin zit.',
-      lead: 'Recht uit de kokosnoot: puur en transparant — niets meer, niets minder.',
+      lead: 'Recht uit de kokosnoot: puur en transparant.',
       per: 'per 100 ml',
       rows: [
         ['Energie', '50 kJ / 12 kcal'],
         ['Vetten', '0 g'],
         ['Koolhydraten', '2,8 g'],
-        ['— waarvan suikers', '2,1 g'],
+        ['waarvan suikers', '2,1 g'],
         ['Eiwitten', '0 g'],
         ['Zout', '0,07 g'],
       ],
@@ -138,7 +138,7 @@ export const content = {
       title: 'Koud. Vers. Klaar.',
       body: 'Van smoothiebowl tot sportfles: ÉLAN hoort thuis in elke koelkast. Puur genoeg voor elke dag, bijzonder genoeg voor elk moment.',
       benefits: [
-        '100% puur kokoswater — nooit uit concentraat',
+        '100% puur kokoswater, nooit uit concentraat',
         'Zonder toegevoegde suikers of conserveermiddelen',
         'Hersluitbaar 500 ml pak met dop',
       ],
@@ -150,19 +150,20 @@ export const content = {
       script: 'in cijfers',
       title: 'ÉLAN in cijfers',
       items: [
-        ['150+', 'verkooppunten in Nederland'],
-        ['100.000+', 'verpakkingen verkocht in 3 maanden'],
+        ['150+', 'verkooppunten door heel Nederland'],
+        ['100.000+', 'sinds de introductie in Nederland'],
         ['100%', 'puur kokoswater'],
         ['500 ml', 'hersluitbaar pak met dop'],
+        ['0g', 'toegevoegde suikers. Alleen natuurlijke suikers uit kokoswater'],
       ],
-      foot: 'Een Nederlands premium merk.',
+      foot: 'Nederlands premium merk.',
+      sub: 'Van sportscholen tot supermarkten: ÉLAN groeit elke maand verder in Nederland.',
     },
 
     // Verkrijgbaarheid (social proof) — punt 11.
     availability: {
       script: 'vind ons',
       title: 'Beschikbaar bij',
-      items: ['PLUS', 'Sportscholen', 'Speciaalzaken', 'Binnenkort meer locaties'],
       cta: 'Bekijk alle verkooppunten',
     },
 
@@ -183,7 +184,7 @@ export const content = {
         'ÉLAN begon met een eenvoudige vraag: waarom is het zo moeilijk om écht puur kokoswater te vinden dat smaakt zoals recht uit de kokosnoot?',
         'Tijdens onze zoektocht proefden we veel verschillende merken. Vaak ontbrak de frisse, natuurlijke smaak die kokoswater juist zo bijzonder maakt. Sommige producten waren gemaakt van concentraat of verloren hun pure karakter door het productieproces.',
         'Wij geloofden dat het anders kon.',
-        'Daarom besloten we ÉLAN te ontwikkelen: een premium kokoswater dat niet alleen 100% puur is, maar ook de frisse, zachte en natuurlijke smaak behoudt zoals de natuur die bedoeld heeft.',
+        'Daarom besloten we ÉLAN te ontwikkelen: een premium kokoswater dat 100% puur is en de frisse, zachte en natuurlijke smaak van de kokosnoot vasthoudt.',
       ],
       sections: [
         {
@@ -211,7 +212,7 @@ export const content = {
             'Wij bouwen aan een Nederlands premiummerk dat staat voor eerlijkheid, kwaliteit en transparantie.',
             'Niet door de meeste ingrediënten toe te voegen, maar juist door niets weg te nemen van wat de natuur al perfect heeft gemaakt.',
             'Wij willen laten zien dat eenvoud de hoogste vorm van kwaliteit is.',
-            'Van de kokosnoot tot het pak: iedere keuze die wij maken is gericht op één doel: consumenten laten genieten van het puurste kokoswater, zonder concessies.',
+            'Van de kokosnoot tot het pak is iedere keuze die wij maken gericht op één doel: mensen laten genieten van het puurste kokoswater.',
           ],
         },
         {
@@ -245,7 +246,7 @@ export const content = {
         send: 'Verstuur bericht',
         sending: 'Versturen…',
         privacy: 'Je gaat akkoord met ons vriendelijke privacybeleid.',
-        errorPre: 'Er ging iets mis — probeer het opnieuw of mail ons direct via ',
+        errorPre: 'Er ging iets mis. Probeer het opnieuw of mail ons direct via ',
         okScript: 'bedankt!',
         okTitle: 'Je bericht is verstuurd.',
         okBody: 'We nemen zo snel mogelijk contact met je op.',
@@ -278,7 +279,7 @@ export const content = {
         { label: 'Cookiebeleid', href: '#/cookiebeleid' },
       ],
       company: 'ELAN WORLD BV · KVK 97952338',
-      copy: (y) => `© ${y} ELAN WORLD BV — 100% Puur Kokoswater`,
+      copy: (y) => `© ${y} ELAN WORLD BV · 100% Puur Kokoswater`,
     },
 
     findus: {
@@ -298,15 +299,10 @@ export const content = {
       eyebrow: 'De ÉLAN shop',
       script: 'neem het mee naar huis',
       title: 'Breng de tropen in huis.',
-      body: '100% puur kokoswater — los te koop bij onze verkooppunten, of straks per case en als maandelijks abonnement rechtstreeks van ÉLAN.',
-      trust: [
-        ['iDEAL & creditcard', 'Veilig afrekenen via Stripe'],
-        ['Vers gegarandeerd', 'Recht uit de kokosnoot'],
-        ['Verzending NL', 'Gratis vanaf €35'],
-      ],
+      body: '100% puur kokoswater, los te koop bij onze verkooppunten. Straks ook per case en als maandelijks abonnement rechtstreeks van ÉLAN.',
       resellerScript: 'liever in de winkel?',
       resellerTitle: 'Vind ÉLAN bij jou in de buurt.',
-      resellerBody: 'Ontdek op de kaart waar je ÉLAN los kunt kopen — supermarkten, horeca en speciaalzaken door heel Nederland.',
+      resellerBody: 'Ontdek op de kaart waar je ÉLAN los kunt kopen: supermarkten, horeca en speciaalzaken door heel Nederland.',
       resellerCta: 'Open de kaart',
       buyResellerLead: 'Nu verkrijgbaar bij onze verkooppunten:',
       buyFindCta: 'Vind ÉLAN bij jou in de buurt',
@@ -319,23 +315,27 @@ export const content = {
       cart: 'In winkelmand',
       backToShop: 'Terug naar de shop',
       view: 'Bekijk',
+      buyExternal: 'Bestel bij BGS Nutrition',
+      buyExternalLead: 'Nu te bestellen via onze partner:',
+      soonBadge: 'Binnenkort',
+      soonTeaserCta: 'Meer weten',
     },
 
     products: [
       {
         slug: 'elan-500', name: 'ÉLAN 500 ml',
-        subtitle: 'Los pak — 100% puur kokoswater',
+        subtitle: 'Los pak, 100% puur kokoswater',
         unit: 'per pak', badge: 'Bestseller',
         short: 'Het hersluitbare pak van 500 ml met dop. Niet uit concentraat, zonder toegevoegde suikers. Overal onderweg mee te nemen.',
         highlights: [
-          '100% puur kokoswater — nooit uit concentraat',
+          '100% puur kokoswater, nooit uit concentraat',
           'Zonder toegevoegde suikers of conserveermiddelen',
           'Slechts 12 kcal per 100 ml',
           'Vegan en glutenvrij',
         ],
       },
       {
-        slug: 'elan-case-12', name: 'Voordeelcase — 12× 500 ml',
+        slug: 'elan-case-12', name: 'Voordeelcase, 12× 500 ml',
         subtitle: 'Sla je voorraad in met voordeel',
         unit: 'per case (12 stuks)', badge: 'Beste deal',
         short: 'Twaalf pakken ÉLAN in één doos, met casevoordeel. De slimste manier om altijd fris kokoswater in huis te hebben. Binnenkort rechtstreeks te bestellen.',
@@ -349,13 +349,26 @@ export const content = {
       {
         slug: 'elan-abo', name: 'ÉLAN Abonnement',
         subtitle: 'Elke maand vers thuisbezorgd',
-        unit: 'per maand — opzegbaar', badge: 'Nieuw',
+        unit: 'per maand, opzegbaar', badge: 'Binnenkort',
         short: 'Nooit meer zonder. Elke maand een case ÉLAN in de bus, met abonnee-voordeel en altijd opzegbaar. Binnenkort beschikbaar.',
         highlights: [
-          'Maandelijkse levering — geen omkijken naar',
+          'Maandelijkse levering, geen omkijken naar',
           'Abonnee-voordeel op elke case',
           'Op elk moment pauzeren of opzeggen',
           'Gratis verzending inbegrepen',
+        ],
+      },
+      {
+        slug: 'elan-1l', name: 'ÉLAN 1 L',
+        subtitle: 'Familiepak, 100% puur kokoswater',
+        unit: 'per pak', badge: 'Binnenkort',
+        note: 'Vanaf januari 2027',
+        short: 'Het grote literpak voor thuis. Hetzelfde 100% pure kokoswater, niet uit concentraat en zonder toegevoegde suikers, nu in een handig formaat om te delen. Vanaf januari 2027 verkrijgbaar.',
+        highlights: [
+          '1 liter, ideaal om te delen of voor thuis',
+          '100% puur kokoswater, niet uit concentraat',
+          'Zonder toegevoegde suikers of conserveermiddelen',
+          'Vegan en glutenvrij',
         ],
       },
     ],
@@ -376,7 +389,7 @@ export const content = {
         sections: [
           ['Wie zijn wij', 'ELAN WORLD BV (KVK 97952338), gevestigd aan de Cypresbaan 55, 2908 LT Capelle aan den IJssel, is verantwoordelijk voor de verwerking van persoonsgegevens zoals beschreven in dit beleid.'],
           ['Welke gegevens verzamelen wij', 'Gegevens die je zelf achterlaat via het contact- of bestelformulier (naam, e-mailadres, bericht), en technische gegevens die nodig zijn om de website te laten werken.'],
-          ['Waarvoor gebruiken wij ze', 'Om je vragen te beantwoorden, bestellingen te verwerken en je — met toestemming — op de hoogte te houden.'],
+          ['Waarvoor gebruiken wij ze', 'Om je vragen te beantwoorden, bestellingen te verwerken en je, met jouw toestemming, op de hoogte te houden.'],
           ['Je rechten', 'Je hebt recht op inzage, correctie en verwijdering van je gegevens. Mail hiervoor naar Info@drinkelan.com.'],
         ],
       },
@@ -444,7 +457,7 @@ export const content = {
       eyebrow: '100% Pure Coconut Water',
       script: 'pure by nature',
       tagline: '100% Pure Coconut Water. Nothing else.',
-      sub: 'Refreshment without compromise. ÉLAN hydrates you from within with the soft, natural taste of young coconut water.',
+      sub: 'ÉLAN hydrates you from within with the soft, natural taste of young coconut water.',
       cta: 'Discover ÉLAN',
     },
 
@@ -458,7 +471,7 @@ export const content = {
       {
         n: '01', eyebrow: 'Straight from the coconut',
         title: '100% pure.\nNothing added.',
-        body: 'No concentrate, no added sugars, no preservatives. Just coconut water the way nature intended — clear, light and honest.',
+        body: 'No concentrate, no added sugars, no preservatives. Just pure coconut water: clear, light and honest.',
         side: 'center', tint: '#123324',
       },
       {
@@ -470,13 +483,13 @@ export const content = {
       {
         n: '03', eyebrow: 'Light & guilt-free',
         title: 'Guilt-free\nthirst quencher.',
-        body: 'Just 12 kcal per 100 ml. Lightly sweet, refreshing and low in calories — the clear alternative to anything too heavy or too sweet.',
+        body: 'Just 12 kcal per 100 ml. Lightly sweet and refreshing, a nice alternative to anything too heavy or too sweet.',
         side: 'left', tint: '#175a33',
       },
       {
         n: '04', eyebrow: 'Always within reach',
         title: 'Made\nfor the go.',
-        body: 'A resealable 500 ml carton with cap. At the gym, at the festival or on the move — ÉLAN comes along and stays fresh.',
+        body: 'A resealable 500 ml carton with cap. At the gym, at the festival or on the move: ÉLAN comes along and stays fresh.',
         side: 'center', tint: '#1e6e35',
       },
     ],
@@ -500,13 +513,13 @@ export const content = {
     videoBand: {
       script: 'straight from the source',
       title: 'Tapped from young green coconuts.',
-      body: 'One ingredient. Zero compromise. Bottled the moment nature is ready.',
+      body: 'One ingredient, nothing else. Bottled the moment nature is ready.',
     },
 
     meaning: {
       script: 'the meaning',
       title: 'Energy, flair & enthusiasm.',
-      body: 'ÉLAN means energy, flair and enthusiasm. It symbolizes vitality and a zest for life — exactly what our coconut water represents.',
+      body: 'ÉLAN means energy, flair and enthusiasm. It stands for vitality and a positive outlook, exactly what our coconut water represents.',
       body2: 'ÉLAN coconut water is 100% pure and not made from concentrate, with no added sugars or preservatives. Vegan and gluten-free.',
       stats: [
         ['100%', 'Pure coconut water'],
@@ -519,13 +532,13 @@ export const content = {
       eyebrow: 'Nutrition',
       script: 'pure & transparent',
       title: 'What you taste is exactly what’s inside.',
-      lead: 'Straight from the coconut: pure and transparent — nothing more, nothing less.',
+      lead: 'Straight from the coconut: pure and transparent.',
       per: 'per 100 ml',
       rows: [
         ['Energy', '50 kJ / 12 kcal'],
         ['Fat', '0 g'],
         ['Carbohydrates', '2.8 g'],
-        ['— of which sugars', '2.1 g'],
+        ['of which sugars', '2.1 g'],
         ['Protein', '0 g'],
         ['Salt', '0.07 g'],
       ],
@@ -547,7 +560,7 @@ export const content = {
       title: 'Cold. Fresh. Ready.',
       body: 'From smoothie bowl to sports bottle: ÉLAN belongs in every fridge. Pure enough for every day, special enough for every moment.',
       benefits: [
-        '100% pure coconut water — never from concentrate',
+        '100% pure coconut water, never from concentrate',
         'No added sugars or preservatives',
         'Resealable 500 ml carton with cap',
       ],
@@ -559,17 +572,18 @@ export const content = {
       title: 'ÉLAN by the numbers',
       items: [
         ['150+', 'stockists across the Netherlands'],
-        ['100,000+', 'cartons sold in 3 months'],
+        ['100,000+', 'since our launch in the Netherlands'],
         ['100%', 'pure coconut water'],
         ['500 ml', 'resealable carton with cap'],
+        ['0g', 'added sugar. Only natural sugars from coconut water'],
       ],
       foot: 'A Dutch premium brand.',
+      sub: 'From gyms to supermarkets: ÉLAN keeps growing across the Netherlands every month.',
     },
 
     availability: {
       script: 'find us',
       title: 'Available at',
-      items: ['PLUS', 'Gyms', 'Specialty stores', 'More locations soon'],
       cta: 'See all stockists',
     },
 
@@ -616,7 +630,7 @@ export const content = {
             'We are building a Dutch premium brand that stands for honesty, quality and transparency.',
             'Not by adding the most ingredients, but by taking away nothing from what nature has already made perfect.',
             'We want to show that simplicity is the highest form of quality.',
-            'From the coconut to the carton: every choice we make serves one goal — letting people enjoy the purest coconut water, without compromise.',
+            'From the coconut to the carton: every choice we make serves one goal: letting people enjoy the purest coconut water.',
           ],
         },
         {
@@ -650,7 +664,7 @@ export const content = {
         send: 'Send message',
         sending: 'Sending…',
         privacy: 'You agree to our friendly privacy policy.',
-        errorPre: 'Something went wrong — please try again or email us directly at ',
+        errorPre: 'Something went wrong. Please try again or email us directly at ',
         okScript: 'thank you!',
         okTitle: 'Your message has been sent.',
         okBody: 'We’ll get back to you as soon as possible.',
@@ -683,7 +697,7 @@ export const content = {
         { label: 'Cookie policy', href: '#/cookiebeleid' },
       ],
       company: 'ELAN WORLD BV · CoC 97952338',
-      copy: (y) => `© ${y} ELAN WORLD BV — 100% Pure Coconut Water`,
+      copy: (y) => `© ${y} ELAN WORLD BV · 100% Pure Coconut Water`,
     },
 
     findus: {
@@ -703,15 +717,10 @@ export const content = {
       eyebrow: 'The ÉLAN shop',
       script: 'take it home',
       title: 'Bring the tropics home.',
-      body: '100% pure coconut water — available at our stockists, or soon by the case and as a monthly subscription directly from ÉLAN.',
-      trust: [
-        ['iDEAL & credit card', 'Secure checkout via Stripe'],
-        ['Freshness guaranteed', 'Straight from the coconut'],
-        ['Shipping NL', 'Free from €35'],
-      ],
+      body: '100% pure coconut water, available at our stockists. Soon also by the case and as a monthly subscription directly from ÉLAN.',
       resellerScript: 'prefer in-store?',
       resellerTitle: 'Find ÉLAN near you.',
-      resellerBody: 'Discover on the map where you can buy ÉLAN by the carton — supermarkets, hospitality and specialty stores across the Netherlands.',
+      resellerBody: 'Discover on the map where you can buy ÉLAN by the carton: supermarkets, hospitality and specialty stores across the Netherlands.',
       resellerCta: 'Open the map',
       buyResellerLead: 'Now available at our stockists:',
       buyFindCta: 'Find ÉLAN near you',
@@ -724,23 +733,27 @@ export const content = {
       cart: 'Add to cart',
       backToShop: 'Back to the shop',
       view: 'View',
+      buyExternal: 'Order at BGS Nutrition',
+      buyExternalLead: 'Available to order now via our partner:',
+      soonBadge: 'Coming soon',
+      soonTeaserCta: 'Learn more',
     },
 
     products: [
       {
         slug: 'elan-500', name: 'ÉLAN 500 ml',
-        subtitle: 'Single carton — 100% pure coconut water',
+        subtitle: 'Single carton, 100% pure coconut water',
         unit: 'per carton', badge: 'Bestseller',
         short: 'The resealable 500 ml carton with cap. Not from concentrate, no added sugars. Take it anywhere.',
         highlights: [
-          '100% pure coconut water — never from concentrate',
+          '100% pure coconut water, never from concentrate',
           'No added sugars or preservatives',
           'Just 12 kcal per 100 ml',
           'Vegan and gluten-free',
         ],
       },
       {
-        slug: 'elan-case-12', name: 'Value case — 12× 500 ml',
+        slug: 'elan-case-12', name: 'Value case, 12× 500 ml',
         subtitle: 'Stock up and save',
         unit: 'per case (12 pcs)', badge: 'Best deal',
         short: 'Twelve cartons of ÉLAN in one box, with case savings. The smartest way to always have fresh coconut water at home. Available to order soon.',
@@ -754,13 +767,26 @@ export const content = {
       {
         slug: 'elan-abo', name: 'ÉLAN Subscription',
         subtitle: 'Fresh delivery every month',
-        unit: 'per month — cancel anytime', badge: 'New',
+        unit: 'per month, cancel anytime', badge: 'Coming soon',
         short: 'Never run out. A case of ÉLAN through your door every month, with subscriber savings and always cancellable. Available soon.',
         highlights: [
-          'Monthly delivery — nothing to worry about',
+          'Monthly delivery, nothing to worry about',
           'Subscriber savings on every case',
           'Pause or cancel at any time',
           'Free shipping included',
+        ],
+      },
+      {
+        slug: 'elan-1l', name: 'ÉLAN 1 L',
+        subtitle: 'Family carton, 100% pure coconut water',
+        unit: 'per carton', badge: 'Coming soon',
+        note: 'From January 2027',
+        short: 'The large one-litre carton for home. The same 100% pure coconut water, not from concentrate and no added sugars, now in a handy size to share. Available from January 2027.',
+        highlights: [
+          '1 litre, perfect to share or for home',
+          '100% pure coconut water, not from concentrate',
+          'No added sugars or preservatives',
+          'Vegan and gluten-free',
         ],
       },
     ],
@@ -780,7 +806,7 @@ export const content = {
         sections: [
           ['Who we are', 'ELAN WORLD BV (CoC 97952338), based at Cypresbaan 55, 2908 LT Capelle aan den IJssel, the Netherlands, is responsible for processing personal data as described in this policy.'],
           ['What data we collect', 'Data you provide via the contact or order form (name, email, message), and technical data needed to run the website.'],
-          ['How we use it', 'To answer your questions, process orders and — with your consent — keep you informed.'],
+          ['How we use it', 'To answer your questions, process orders and, with your consent, keep you informed.'],
           ['Your rights', 'You have the right to access, correct and delete your data. Email Info@drinkelan.com to do so.'],
         ],
       },
