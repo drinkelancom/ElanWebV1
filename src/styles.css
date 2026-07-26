@@ -1207,6 +1207,9 @@ ul { list-style: none; }
 .product-card-media {
   aspect-ratio: 1/1;
   display: grid; place-items: center;
+  /* Definiete rij/kolom: anders groeit het grid-vak mee met een hoge packshot en
+     doet max-height:100% niets, waardoor het beeld onderaan wordt afgekapt. */
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
   background: radial-gradient(120% 100% at 50% 15%, var(--plaster), var(--cream));
   padding: 26px; overflow: hidden;
 }
@@ -1288,6 +1291,8 @@ ul { list-style: none; }
   position: relative;
   aspect-ratio: 4/4.4;
   display: grid; place-items: center;
+  /* Zie .product-card-media: definiete rij/kolom houdt max-height:100% werkend. */
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
   background: radial-gradient(120% 100% at 50% 12%, var(--plaster), var(--cream));
   border-radius: var(--radius);
   box-shadow: var(--shadow);
@@ -1439,6 +1444,13 @@ ul { list-style: none; }
 .availability-logos img {
   max-width: 100%; max-height: 56px; width: auto; height: auto;
   object-fit: contain; display: block;
+}
+/* Script-regel boven de titel is een hele zin i.p.v. twee woorden:
+   iets kleiner en met max-breedte zodat hij netjes over 2 regels valt. */
+.sec-availability .script-lg {
+  font-size: clamp(24px, 2.4vw, 34px);
+  max-width: 30ch; margin: 0 auto 6px;
+  line-height: 1.15;
 }
 
 /* ============================================================

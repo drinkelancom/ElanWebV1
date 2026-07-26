@@ -1105,6 +1105,70 @@ export const locations = [
     lng: 4.420851,
     type: 'store',
   },
+  // Warung Mini XL — 3 vestigingen. Adressen geverifieerd via PDOK/BAG;
+  // Den Haag en Berkel ook als winkel-POI in OpenStreetMap (zelfde coördinaten).
+  {
+    id: 'nl-warung-mini-xl-den-haag',
+    name: 'Warung Mini XL Den Haag',
+    country: 'Netherlands',
+    city: '\'s-Gravenhage',
+    address: 'Amsterdamse Veerkade 57A, 2512 AH',
+    lat: 52.075790,
+    lng: 4.317685,
+    type: 'store',
+  },
+  {
+    id: 'nl-warung-mini-xl-rijswijk',
+    name: 'Warung Mini XL Rijswijk',
+    country: 'Netherlands',
+    city: 'Rijswijk',
+    address: 'Cort van der Lindenstraat 8C, 2288 EV',
+    lat: 52.042068,
+    lng: 4.333168,
+    type: 'store',
+  },
+  {
+    id: 'nl-warung-mini-xl-berkel-en-rodenrijs',
+    name: 'Warung Mini XL Berkel en Rodenrijs',
+    country: 'Netherlands',
+    city: 'Berkel en Rodenrijs',
+    address: 'Westersingel 45E, 2651 CM',
+    lat: 51.995018,
+    lng: 4.474503,
+    type: 'store',
+  },
+  {
+    id: 'nl-badris-tropical-almere',
+    name: "Badri's Tropical",
+    country: 'Netherlands',
+    city: 'Almere',
+    address: 'Noordeinde 166, 1334 BC',
+    lat: 52.394678,
+    lng: 5.277552,
+    type: 'store',
+  },
+  {
+    // Hofbogen-boog; Google noemt postcode 3032 AH, maar dat is de Raampoortstraat
+    // aan de achterzijde. BAG + eigen site: Katshoek 17 = 3032 AE.
+    id: 'nl-crossfit-hofplein',
+    name: 'CrossFit Hofplein',
+    country: 'Netherlands',
+    city: 'Rotterdam',
+    address: 'Katshoek 17, 3032 AE',
+    lat: 51.927109,
+    lng: 4.479275,
+    type: 'store',
+  },
+  {
+    id: 'nl-stickybar-rotterdam',
+    name: 'Stickybar',
+    country: 'Netherlands',
+    city: 'Rotterdam',
+    address: 'Voorburgstraat 209, 3037 ER',
+    lat: 51.932772,
+    lng: 4.469715,
+    type: 'store',
+  },
 ]
 
 export const typeColors = {

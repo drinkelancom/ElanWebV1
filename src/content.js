@@ -151,7 +151,7 @@ export const content = {
       title: 'ÉLAN in cijfers',
       items: [
         ['150+', 'verkooppunten door heel Nederland'],
-        ['100.000+', 'sinds de introductie in Nederland'],
+        ['100.000+', 'pakjes verkocht in 12 weken'],
         ['100%', 'puur kokoswater'],
         ['500 ml', 'hersluitbaar pak met dop'],
         ['0g', 'toegevoegde suikers. Alleen natuurlijke suikers uit kokoswater'],
@@ -162,8 +162,8 @@ export const content = {
 
     // Verkrijgbaarheid (social proof) — punt 11.
     availability: {
-      script: 'vind ons',
-      title: 'Beschikbaar bij',
+      script: 'Vertrouwd door retailers en speciaalzaken in Nederland.',
+      title: 'Verkrijgbaar bij',
       cta: 'Bekijk alle verkooppunten',
     },
 
@@ -572,7 +572,7 @@ export const content = {
       title: 'ÉLAN by the numbers',
       items: [
         ['150+', 'stockists across the Netherlands'],
-        ['100,000+', 'since our launch in the Netherlands'],
+        ['100,000+', 'cartons sold in 12 weeks'],
         ['100%', 'pure coconut water'],
         ['500 ml', 'resealable carton with cap'],
         ['0g', 'added sugar. Only natural sugars from coconut water'],
@@ -582,7 +582,7 @@ export const content = {
     },
 
     availability: {
-      script: 'find us',
+      script: 'Trusted by retailers and specialty stores across the Netherlands.',
       title: 'Available at',
       cta: 'See all stockists',
     },
