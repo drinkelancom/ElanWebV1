@@ -323,18 +323,6 @@ export const content = {
 
     products: [
       {
-        slug: 'elan-500', name: 'ÉLAN 500 ml',
-        subtitle: 'Los pak, 100% puur kokoswater',
-        unit: 'per pak', badge: 'Bestseller',
-        short: 'Het hersluitbare pak van 500 ml met dop. Niet uit concentraat, zonder toegevoegde suikers. Overal onderweg mee te nemen.',
-        highlights: [
-          '100% puur kokoswater, nooit uit concentraat',
-          'Zonder toegevoegde suikers of conserveermiddelen',
-          'Slechts 12 kcal per 100 ml',
-          'Vegan en glutenvrij',
-        ],
-      },
-      {
         slug: 'elan-case-12', name: 'Voordeelcase, 12× 500 ml',
         subtitle: 'Sla je voorraad in met voordeel',
         unit: 'per case (12 stuks)', badge: 'Beste deal',
@@ -344,6 +332,18 @@ export const content = {
           'Voordeel t.o.v. los kopen',
           'Gratis verzending binnen NL vanaf €35',
           'Ideaal voor thuis, sport of kantoor',
+        ],
+      },
+      {
+        slug: 'elan-500', name: 'ÉLAN 500 ml',
+        subtitle: 'Los pak, 100% puur kokoswater',
+        unit: 'per pak', badge: 'Bestseller',
+        short: 'Het hersluitbare pak van 500 ml met dop. Niet uit concentraat, zonder toegevoegde suikers. Overal onderweg mee te nemen.',
+        highlights: [
+          '100% puur kokoswater, nooit uit concentraat',
+          'Zonder toegevoegde suikers of conserveermiddelen',
+          'Slechts 12 kcal per 100 ml',
+          'Vegan en glutenvrij',
         ],
       },
       {
@@ -741,18 +741,6 @@ export const content = {
 
     products: [
       {
-        slug: 'elan-500', name: 'ÉLAN 500 ml',
-        subtitle: 'Single carton, 100% pure coconut water',
-        unit: 'per carton', badge: 'Bestseller',
-        short: 'The resealable 500 ml carton with cap. Not from concentrate, no added sugars. Take it anywhere.',
-        highlights: [
-          '100% pure coconut water, never from concentrate',
-          'No added sugars or preservatives',
-          'Just 12 kcal per 100 ml',
-          'Vegan and gluten-free',
-        ],
-      },
-      {
         slug: 'elan-case-12', name: 'Value case, 12× 500 ml',
         subtitle: 'Stock up and save',
         unit: 'per case (12 pcs)', badge: 'Best deal',
@@ -762,6 +750,18 @@ export const content = {
           'Savings versus single purchase',
           'Free shipping within NL from €35',
           'Ideal for home, sport or the office',
+        ],
+      },
+      {
+        slug: 'elan-500', name: 'ÉLAN 500 ml',
+        subtitle: 'Single carton, 100% pure coconut water',
+        unit: 'per carton', badge: 'Bestseller',
+        short: 'The resealable 500 ml carton with cap. Not from concentrate, no added sugars. Take it anywhere.',
+        highlights: [
+          '100% pure coconut water, never from concentrate',
+          'No added sugars or preservatives',
+          'Just 12 kcal per 100 ml',
+          'Vegan and gluten-free',
         ],
       },
       {
