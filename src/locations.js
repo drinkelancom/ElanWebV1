@@ -1169,6 +1169,37 @@ export const locations = [
     lng: 4.469715,
     type: 'store',
   },
+  {
+    id: 'nl-de-ijssalon',
+    name: 'De IJssalon',
+    country: 'Netherlands',
+    city: 'Rotterdam',
+    address: 'Lusthofstraat 71, 3061 WL',
+    lat: 51.924495,
+    lng: 4.510042,
+    type: 'store',
+  },
+  {
+    id: 'nl-plus-meeuwsen-utrecht',
+    name: 'Plus Meeuwsen',
+    country: 'Netherlands',
+    city: 'Utrecht',
+    address: 'Plantage 15, 3551 DE',
+    lat: 52.102042,
+    lng: 5.099741,
+    type: 'store',
+  },
+  {
+    // Bron noteert 'Pr. Irenelaan'; BAG/OSM: Prinses Irenelaan 330.
+    id: 'nl-plus-jongenotter-rijswijk',
+    name: 'Plus Jongenotter',
+    country: 'Netherlands',
+    city: 'Rijswijk',
+    address: 'Prinses Irenelaan 330, 2285 GD',
+    lat: 52.035367,
+    lng: 4.306952,
+    type: 'store',
+  },
 ]
 
 export const typeColors = {
