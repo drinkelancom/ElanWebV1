@@ -574,14 +574,15 @@ function Reviews() {
   const [status, setStatus] = useState('idle') // idle | sending | ok | error
 
   /* Goedgekeurde reviews komen van /api/reviews. De lijst uit data.js is de
-     val-terug: zo blijft de sectie werken als de API (nog) niet draait. */
+     val-terug voor als de API onbereikbaar is. Een geslaagd antwoord is altijd
+     leidend, ook als het leeg is — anders blijven verwijderde reviews staan. */
   const [list, setList] = useState(reviews)
   useEffect(() => {
     let alive = true
     fetch('/api/reviews')
       .then((res) => (res.ok ? res.json() : null))
       .then((json) => {
-        if (alive && json && Array.isArray(json.reviews) && json.reviews.length) setList(json.reviews)
+        if (alive && json && Array.isArray(json.reviews)) setList(json.reviews)
       })
       .catch(() => { /* stil: val terug op data.js */ })
     return () => { alive = false }
