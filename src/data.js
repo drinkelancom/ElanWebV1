@@ -37,6 +37,30 @@ export const socialFeedImages = [
 // contactformulier én shop pre-order/notify.
 export const WEB3FORMS_KEY = '25c97098-16a2-42ba-ad85-603bf65fc024'
 
+// Canonieke site-URL — moet gelijk blijven aan <link rel="canonical"> in
+// index.html. Wordt gebruikt om het review-schema aan het bestaande
+// Product-knooppunt (#product) te koppelen.
+export const SITE_URL = 'https://www.drinkelan.com'
+
+// Google Bedrijfsprofiel — plak hier de "Vraag om reviews"-link uit je profiel
+// (vorm: https://g.page/r/XXXXXXXXXXXX/review). Zolang dit leeg is, verbergt de
+// reviewsectie de Google-knop vanzelf; de rest blijft gewoon werken.
+export const GOOGLE_REVIEW_URL = ''
+
+// Goedgekeurde klantreviews. Bewust taal-onafhankelijk: dit zijn letterlijke
+// citaten van klanten, die vertalen we niet mee met de NL/EN-schakelaar.
+// Nieuwe reviews komen via het formulier binnen op Info@drinkelan.com; zet ze
+// hier pas neer nadat je ze hebt gelezen en goedgekeurd.
+//
+// Vorm: { name: 'Sanne V.', place: 'Rotterdam', rating: 5,
+//         date: '2026-08-14', text: 'Echt het frisste kokoswater dat ik ken.' }
+//
+// Vul hier nooit verzonnen reviews in. De sterrenwaardering die naar Google
+// gaat (Product-schema) wordt hieruit berekend — verzonnen reviews zijn in
+// strijd met Google's richtlijnen én verboden onder de Nederlandse
+// consumentenwetgeving (misleidende handelspraktijk).
+export const reviews = []
+
 // Globale val-terug-modus. Op 'live' schakel je pas als /api/* + Stripe klaar zijn.
 export const SHOP_MODE = 'prelaunch' // 'prelaunch' | 'live'
 

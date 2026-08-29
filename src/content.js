@@ -167,6 +167,33 @@ export const content = {
       cta: 'Bekijk alle verkooppunten',
     },
 
+    // Klantreviews — de reviews zelf staan in data.js (niet vertaald).
+    reviews: {
+      script: 'wat anderen zeggen',
+      title: 'Reviews',
+      body: 'Ervaringen van mensen die ÉLAN drinken.',
+      empty: 'Nog geen reviews geplaatst. Wees de eerste — we lezen elke review zelf.',
+      summary: (avg, n) => `${avg} van de 5 · ${n} ${n === 1 ? 'review' : 'reviews'}`,
+      writeCta: 'Schrijf een review',
+      googleCta: 'Review ons op Google',
+      cancel: 'Annuleren',
+      form: {
+        name: 'Naam',
+        place: 'Woonplaats (optioneel)',
+        email: 'E-mailadres (blijft privé)',
+        rating: 'Je waardering',
+        message: 'Wat vind je van ÉLAN?',
+        send: 'Plaats review',
+        sending: 'Versturen…',
+        privacy: 'We plaatsen je review na een korte check. Je e-mailadres blijft privé en komt niet op de site.',
+        errorPre: 'Er ging iets mis. Probeer het opnieuw of mail ons direct via ',
+        okScript: 'bedankt!',
+        okTitle: 'Je review is verstuurd.',
+        okBody: 'We lezen hem door en plaatsen hem daarna op de site.',
+        okAgain: 'Nog een review',
+      },
+    },
+
     // Homepage-teaser die naar de Ons verhaal-pagina linkt.
     story: {
       script: 'ons verhaal',
@@ -585,6 +612,32 @@ export const content = {
       script: 'Trusted by retailers and specialty stores across the Netherlands.',
       title: 'Available at',
       cta: 'See all stockists',
+    },
+
+    reviews: {
+      script: 'what others say',
+      title: 'Reviews',
+      body: 'Experiences from people who drink ÉLAN.',
+      empty: 'No reviews published yet. Be the first — we read every single one.',
+      summary: (avg, n) => `${avg} out of 5 · ${n} ${n === 1 ? 'review' : 'reviews'}`,
+      writeCta: 'Write a review',
+      googleCta: 'Review us on Google',
+      cancel: 'Cancel',
+      form: {
+        name: 'Name',
+        place: 'City (optional)',
+        email: 'Email (stays private)',
+        rating: 'Your rating',
+        message: 'What do you think of ÉLAN?',
+        send: 'Post review',
+        sending: 'Sending…',
+        privacy: 'We publish your review after a quick check. Your email stays private and never appears on the site.',
+        errorPre: 'Something went wrong. Please try again or email us directly at ',
+        okScript: 'thank you!',
+        okTitle: 'Your review has been sent.',
+        okBody: 'We’ll read it through and publish it on the site.',
+        okAgain: 'Write another',
+      },
     },
 
     story: {

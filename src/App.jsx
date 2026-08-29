@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react'
-import { images, videos, socialFeedImages, WEB3FORMS_KEY } from './data.js'
+import { images, videos, socialFeedImages, WEB3FORMS_KEY, reviews, GOOGLE_REVIEW_URL, SITE_URL } from './data.js'
 import { useLang } from './lang.jsx'
 import BottleScroll from './BottleScroll.jsx'
 
@@ -24,6 +24,18 @@ function FbIcon({ className }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
       <path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12z" />
+    </svg>
+  )
+}
+
+/* Google "G" in de officiële vier kleuren — blijft leesbaar op ivoor. */
+function GoogleIcon({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" aria-hidden>
+      <path fill="#4285F4" d="M23.5 12.27c0-.85-.08-1.67-.22-2.45H12v4.64h6.45a5.5 5.5 0 0 1-2.39 3.62v3h3.86c2.26-2.08 3.56-5.15 3.56-8.81z" />
+      <path fill="#34A853" d="M12 24c3.24 0 5.96-1.08 7.94-2.91l-3.87-3a7.2 7.2 0 0 1-10.72-3.78H1.4v3.09A12 12 0 0 0 12 24z" />
+      <path fill="#FBBC05" d="M5.35 14.3a7.1 7.1 0 0 1 0-4.6V6.62H1.4a12 12 0 0 0 0 10.77l3.95-3.08z" />
+      <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0A12 12 0 0 0 1.4 6.62l3.95 3.08A7.16 7.16 0 0 1 12 4.75z" />
     </svg>
   )
 }
@@ -493,6 +505,218 @@ function Availability() {
   )
 }
 
+/* ============ Reviews — klantbeoordelingen + eigen reviewformulier ============ */
+
+const STAR_PATH = 'M10 0.6l2.72 5.9 6.42.72-4.79 4.36 1.3 6.33L10 14.65 4.35 17.9l1.3-6.32L.86 7.22l6.42-.72z'
+
+/* Vaste 5-sterrenweergave (read-only). */
+function Stars({ value, className = '' }) {
+  return (
+    <span className={`stars ${className}`} aria-hidden="true">
+      {[1, 2, 3, 4, 5].map((n) => (
+        <svg key={n} viewBox="0 0 20 18" className={`star${n <= Math.round(value) ? ' on' : ''}`}>
+          <path d={STAR_PATH} />
+        </svg>
+      ))}
+    </span>
+  )
+}
+
+/* Sterren als radiogroep — toetsenbord-toegankelijk via de echte inputs. */
+function RatingInput({ label, value, onChange }) {
+  return (
+    <fieldset className="rating-input">
+      <legend>{label}</legend>
+      <div className="rating-stars">
+        {[1, 2, 3, 4, 5].map((n) => (
+          <label key={n} className={n <= value ? 'on' : ''}>
+            <input
+              type="radio" name="rating" value={n} required
+              checked={value === n} onChange={() => onChange(n)}
+            />
+            <svg viewBox="0 0 20 18" aria-hidden="true"><path d={STAR_PATH} /></svg>
+            <span className="sr-only">{n} / 5</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+  )
+}
+
+function ReviewCard({ review, locale, style }) {
+  const when = review.date
+    ? new Date(review.date).toLocaleDateString(locale, { year: 'numeric', month: 'long' })
+    : null
+  return (
+    <li className="review-card reveal" style={style}>
+      <Stars value={review.rating} />
+      <p className="review-text">{review.text}</p>
+      <p className="review-meta">
+        <strong>{review.name}</strong>
+        {review.place && <span> · {review.place}</span>}
+        {when && <span> · {when}</span>}
+      </p>
+    </li>
+  )
+}
+
+function Reviews() {
+  const { t, lang } = useLang()
+  const r = t.reviews
+  const [open, setOpen] = useState(false)
+  const [rating, setRating] = useState(0)
+  const [status, setStatus] = useState('idle') // idle | sending | ok | error
+
+  /* Goedgekeurde reviews komen van /api/reviews. De lijst uit data.js is de
+     val-terug: zo blijft de sectie werken als de API (nog) niet draait. */
+  const [list, setList] = useState(reviews)
+  useEffect(() => {
+    let alive = true
+    fetch('/api/reviews')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json) => {
+        if (alive && json && Array.isArray(json.reviews) && json.reviews.length) setList(json.reviews)
+      })
+      .catch(() => { /* stil: val terug op data.js */ })
+    return () => { alive = false }
+  }, [])
+
+  const count = list.length
+  const avg = count
+    ? Math.round((list.reduce((sum, x) => sum + x.rating, 0) / count) * 10) / 10
+    : 0
+
+  const onSubmit = async (e) => {
+    e.preventDefault()
+    if (status === 'sending') return
+    const form = e.currentTarget
+    const payload = Object.fromEntries(new FormData(form))
+    if (payload.botcheck) return
+    setStatus('sending')
+    try {
+      const res = await fetch('/api/reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      if (res.ok) { setStatus('ok'); form.reset(); setRating(0) }
+      else setStatus('error')
+    } catch {
+      setStatus('error')
+    }
+  }
+
+  /* Koppelt de reviews aan het bestaande Product-knooppunt uit index.html
+     (zelfde @id → schema.org voegt de knopen samen). Alleen renderen als er
+     écht reviews op de pagina staan: Google eist dat de markup overeenkomt
+     met wat de bezoeker ziet. */
+  const jsonLd = count ? {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    '@id': `${SITE_URL}/#product`,
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: avg,
+      reviewCount: count,
+      bestRating: 5,
+      worstRating: 1,
+    },
+    review: list.map((x) => ({
+      '@type': 'Review',
+      author: { '@type': 'Person', name: x.name },
+      reviewRating: { '@type': 'Rating', ratingValue: x.rating, bestRating: 5, worstRating: 1 },
+      reviewBody: x.text,
+      ...(x.date ? { datePublished: x.date } : {}),
+    })),
+  } : null
+
+  return (
+    <section className="section sec-reviews" id="reviews">
+      <div className="container reviews-inner">
+        <div className="reviews-head reveal">
+          <span className="script script-lg">{r.script}</span>
+          <h2 className="display">{r.title}</h2>
+          {count > 0 ? (
+            <p className="reviews-summary">
+              <Stars value={avg} className="stars-lg" />
+              <span>{r.summary(avg.toFixed(1).replace('.', lang === 'nl' ? ',' : '.'), count)}</span>
+            </p>
+          ) : (
+            <p className="lead center narrow">{r.body}</p>
+          )}
+        </div>
+
+        {count > 0 ? (
+          <ul className="review-grid">
+            {list.map((x, i) => (
+              <ReviewCard
+                key={`${x.name}-${i}`}
+                review={x}
+                locale={lang === 'nl' ? 'nl-NL' : 'en-GB'}
+                style={{ '--d': `${i * 80}ms` }}
+              />
+            ))}
+          </ul>
+        ) : (
+          <p className="reviews-empty reveal">{r.empty}</p>
+        )}
+
+        <div className="reviews-actions reveal">
+          {!open && status !== 'ok' && (
+            <button className="btn btn-primary" onClick={() => setOpen(true)}>{r.writeCta}</button>
+          )}
+          {GOOGLE_REVIEW_URL && (
+            <a className="btn btn-outline" href={GOOGLE_REVIEW_URL} target="_blank" rel="noopener noreferrer">
+              <GoogleIcon className="g-ico" /> {r.googleCta}
+            </a>
+          )}
+        </div>
+
+        {status === 'ok' ? (
+          <div className="review-form review-sent">
+            <span className="script script-lg">{r.form.okScript}</span>
+            <h3>{r.form.okTitle}</h3>
+            <p>{r.form.okBody}</p>
+            <button className="btn btn-outline" onClick={() => { setStatus('idle'); setOpen(true) }}>
+              {r.form.okAgain}
+            </button>
+          </div>
+        ) : open && (
+          <form className="review-form" onSubmit={onSubmit}>
+            <RatingInput label={r.form.rating} value={rating} onChange={setRating} />
+            <div className="review-row">
+              <input type="text" name="name" placeholder={r.form.name} required />
+              <input type="text" name="place" placeholder={r.form.place} />
+            </div>
+            <input type="email" name="email" placeholder={r.form.email} required />
+            <textarea name="message" placeholder={r.form.message} rows="4" required />
+            <input type="checkbox" name="botcheck" tabIndex="-1" autoComplete="off" style={{ display: 'none' }} />
+            <div className="review-row review-row-btns">
+              <button className="btn btn-primary" type="submit" disabled={status === 'sending'}>
+                {status === 'sending' ? r.form.sending : r.form.send}
+              </button>
+              <button className="btn btn-outline" type="button" onClick={() => setOpen(false)}>
+                {r.cancel}
+              </button>
+            </div>
+            {status === 'error' ? (
+              <span className="form-note form-error">
+                {r.form.errorPre}<a href={`mailto:${t.contact.email}`}>{t.contact.email}</a>.
+              </span>
+            ) : (
+              <span className="form-note">{r.form.privacy}</span>
+            )}
+          </form>
+        )}
+      </div>
+
+      {jsonLd && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      )}
+    </section>
+  )
+}
+
 /* ============ Story-teaser → linkt naar Ons verhaal ============ */
 function StoryTeaser() {
   const { t } = useLang()
@@ -654,6 +878,7 @@ export function Footer() {
         </div>
         <nav className="footer-nav">
           {t.nav.map((item) => <a key={item.label} href={item.href}>{item.label}</a>)}
+          <a href="#reviews">{t.reviews.title}</a>
           <a href="#social">Social</a>
         </nav>
         <nav className="footer-legal">
@@ -807,6 +1032,7 @@ export default function App() {
         <Beach />
         <Fridge />
         <Availability />
+        <Reviews />
         <StoryTeaser />
         <Contact />
         <Social />
