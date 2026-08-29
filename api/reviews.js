@@ -22,19 +22,29 @@ function publicView(r) {
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
+    /* X-Review-Store maakt van buitenaf controleerbaar of de opslag werkt:
+       'off'   = geen BLOB_READ_WRITE_TOKEN in de omgeving
+       'ok'    = opslag gelezen
+       'error' = opslag gekoppeld maar het lezen faalde (met het type fout)
+       Bevat bewust geen tokens of andere gevoelige waarden. */
+    if (!hasStorage()) {
+      res.setHeader('X-Review-Store', 'off')
+      return res.status(200).json({ reviews: [] })
+    }
     try {
-      if (!hasStorage()) return res.status(200).json({ reviews: [] })
       const { reviews } = await readAll()
       const approved = reviews
         .filter((r) => r.approved)
         .sort((a, b) => (b.date || '').localeCompare(a.date || ''))
         .map(publicView)
+      res.setHeader('X-Review-Store', 'ok')
       // Kort cachen: reviews veranderen zelden, maar een goedkeuring moet
       // wel binnen een minuut zichtbaar zijn.
       res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300')
       return res.status(200).json({ reviews: approved })
     } catch (err) {
       console.error('[reviews] GET mislukt:', err)
+      res.setHeader('X-Review-Store', `error:${err?.name || 'Onbekend'}`)
       return res.status(200).json({ reviews: [] })
     }
   }
