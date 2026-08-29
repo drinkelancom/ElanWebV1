@@ -75,33 +75,34 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Vul je naam, een waardering en een review in.' })
   }
 
-  // Welke stap faalde, voor als er iets misgaat. Zonder dit onderscheid is
-  // een storing niet te herleiden zonder in de logs te duiken.
-  let stage = 'mail'
+  // Opslaan gaat vóór het versturen van de melding. De review bewaren is het
+  // enige dat écht niet mis mag gaan; een mislukte melding is vervelend maar
+  // mag een bezoeker nooit zijn review kosten.
   try {
-    // Eerst mailen: als de opslag nog niet gekoppeld is, mag een review
-    // nooit verloren gaan. De mail is dan het vangnet.
-    const origin = siteOrigin(req)
-    await sendModerationMail({ review, origin })
-
-    if (hasStorage()) {
-      stage = 'opslag'
-      // Het e-mailadres bewust niet opslaan: het is alleen nodig om de
-      // moderatiemail te kunnen beantwoorden, en die is hierboven al
-      // verstuurd. Scheelt het bewaren van persoonsgegevens (AVG).
-      const { email, ...stored } = review
-      await mutate((all) => [...all, stored])
-    } else {
-      stage = 'geen-opslag'
-      console.warn('[reviews] BLOB_READ_WRITE_TOKEN ontbreekt — review alleen gemaild, niet opgeslagen.')
+    if (!hasStorage()) {
+      console.warn('[reviews] BLOB_READ_WRITE_TOKEN ontbreekt — review kan niet worden opgeslagen.')
+      return res.status(503).json({ error: 'Opslag niet beschikbaar', stage: 'geen-opslag' })
     }
-    return res.status(200).json({ success: true, stage })
+    // Het e-mailadres bewust niet bewaren: het is alleen nodig om de
+    // inzender te kunnen beantwoorden en gaat mee in de melding (AVG).
+    const { email, ...stored } = review
+    await mutate((all) => [...all, stored])
   } catch (err) {
-    console.error(`[reviews] POST mislukt bij '${stage}':`, err)
-    // Alleen het type fout teruggeven, nooit de melding zelf — daar kunnen
-    // interne gegevens in staan.
-    return res.status(500).json({ error: 'Opslaan mislukt', stage, type: err?.name || 'Error' })
+    console.error('[reviews] opslaan mislukt:', err)
+    return res.status(500).json({ error: 'Opslaan mislukt', stage: 'opslag', type: err?.name || 'Error' })
   }
+
+  // Melding is een extraatje: faalt hij, dan staat de review er nog steeds en
+  // is hij zichtbaar op de moderatiepagina.
+  let notified = true
+  try {
+    await sendModerationMail({ review, origin: siteOrigin(req) })
+  } catch (err) {
+    notified = false
+    console.error('[reviews] melding versturen mislukt:', err)
+  }
+
+  return res.status(200).json({ success: true, notified })
 }
 
 function safeParse(s) {
