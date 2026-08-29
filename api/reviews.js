@@ -75,6 +75,9 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Vul je naam, een waardering en een review in.' })
   }
 
+  // Welke stap faalde, voor als er iets misgaat. Zonder dit onderscheid is
+  // een storing niet te herleiden zonder in de logs te duiken.
+  let stage = 'mail'
   try {
     // Eerst mailen: als de opslag nog niet gekoppeld is, mag een review
     // nooit verloren gaan. De mail is dan het vangnet.
@@ -82,18 +85,22 @@ export default async function handler(req, res) {
     await sendModerationMail({ review, origin })
 
     if (hasStorage()) {
+      stage = 'opslag'
       // Het e-mailadres bewust niet opslaan: het is alleen nodig om de
       // moderatiemail te kunnen beantwoorden, en die is hierboven al
       // verstuurd. Scheelt het bewaren van persoonsgegevens (AVG).
       const { email, ...stored } = review
       await mutate((all) => [...all, stored])
     } else {
+      stage = 'geen-opslag'
       console.warn('[reviews] BLOB_READ_WRITE_TOKEN ontbreekt — review alleen gemaild, niet opgeslagen.')
     }
-    return res.status(200).json({ success: true })
+    return res.status(200).json({ success: true, stage })
   } catch (err) {
-    console.error('[reviews] POST mislukt:', err)
-    return res.status(500).json({ error: 'Opslaan mislukt' })
+    console.error(`[reviews] POST mislukt bij '${stage}':`, err)
+    // Alleen het type fout teruggeven, nooit de melding zelf — daar kunnen
+    // interne gegevens in staan.
+    return res.status(500).json({ error: 'Opslaan mislukt', stage, type: err?.name || 'Error' })
   }
 }
 
