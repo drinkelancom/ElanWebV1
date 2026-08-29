@@ -756,7 +756,6 @@ function Reviews() {
               </a>
             ) : null}
           </p>
-          {alle.length === 0 && <p className="lead center narrow">{r.body}</p>}
         </div>
 
         {eerste ? (

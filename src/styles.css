@@ -809,9 +809,13 @@ ul { list-style: none; }
 .score-google:hover { color: var(--ink); }
 .score-google span:last-child { text-decoration: underline; text-underline-offset: 3px; }
 
+/* Zonder reviews draagt deze regel de hele sectie. Hij mag daarom groter staan
+   dan een voetnoot: het is een uitnodiging, geen mededeling. */
 .reviews-empty {
-  margin: 30px auto 0; max-width: 46ch;
-  color: var(--grey); font-size: 16px;
+  margin: clamp(28px, 3.4vw, 40px) auto 0; max-width: 34ch;
+  font-family: 'Zodiak', Georgia, serif;
+  font-size: clamp(19px, 2vw, 24px); line-height: 1.45;
+  color: var(--ink-soft);
 }
 
 /* ---- Eén review ---- */
