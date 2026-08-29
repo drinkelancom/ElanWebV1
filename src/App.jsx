@@ -67,8 +67,23 @@ function useScrollReveal(route) {
       },
       { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
     )
-    document.querySelectorAll('.reveal').forEach((el) => io.observe(el))
-    return () => io.disconnect()
+    const observe = (node) => {
+      if (node.nodeType !== 1) return
+      if (node.classList.contains('reveal') && !node.classList.contains('in')) io.observe(node)
+      node.querySelectorAll('.reveal:not(.in)').forEach((el) => io.observe(el))
+    }
+    observe(document.body)
+
+    /* Elementen die later pas verschijnen — de reviews komen van /api/reviews
+       en zijn er dus nog niet bij het opzetten hierboven — moeten alsnog
+       aangemeld worden. Zonder deze bewaking blijven ze op opacity:0 staan:
+       wel in de pagina, maar onzichtbaar. */
+    const mo = new MutationObserver((mutaties) => {
+      mutaties.forEach((m) => m.addedNodes.forEach(observe))
+    })
+    mo.observe(document.body, { childList: true, subtree: true })
+
+    return () => { io.disconnect(); mo.disconnect() }
   }, [route])
 }
 
