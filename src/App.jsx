@@ -522,8 +522,12 @@ function Stars({ value, className = '' }) {
   )
 }
 
-/* Sterren als radiogroep — toetsenbord-toegankelijk via de echte inputs. */
-function RatingInput({ label, value, onChange }) {
+/* Sterren als radiogroep — toetsenbord-toegankelijk via de echte inputs.
+   Bewust géén `required`: de inputs zijn visueel verborgen, en de browser kan
+   zijn foutmelding niet tonen bij een veld dat hij niet kan aanwijzen. Het
+   versturen zou dan zonder zichtbare reden geblokkeerd worden. De controle
+   gebeurt daarom in onSubmit, met een eigen melding. */
+function RatingInput({ label, value, onChange, hint }) {
   return (
     <fieldset className="rating-input">
       <legend>{label}</legend>
@@ -531,7 +535,7 @@ function RatingInput({ label, value, onChange }) {
         {[1, 2, 3, 4, 5].map((n) => (
           <label key={n} className={n <= value ? 'on' : ''}>
             <input
-              type="radio" name="rating" value={n} required
+              type="radio" name="rating" value={n}
               checked={value === n} onChange={() => onChange(n)}
             />
             <svg viewBox="0 0 20 18" aria-hidden="true"><path d={STAR_PATH} /></svg>
@@ -539,6 +543,7 @@ function RatingInput({ label, value, onChange }) {
           </label>
         ))}
       </div>
+      {hint && <span className="rating-hint" role="alert">{hint}</span>}
     </fieldset>
   )
 }
@@ -565,6 +570,7 @@ function Reviews() {
   const r = t.reviews
   const [open, setOpen] = useState(false)
   const [rating, setRating] = useState(0)
+  const [hint, setHint] = useState('')
   const [status, setStatus] = useState('idle') // idle | sending | ok | error
 
   /* Goedgekeurde reviews komen van /api/reviews. De lijst uit data.js is de
@@ -592,6 +598,8 @@ function Reviews() {
     const form = e.currentTarget
     const payload = Object.fromEntries(new FormData(form))
     if (payload.botcheck) return
+    if (!rating) { setHint(r.form.ratingRequired); return }
+    setHint('')
     setStatus('sending')
     try {
       const res = await fetch('/api/reviews', {
@@ -605,6 +613,8 @@ function Reviews() {
       setStatus('error')
     }
   }
+
+  const pickRating = (n) => { setRating(n); setHint('') }
 
   /* Koppelt de reviews aan het bestaande Product-knooppunt uit index.html
      (zelfde @id → schema.org voegt de knopen samen). Alleen renderen als er
@@ -683,7 +693,7 @@ function Reviews() {
           </div>
         ) : open && (
           <form className="review-form" onSubmit={onSubmit}>
-            <RatingInput label={r.form.rating} value={rating} onChange={setRating} />
+            <RatingInput label={r.form.rating} value={rating} onChange={pickRating} hint={hint} />
             <div className="review-row">
               <input type="text" name="name" placeholder={r.form.name} required />
               <input type="text" name="place" placeholder={r.form.place} />

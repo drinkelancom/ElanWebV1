@@ -838,8 +838,11 @@ ul { list-style: none; }
 }
 .rating-stars label.on svg { fill: #f0a53c; }
 .rating-stars label:hover svg { transform: scale(1.12); }
-.rating-stars input { position: absolute; opacity: 0; width: 0; height: 0; }
+/* Verborgen, maar wél 1px groot: een element van 0x0 kan de browser niet
+   aanwijzen, waardoor toetsenbordfocus en foutmeldingen nergens landen. */
+.rating-stars input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; }
 .rating-stars input:focus-visible + svg { outline: 2px solid var(--green); outline-offset: 3px; }
+.rating-hint { display: block; margin-top: 8px; font-size: 13px; color: #b0553a; font-weight: 600; }
 
 .review-sent {
   text-align: center; place-items: center; gap: 8px; padding: 40px 30px;
