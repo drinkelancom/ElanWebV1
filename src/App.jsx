@@ -563,46 +563,40 @@ function RatingInput({ label, value, onChange, hint }) {
   )
 }
 
-function ReviewCard({ review, locale, style }) {
-  const when = review.date
-    ? new Date(review.date).toLocaleDateString(locale, { year: 'numeric', month: 'long' })
-    : null
+/* Eén review — of hij nu van de site zelf komt of van het Google-profiel.
+ *
+ * Bewust géén kaart met een rand eromheen. Het merk gaat over weglaten, en dat
+ * geldt hier ook: haal de doos weg en er blijft over wat iemand écht schreef.
+ * De naam staat in het handschrift van het merk, als een ondertekende brief in
+ * plaats van een regel uit een database.
+ *
+ * Bij een Google-review staan de naam en de link naar de review er niet voor de
+ * sier: die bronvermelding is verplicht.
+ */
+function Quote({ review, featured, style }) {
+  const Tag = featured ? 'div' : 'li'
+  const meta = [review.where, review.when].filter(Boolean).join(' · ')
   return (
-    <li className="review-card reveal" style={style}>
-      <Stars value={review.rating} />
-      <p className="review-text">{review.text}</p>
-      <p className="review-meta">
-        <strong>{review.name}</strong>
-        {review.place && <span> · {review.place}</span>}
-        {when && <span> · {when}</span>}
+    <Tag className={`quote${featured ? ' quote-lead' : ''} reveal`} style={style}>
+      <Stars value={review.rating} className={featured ? 'stars-lg' : ''} />
+      <blockquote className={`quote-text${featured ? '' : ' quote-clamp'}`}>
+        {`“${review.text}”`}
+      </blockquote>
+      <span className="quote-rule" aria-hidden />
+      <p className="quote-sign">
+        <span className="quote-name">
+          {review.url ? (
+            <a href={review.url} target="_blank" rel="noopener noreferrer nofollow">{review.who}</a>
+          ) : review.who}
+        </span>
+        <span className="quote-meta">
+          {meta && <span>{meta}</span>}
+          {review.google && (
+            <span className="quote-via"><GoogleIcon className="g-ico-sm" />Google</span>
+          )}
+        </span>
       </p>
-    </li>
-  )
-}
-
-/* Een review van het Google-profiel. Ziet er bewust net iets anders uit dan een
-   eigen review: de bezoeker hoort te kunnen zien waar een oordeel vandaan komt.
-   Naam en link naar de review zijn geen sier — Google verplicht die vermelding. */
-function GoogleReviewCard({ review, style, label }) {
-  return (
-    <li className="review-card review-card-google reveal" style={style}>
-      <div className="review-source">
-        <GoogleIcon className="g-ico" />
-        <span>{label}</span>
-      </div>
-      <Stars value={review.rating} />
-      <p className="review-text review-text-clamp">{review.text}</p>
-      <p className="review-meta">
-        {review.url ? (
-          <a href={review.url} target="_blank" rel="noopener noreferrer nofollow">
-            <strong>{review.author}</strong>
-          </a>
-        ) : (
-          <strong>{review.author}</strong>
-        )}
-        {review.when && <span> · {review.when}</span>}
-      </p>
-    </li>
+    </Tag>
   )
 }
 
@@ -649,6 +643,35 @@ function Reviews() {
     : 0
 
   const getal = (n) => n.toFixed(1).replace('.', lang === 'nl' ? ',' : '.')
+
+  /* Eigen reviews en Google-reviews in één vorm, zodat ze door dezelfde
+     component gerenderd kunnen worden. De eerste krijgt de grote behandeling:
+     de sectie opent met een zin van een klant, niet met het woord 'Reviews'.
+     Een klant die iets moois schrijft overtuigt nu eenmaal beter dan een kop. */
+  const locale = lang === 'nl' ? 'nl-NL' : 'en-GB'
+  const alle = [
+    ...list.map((x, i) => ({
+      key: `eigen-${i}`,
+      rating: x.rating,
+      text: x.text,
+      who: x.name,
+      where: x.place || null,
+      when: x.date ? new Date(x.date).toLocaleDateString(locale, { year: 'numeric', month: 'long' }) : null,
+      url: null,
+      google: false,
+    })),
+    ...googleList.map((x, i) => ({
+      key: x.id || `google-${i}`,
+      rating: x.rating,
+      text: x.text,
+      who: x.author,
+      where: null,
+      when: x.when,
+      url: x.url,
+      google: true,
+    })),
+  ]
+  const [eerste, ...rest] = alle
 
   /* De link om een review op Google achter te laten komt van het endpoint, dat
      hem uit het plaats-id samenstelt. Zo staat het id op één plek (Vercel) en
@@ -712,52 +735,41 @@ function Reviews() {
       <div className="container reviews-inner">
         <div className="reviews-head reveal">
           <span className="script script-lg">{r.script}</span>
-          <h2 className="display">{r.title}</h2>
-          {count > 0 ? (
-            <p className="reviews-summary">
-              <Stars value={avg} className="stars-lg" />
-              <span>{r.summary(getal(avg), count)}</span>
-            </p>
-          ) : (
-            <p className="lead center narrow">{r.body}</p>
-          )}
-          {/* De Google-score staat er los onder, niet opgeteld bij de eigen
-              reviews. Twee bronnen tot één gemiddelde mengen zou een cijfer
-              opleveren dat nergens klopt en nergens na te rekenen is. */}
-          {google?.rating && google?.total ? (
-            <p className="reviews-google">
-              <GoogleIcon className="g-ico" />
-              <Stars value={google.rating} />
-              {google.url ? (
-                <a href={google.url} target="_blank" rel="noopener noreferrer">
-                  {r.googleSummary(getal(google.rating), google.total)}
-                </a>
-              ) : (
+          <h2 className="reviews-title">{r.title}</h2>
+          <p className="reviews-scores">
+            {count > 0 && (
+              <span className="score">
+                <Stars value={avg} />
+                <span>{r.summary(getal(avg), count)}</span>
+              </span>
+            )}
+            {/* De Google-score staat naast het eigen gemiddelde, niet erin
+                verwerkt. Twee bronnen tot één cijfer mengen levert een getal op
+                dat nergens klopt en nergens na te rekenen is. */}
+            {google?.rating && google?.total ? (
+              <a className="score score-google" href={google.url || '#reviews'}
+                 target={google.url ? '_blank' : undefined}
+                 rel={google.url ? 'noopener noreferrer' : undefined}>
+                <GoogleIcon className="g-ico-sm" />
+                <Stars value={google.rating} />
                 <span>{r.googleSummary(getal(google.rating), google.total)}</span>
-              )}
-            </p>
-          ) : null}
+              </a>
+            ) : null}
+          </p>
+          {alle.length === 0 && <p className="lead center narrow">{r.body}</p>}
         </div>
 
-        {count > 0 || googleList.length > 0 ? (
-          <ul className="review-grid">
-            {list.map((x, i) => (
-              <ReviewCard
-                key={`${x.name}-${i}`}
-                review={x}
-                locale={lang === 'nl' ? 'nl-NL' : 'en-GB'}
-                style={{ '--d': `${i * 80}ms` }}
-              />
-            ))}
-            {googleList.map((x, i) => (
-              <GoogleReviewCard
-                key={x.id || `google-${i}`}
-                review={x}
-                label={r.googleLabel}
-                style={{ '--d': `${(count + i) * 80}ms` }}
-              />
-            ))}
-          </ul>
+        {eerste ? (
+          <>
+            <Quote review={eerste} featured />
+            {rest.length > 0 && (
+              <ul className="quote-grid">
+                {rest.map((x, i) => (
+                  <Quote key={x.key} review={x} style={{ '--d': `${i * 90}ms` }} />
+                ))}
+              </ul>
+            )}
+          </>
         ) : (
           <p className="reviews-empty reveal">{r.empty}</p>
         )}
@@ -1133,9 +1145,9 @@ export default function App() {
         <Beach />
         <Fridge />
         <Availability />
-        <Reviews />
         <StoryTeaser />
         <Contact />
+        <Reviews />
         <Social />
       </main>
       <Footer />
