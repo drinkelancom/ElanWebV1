@@ -800,6 +800,30 @@ ul { list-style: none; }
 }
 .review-meta { font-size: 14px; color: var(--grey); margin-top: auto; }
 .review-meta strong { color: var(--ink); }
+.review-meta a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Reviews van Google. Een net iets koelere kaart met een bronregel erboven,
+   zodat een bezoeker in één oogopslag ziet dat dit oordeel niet van ons komt. */
+.review-card-google { background: #fdfaf3; }
+.review-source {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 700; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--grey);
+}
+/* Google-reviews kunnen lang zijn; zonder begrenzing rekt één verhaal de hele
+   rij uit. Acht regels is genoeg om de toon te proeven, de link eronder gaat
+   naar de volledige tekst. */
+.review-text-clamp {
+  display: -webkit-box; -webkit-line-clamp: 8; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.reviews-google {
+  display: flex; align-items: center; justify-content: center;
+  flex-wrap: wrap; gap: 10px; margin-top: 10px;
+  font-size: 15px; color: var(--grey);
+}
+.reviews-google a { color: var(--grey); text-decoration: underline; text-underline-offset: 3px; }
+.reviews-google a:hover { color: var(--ink); }
 
 .reviews-actions {
   display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;

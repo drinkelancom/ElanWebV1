@@ -580,6 +580,32 @@ function ReviewCard({ review, locale, style }) {
   )
 }
 
+/* Een review van het Google-profiel. Ziet er bewust net iets anders uit dan een
+   eigen review: de bezoeker hoort te kunnen zien waar een oordeel vandaan komt.
+   Naam en link naar de review zijn geen sier — Google verplicht die vermelding. */
+function GoogleReviewCard({ review, style, label }) {
+  return (
+    <li className="review-card review-card-google reveal" style={style}>
+      <div className="review-source">
+        <GoogleIcon className="g-ico" />
+        <span>{label}</span>
+      </div>
+      <Stars value={review.rating} />
+      <p className="review-text review-text-clamp">{review.text}</p>
+      <p className="review-meta">
+        {review.url ? (
+          <a href={review.url} target="_blank" rel="noopener noreferrer nofollow">
+            <strong>{review.author}</strong>
+          </a>
+        ) : (
+          <strong>{review.author}</strong>
+        )}
+        {review.when && <span> · {review.when}</span>}
+      </p>
+    </li>
+  )
+}
+
 function Reviews() {
   const { t, lang } = useLang()
   const r = t.reviews
@@ -603,10 +629,32 @@ function Reviews() {
     return () => { alive = false }
   }, [])
 
+  /* Reviews van het Google Bedrijfsprofiel. Zolang de sleutels niet in Vercel
+     staan geeft het endpoint {configured:false} terug en blijft dit blok leeg —
+     de sectie ziet er dan precies zo uit als voorheen. */
+  const [google, setGoogle] = useState(null)
+  useEffect(() => {
+    let alive = true
+    fetch(`/api/google-reviews?lang=${lang}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json) => { if (alive && json?.configured && !json.error) setGoogle(json) })
+      .catch(() => { /* stil: het Google-blok blijft dan weg */ })
+    return () => { alive = false }
+  }, [lang])
+
+  const googleList = google?.reviews ?? []
   const count = list.length
   const avg = count
     ? Math.round((list.reduce((sum, x) => sum + x.rating, 0) / count) * 10) / 10
     : 0
+
+  const getal = (n) => n.toFixed(1).replace('.', lang === 'nl' ? ',' : '.')
+
+  /* De link om een review op Google achter te laten komt van het endpoint, dat
+     hem uit het plaats-id samenstelt. Zo staat het id op één plek (Vercel) en
+     hoeft de site niet opnieuw gebouwd te worden als het wijzigt. De waarde uit
+     data.js blijft werken als handmatige uitwijk. */
+  const schrijfUrl = google?.writeUrl || GOOGLE_REVIEW_URL
 
   const onSubmit = async (e) => {
     e.preventDefault()
@@ -635,7 +683,10 @@ function Reviews() {
   /* Koppelt de reviews aan het bestaande Product-knooppunt uit index.html
      (zelfde @id → schema.org voegt de knopen samen). Alleen renderen als er
      écht reviews op de pagina staan: Google eist dat de markup overeenkomt
-     met wat de bezoeker ziet. */
+     met wat de bezoeker ziet.
+     Bewust alléén de eigen reviews. De reviews van het Google-profiel staan
+     al bij Google zelf; ze hier ook nog als eigen beoordelingen markeren telt
+     ze dubbel en is in strijd met de richtlijnen voor review-fragmenten. */
   const jsonLd = count ? {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -665,14 +716,30 @@ function Reviews() {
           {count > 0 ? (
             <p className="reviews-summary">
               <Stars value={avg} className="stars-lg" />
-              <span>{r.summary(avg.toFixed(1).replace('.', lang === 'nl' ? ',' : '.'), count)}</span>
+              <span>{r.summary(getal(avg), count)}</span>
             </p>
           ) : (
             <p className="lead center narrow">{r.body}</p>
           )}
+          {/* De Google-score staat er los onder, niet opgeteld bij de eigen
+              reviews. Twee bronnen tot één gemiddelde mengen zou een cijfer
+              opleveren dat nergens klopt en nergens na te rekenen is. */}
+          {google?.rating && google?.total ? (
+            <p className="reviews-google">
+              <GoogleIcon className="g-ico" />
+              <Stars value={google.rating} />
+              {google.url ? (
+                <a href={google.url} target="_blank" rel="noopener noreferrer">
+                  {r.googleSummary(getal(google.rating), google.total)}
+                </a>
+              ) : (
+                <span>{r.googleSummary(getal(google.rating), google.total)}</span>
+              )}
+            </p>
+          ) : null}
         </div>
 
-        {count > 0 ? (
+        {count > 0 || googleList.length > 0 ? (
           <ul className="review-grid">
             {list.map((x, i) => (
               <ReviewCard
@@ -680,6 +747,14 @@ function Reviews() {
                 review={x}
                 locale={lang === 'nl' ? 'nl-NL' : 'en-GB'}
                 style={{ '--d': `${i * 80}ms` }}
+              />
+            ))}
+            {googleList.map((x, i) => (
+              <GoogleReviewCard
+                key={x.id || `google-${i}`}
+                review={x}
+                label={r.googleLabel}
+                style={{ '--d': `${(count + i) * 80}ms` }}
               />
             ))}
           </ul>
@@ -691,8 +766,8 @@ function Reviews() {
           {!open && status !== 'ok' && (
             <button className="btn btn-primary" onClick={() => setOpen(true)}>{r.writeCta}</button>
           )}
-          {GOOGLE_REVIEW_URL && (
-            <a className="btn btn-outline" href={GOOGLE_REVIEW_URL} target="_blank" rel="noopener noreferrer">
+          {schrijfUrl && (
+            <a className="btn btn-outline" href={schrijfUrl} target="_blank" rel="noopener noreferrer">
               <GoogleIcon className="g-ico" /> {r.googleCta}
             </a>
           )}

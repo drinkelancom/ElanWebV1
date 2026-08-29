@@ -42,9 +42,13 @@ export const WEB3FORMS_KEY = '25c97098-16a2-42ba-ad85-603bf65fc024'
 // Product-knooppunt (#product) te koppelen.
 export const SITE_URL = 'https://www.drinkelan.com'
 
-// Google Bedrijfsprofiel — plak hier de "Vraag om reviews"-link uit je profiel
-// (vorm: https://g.page/r/XXXXXXXXXXXX/review). Zolang dit leeg is, verbergt de
-// reviewsectie de Google-knop vanzelf; de rest blijft gewoon werken.
+// Handmatige uitwijk voor de "laat een review achter op Google"-knop, vorm:
+// https://g.page/r/XXXXXXXXXXXX/review
+//
+// Normaal hoeft dit niet ingevuld te worden: staat GOOGLE_PLACE_ID in Vercel,
+// dan stelt /api/google-reviews deze link zelf samen en heeft die voorrang.
+// Vul dit alleen als je géén Places API gebruikt maar wél de knop wilt tonen.
+// Leeg laten verbergt de knop; de rest van de sectie blijft gewoon werken.
 export const GOOGLE_REVIEW_URL = ''
 
 // Goedgekeurde klantreviews. Bewust taal-onafhankelijk: dit zijn letterlijke
