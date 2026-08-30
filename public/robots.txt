@@ -1,4 +1,38 @@
+# ÉLAN — www.drinkelan.com
+#
+# De hele site mag gecrawld worden, ook door de crawlers van AI-zoekmachines.
+# Die staan hier expliciet genoemd zodat een latere Disallow-regel ze niet per
+# ongeluk meeneemt: in ChatGPT, Perplexity en Gemini terugkomen is het doel,
+# niet iets om tegen te beschermen.
+#
+# Alleen /api/ blijft eruit. Dat zijn functies, geen pagina's.
+
 User-agent: *
 Allow: /
+Disallow: /api/
 
-Sitemap: https://elan-web-v1.vercel.app/sitemap.xml
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://www.drinkelan.com/sitemap.xml

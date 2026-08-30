@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Primaire SEO — URL's wijzen naar www.drinkelan.com (het live domein) -->
-    <title>ÉLAN — 100% Puur Kokoswater | Meer niet</title>
-    <meta name="description" content="ÉLAN is 100% puur kokoswater — niet uit concentraat, zonder toegevoegde suikers of conserveermiddelen. Vegan en glutenvrij. Slechts 12 kcal per 100 ml." />
+    <title>ÉLAN kokoswater | 100% puur, niet uit concentraat</title>
+    <meta name="description" content="ÉLAN is 100% puur kokoswater uit jonge groene kokosnoten. Niet uit concentraat, zonder toegevoegde suikers of conserveermiddelen. 12 kcal per 100 ml, in een hersluitbaar pak van 500 ml. Te koop bij 118 verkooppunten in Nederland." />
     <link rel="canonical" href="https://www.drinkelan.com/" />
+    <link rel="alternate" hreflang="x-default" href="https://www.drinkelan.com/" />
+    <link rel="alternate" hreflang="nl-NL" href="https://www.drinkelan.com/" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="theme-color" content="#0c2c1b" />
     <meta name="author" content="ELAN WORLD BV" />
@@ -36,7 +38,12 @@
     <meta name="twitter:image" content="https://www.drinkelan.com/og-image.jpg" />
     <meta name="twitter:image:alt" content="ÉLAN 100% Pure Coconut Water — pak zwevend boven een tropische oceaan" />
 
-    <!-- Structured data: organisatie, website en product (SEO + AI-zoekmachines) -->
+    <!-- Structured data: organisatie, merk, website en product.
+         Bewust Organization en niet LocalBusiness: Cypresbaan 55 is het
+         vestigingsadres van de BV, geen winkel waar klanten langskomen.
+         LocalBusiness zou Google een bezoekadres met openingstijden beloven
+         dat niet bestaat. Waar je ÉLAN wél kunt kopen staat op
+         /verkooppunten/, en dat zijn de winkels van anderen. -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -46,36 +53,86 @@
           "@id": "https://www.drinkelan.com/#org",
           "name": "ÉLAN",
           "legalName": "ELAN WORLD BV",
+          "alternateName": ["ELAN", "Drink ÉLAN"],
           "url": "https://www.drinkelan.com/",
-          "logo": "https://www.drinkelan.com/elan-logo-black.svg",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.drinkelan.com/elan-logo-black.svg"
+          },
+          "image": "https://www.drinkelan.com/og-image.jpg",
+          "description": "Nederlands kokoswatermerk uit Capelle aan den IJssel. Eén product: 100% puur kokoswater in een hersluitbaar pak van 500 ml.",
           "email": "Info@drinkelan.com",
           "telephone": "+31642730763",
+          "identifier": {
+            "@type": "PropertyValue",
+            "propertyID": "KVK",
+            "value": "97952338"
+          },
+          "areaServed": { "@type": "Country", "name": "Nederland" },
           "address": {
             "@type": "PostalAddress",
             "streetAddress": "Cypresbaan 55",
             "postalCode": "2908 LT",
             "addressLocality": "Capelle aan den IJssel",
             "addressCountry": "NL"
-          }
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "customer service",
+            "email": "Info@drinkelan.com",
+            "telephone": "+31642730763",
+            "availableLanguage": ["nl", "en"]
+          },
+          "sameAs": [
+            "https://www.instagram.com/drink.elan/",
+            "https://www.tiktok.com/@drinkelan",
+            "https://www.facebook.com/profile.php?id=61580372634885"
+          ]
+        },
+        {
+          "@type": "Brand",
+          "@id": "https://www.drinkelan.com/#brand",
+          "name": "ÉLAN",
+          "logo": "https://www.drinkelan.com/elan-logo-black.svg",
+          "parentOrganization": { "@id": "https://www.drinkelan.com/#org" }
         },
         {
           "@type": "WebSite",
           "@id": "https://www.drinkelan.com/#website",
           "url": "https://www.drinkelan.com/",
           "name": "ÉLAN — 100% Pure Coconut Water",
-          "inLanguage": "nl",
+          "inLanguage": ["nl-NL", "en"],
           "publisher": { "@id": "https://www.drinkelan.com/#org" }
         },
         {
           "@type": "Product",
           "@id": "https://www.drinkelan.com/#product",
           "name": "ÉLAN 100% Pure Coconut Water 500 ml",
-          "brand": { "@id": "https://www.drinkelan.com/#org" },
+          "sku": "elan-500",
+          "brand": { "@id": "https://www.drinkelan.com/#brand" },
+          "manufacturer": { "@id": "https://www.drinkelan.com/#org" },
           "image": "https://www.drinkelan.com/elan-bottle.png",
-          "description": "100% puur kokoswater in een hersluitbaar pak van 500 ml. Niet uit concentraat, zonder toegevoegde suikers of conserveermiddelen. Vegan en glutenvrij. 12 kcal per 100 ml.",
+          "description": "100% puur kokoswater in een hersluitbaar pak van 500 ml, getapt uit jonge groene kokosnoten. Niet uit concentraat, zonder toegevoegde suikers of conserveermiddelen. Vegan en glutenvrij. 12 kcal per 100 ml.",
           "category": "Kokoswater",
+          "url": "https://www.drinkelan.com/kokoswater/",
+          "offers": {
+            "@type": "Offer",
+            "priceCurrency": "EUR",
+            "price": "2.95",
+            "availability": "https://schema.org/InStoreOnly",
+            "url": "https://www.drinkelan.com/verkooppunten/",
+            "areaServed": { "@type": "Country", "name": "Nederland" },
+            "seller": { "@id": "https://www.drinkelan.com/#org" }
+          },
           "additionalProperty": [
-            { "@type": "PropertyValue", "name": "Energie", "value": "12 kcal / 100 ml" },
+            { "@type": "PropertyValue", "name": "Ingrediënten", "value": "Kokoswater (100%)" },
+            { "@type": "PropertyValue", "name": "Inhoud", "value": "500 ml, hersluitbaar pak met dop" },
+            { "@type": "PropertyValue", "name": "Energie per 100 ml", "value": "50 kJ / 12 kcal" },
+            { "@type": "PropertyValue", "name": "Vetten per 100 ml", "value": "0 g" },
+            { "@type": "PropertyValue", "name": "Koolhydraten per 100 ml", "value": "2,8 g" },
+            { "@type": "PropertyValue", "name": "Waarvan suikers per 100 ml", "value": "2,1 g" },
+            { "@type": "PropertyValue", "name": "Eiwitten per 100 ml", "value": "0 g" },
+            { "@type": "PropertyValue", "name": "Zout per 100 ml", "value": "0,07 g" },
             { "@type": "PropertyValue", "name": "Toegevoegde suikers", "value": "0 g" },
             { "@type": "PropertyValue", "name": "Dieet", "value": "Vegan, glutenvrij" }
           ]
@@ -84,6 +141,26 @@
     }
     </script>
 
+    <!-- Alleen voor de app-shell hierboven. Inline, want deze moet er staan
+         voordat de stylesheet van de app geladen is. -->
+    <style>
+      .app-shell {
+        min-height: 100vh;
+        margin: 0;
+        padding: 12vh 7vw;
+        background: #0c2c1b;
+        color: #fffaee;
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        line-height: 1.6;
+      }
+      .app-shell-mark { margin: 0 0 3rem; letter-spacing: .35em; font-size: .8rem; }
+      .app-shell h1 { margin: 0 0 1.5rem; font-size: clamp(2rem, 6vw, 3.5rem); font-weight: 500; line-height: 1.1; }
+      .app-shell-lead { max-width: 44ch; margin: 0 0 1.2rem; opacity: .85; }
+      .app-shell-links { max-width: 44ch; margin: 2.5rem 0 0; padding: 0; list-style: none; }
+      .app-shell-links li { margin: 0 0 .6rem; }
+      .app-shell-links a { color: #51b83e; }
+    </style>
+
     <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
     <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800,900&f[]=zodiak@400,700,800,900&display=swap" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -91,7 +168,36 @@
     <link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" rel="stylesheet" />
   </head>
   <body>
-    <div id="root"></div>
+    <!-- De inhoud in #root is de app-shell: wat er staat vóórdat React mount.
+         Zonder dit stuurt de server een lege div en zien crawlers die geen
+         JavaScript uitvoeren (GPTBot, ClaudeBot, PerplexityBot) een pagina
+         zonder één woord tekst. React vervangt het binnen een fractie van een
+         seconde door de echte site. De tekst is daarom bewust hetzelfde
+         verhaal als de site zelf: verbergen of iets anders vertellen dan de
+         bezoeker ziet, is precies wat Google cloaking noemt. -->
+    <div id="root">
+      <div class="app-shell">
+        <p class="app-shell-mark">ÉLAN</p>
+        <h1>100% puur kokoswater</h1>
+        <p class="app-shell-lead">
+          ÉLAN is kokoswater uit jonge groene kokosnoten, in een hersluitbaar
+          pak van 500 ml. Eén ingrediënt: kokoswater. Niet uit concentraat,
+          zonder toegevoegde suikers en zonder conserveermiddelen. Vegan en
+          glutenvrij, 12 kcal per 100 ml.
+        </p>
+        <p class="app-shell-lead">
+          Gemaakt door ELAN WORLD BV in Capelle aan den IJssel. Te koop bij 118
+          winkels, sportscholen en horecazaken in Nederland, met het
+          zwaartepunt in Rotterdam en Den Haag.
+        </p>
+        <ul class="app-shell-links">
+          <li><a href="/kokoswater/">Voedingswaarde en veelgestelde vragen</a></li>
+          <li><a href="/verkooppunten/">Alle verkooppunten in Nederland</a></li>
+          <li><a href="/ons-verhaal/">Ons verhaal</a></li>
+          <li><a href="/coconut-water/">In English</a></li>
+        </ul>
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

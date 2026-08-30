@@ -992,6 +992,10 @@ export function Footer() {
           {t.nav.map((item) => <a key={item.label} href={item.href}>{item.label}</a>)}
           <a href="#reviews">{t.reviews.title}</a>
           <a href="#social">Social</a>
+          {/* Echte URL's, geen hash-routes: de platte pagina's uit
+              prerender.mjs. Een zoekmachine volgt links, niet alleen de
+              sitemap, dus zonder deze regel blijven ze slecht vindbaar. */}
+          {f.info.map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}
         </nav>
         <nav className="footer-legal">
           {f.legal.map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}
