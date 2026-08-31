@@ -1,4 +1,4 @@
-/* Gedeelde opslag- en beveiligingslaag voor de reviews.
+/* Gedeelde opslaglaag voor de reviews.
  *
  * Reviews staan als één JSON-bestand in Vercel Blob (private). Bij dit volume
  * — een paar honderd reviews maximaal — is dat ruim voldoende en scheelt het
@@ -7,19 +7,14 @@
  *
  * Benodigde environment variables in Vercel:
  *   BLOB_READ_WRITE_TOKEN  — komt automatisch als je een Blob-store koppelt
- *   REVIEW_SECRET          — zelfverzonnen lange string, ondertekent de
- *                            goedkeur-links in de mail
- *   WEB3FORMS_KEY          — optioneel; valt terug op de key uit src/data.js
+ *   REVIEW_SECRET          — zelfverzonnen lange string; de sleutel waarmee je
+ *                            /api/review-admin opent (of REVIEW_ADMIN_KEY)
  */
 
 import { get, put } from '@vercel/blob'
-import { createHmac, timingSafeEqual, randomUUID } from 'node:crypto'
+import { randomUUID } from 'node:crypto'
 
 const BLOB_PATH = 'reviews/reviews.json'
-
-/* Zelfde key als het contactformulier (src/data.js). Web3Forms-keys zijn
-   publiek van opzet — ze mogen alleen mailen naar het geregistreerde adres. */
-const WEB3FORMS_KEY = process.env.WEB3FORMS_KEY || '25c97098-16a2-42ba-ad85-603bf65fc024'
 
 export const hasStorage = () => Boolean(process.env.BLOB_READ_WRITE_TOKEN)
 
@@ -118,54 +113,3 @@ export async function mutate(fn, attempts = 3) {
 }
 
 export const newId = () => randomUUID()
-
-/* Ondertekent de goedkeur- en weiger-links. Zonder geldige handtekening kan
-   niemand anders reviews publiceren, ook al kent hij het id. */
-function secret() {
-  const s = process.env.REVIEW_SECRET
-  if (!s) throw new Error('REVIEW_SECRET ontbreekt')
-  return s
-}
-
-export function sign(id, action) {
-  return createHmac('sha256', secret()).update(`${id}:${action}`).digest('hex')
-}
-
-export function verify(id, action, token) {
-  let expected
-  try { expected = sign(id, action) } catch { return false }
-  const a = Buffer.from(expected)
-  const b = Buffer.from(String(token || ''))
-  return a.length === b.length && timingSafeEqual(a, b)
-}
-
-/* Stuurt de moderatiemail via Web3Forms — dezelfde dienst als het
-   contactformulier, dus geen extra leverancier erbij. */
-export async function sendModerationMail({ review, origin }) {
-  let links = {}
-  try {
-    links = {
-      'GOEDKEUREN — klik om te publiceren': `${origin}/api/review-moderate?id=${review.id}&action=approve&token=${sign(review.id, 'approve')}`,
-      'WEIGEREN — klik om te verwijderen': `${origin}/api/review-moderate?id=${review.id}&action=reject&token=${sign(review.id, 'reject')}`,
-    }
-  } catch {
-    links = { Let_op: 'REVIEW_SECRET ontbreekt in Vercel — goedkeuren via een link werkt nog niet.' }
-  }
-
-  const res = await fetch('https://api.web3forms.com/submit', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-    body: JSON.stringify({
-      access_key: WEB3FORMS_KEY,
-      subject: `Nieuwe review (${review.rating}/5) van ${review.name}`,
-      from_name: 'ÉLAN reviews',
-      Naam: review.name,
-      Woonplaats: review.place || '—',
-      Waardering: `${review.rating} van de 5`,
-      Review: review.text,
-      'E-mail reviewer': review.email || '—',
-      ...links,
-    }),
-  })
-  if (!res.ok) throw new Error(`Web3Forms gaf ${res.status}`)
-}

@@ -1,12 +1,16 @@
 /* GET  /api/reviews  → de goedgekeurde reviews, voor de site
- * POST /api/reviews  → nieuwe review; wordt opgeslagen als 'pending' en
- *                      gemaild naar Info@drinkelan.com met een goedkeur-link.
+ * POST /api/reviews  → nieuwe review; wordt opgeslagen als 'pending'
  *
  * Een review wordt nooit direct gepubliceerd. Zonder die drempel komt spam
  * rechtstreeks op de homepage terecht.
+ *
+ * Er gaat bewust geen melding uit bij een nieuwe inzending. Web3Forms weigert
+ * aanroepen vanaf een server op het gratis plan, dus die mail kwam toch niet
+ * aan, en een tweede maildienst erbij halen is het niet waard. Wachtende
+ * reviews staan op /api/review-admin en worden daar met de hand afgehandeld.
  */
 
-import { readAll, mutate, newId, sendModerationMail, hasStorage, veiligeMelding } from './_store.js'
+import { readAll, mutate, newId, hasStorage, veiligeMelding } from './_store.js'
 
 const LIMITS = { name: 60, place: 60, email: 120, text: 1500 }
 
@@ -75,9 +79,6 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Vul je naam, een waardering en een review in.' })
   }
 
-  // Opslaan gaat vóór het versturen van de melding. De review bewaren is het
-  // enige dat écht niet mis mag gaan; een mislukte melding is vervelend maar
-  // mag een bezoeker nooit zijn review kosten.
   try {
     if (!hasStorage()) {
       console.warn('[reviews] BLOB_READ_WRITE_TOKEN ontbreekt — review kan niet worden opgeslagen.')
@@ -98,26 +99,9 @@ export default async function handler(req, res) {
     })
   }
 
-  // Melding is een extraatje: faalt hij, dan staat de review er nog steeds en
-  // is hij zichtbaar op de moderatiepagina.
-  let notified = true
-  try {
-    await sendModerationMail({ review, origin: siteOrigin(req) })
-  } catch (err) {
-    notified = false
-    console.error('[reviews] melding versturen mislukt:', err)
-  }
-
-  return res.status(200).json({ success: true, notified })
+  return res.status(200).json({ success: true })
 }
 
 function safeParse(s) {
   try { return JSON.parse(s) } catch { return {} }
-}
-
-function siteOrigin(req) {
-  if (process.env.SITE_ORIGIN) return process.env.SITE_ORIGIN
-  const host = req.headers['x-forwarded-host'] || req.headers.host
-  const proto = req.headers['x-forwarded-proto'] || 'https'
-  return `${proto}://${host}`
 }
