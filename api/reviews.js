@@ -6,7 +6,7 @@
  * rechtstreeks op de homepage terecht.
  */
 
-import { readAll, mutate, newId, sendModerationMail, hasStorage } from './_store.js'
+import { readAll, mutate, newId, sendModerationMail, hasStorage, veiligeMelding } from './_store.js'
 
 const LIMITS = { name: 60, place: 60, email: 120, text: 1500 }
 
@@ -89,7 +89,13 @@ export default async function handler(req, res) {
     await mutate((all) => [...all, stored])
   } catch (err) {
     console.error('[reviews] opslaan mislukt:', err)
-    return res.status(500).json({ error: 'Opslaan mislukt', stage: 'opslag', type: err?.name || 'Error' })
+    // De melding staat er bewust bij: zonder Vercel-logs is dit de enige
+    // manier om te zien wat de Blob-opslag precies weigert.
+    return res.status(500).json({
+      error: 'Opslaan mislukt',
+      stage: 'opslag',
+      reason: veiligeMelding(err),
+    })
   }
 
   // Melding is een extraatje: faalt hij, dan staat de review er nog steeds en

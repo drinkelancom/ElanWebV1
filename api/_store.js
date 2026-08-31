@@ -23,6 +23,16 @@ const WEB3FORMS_KEY = process.env.WEB3FORMS_KEY || '25c97098-16a2-42ba-ad85-603b
 
 export const hasStorage = () => Boolean(process.env.BLOB_READ_WRITE_TOKEN)
 
+/* @vercel/blob zet op geen van zijn foutklassen een eigen `name`, dus elke
+   Blob-fout komt binnen als "Error". Alleen de melding zegt wat er misging.
+   Die melding mag naar buiten — hij bevat geen sleutels — maar we halen er
+   voor de zekerheid alles uit wat op een token lijkt, want deze tekst belandt
+   in het antwoord van een publiek endpoint. */
+export function veiligeMelding(err) {
+  const tekst = String(err?.message || err || 'onbekende fout')
+  return tekst.replace(/vercel_blob_[a-z]{2}_[A-Za-z0-9_-]+/g, '[token]').slice(0, 300)
+}
+
 /* @vercel/blob geeft afhankelijk van de runtime een web- of Node-stream terug.
    Beide afhandelen scheelt verrassingen bij een runtime-upgrade. */
 async function streamToString(stream) {
