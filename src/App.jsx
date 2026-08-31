@@ -573,20 +573,24 @@ function RatingInput({ label, value, onChange, hint }) {
  * Bij een Google-review staan de naam en de link naar de review er niet voor de
  * sier: die bronvermelding is verplicht.
  */
-function Quote({ review, featured, style }) {
-  const Tag = featured ? 'div' : 'li'
+/* Eén review op kopformaat. Alle reviews liggen in dezelfde rastercel op
+   elkaar (zie .quote-stage); alleen de actieve is zichtbaar. Daardoor is de
+   sectie zo hoog als de langste review en verspringt de pagina niet bij het
+   wisselen. `reveal` staat bewust op de wrapper en niet hier: die klasse
+   stuurt ook opacity aan en zou met de overgang vechten. */
+function Quote({ review, active }) {
   const meta = [review.where, review.when].filter(Boolean).join(' · ')
   return (
-    <Tag className={`quote${featured ? ' quote-lead' : ''} reveal`} style={style}>
-      <Stars value={review.rating} className={featured ? 'stars-lg' : ''} />
-      <blockquote className={`quote-text${featured ? '' : ' quote-clamp'}`}>
-        {`“${review.text}”`}
-      </blockquote>
+    <div className={`quote quote-lead quote-slide${active ? ' on' : ''}`} aria-hidden={!active}>
+      <Stars value={review.rating} className="stars-lg" />
+      <blockquote className="quote-text">{`“${review.text}”`}</blockquote>
       <span className="quote-rule" aria-hidden />
       <p className="quote-sign">
         <span className="quote-name">
           {review.url ? (
-            <a href={review.url} target="_blank" rel="noopener noreferrer nofollow">{review.who}</a>
+            /* Een verborgen slide mag niet in de tabvolgorde blijven staan. */
+            <a href={review.url} target="_blank" rel="noopener noreferrer nofollow"
+               tabIndex={active ? undefined : -1}>{review.who}</a>
           ) : review.who}
         </span>
         <span className="quote-meta">
@@ -596,8 +600,30 @@ function Quote({ review, featured, style }) {
           )}
         </span>
       </p>
-    </Tag>
+    </div>
   )
+}
+
+/* Rouleert door de reviews. Stilstaan zodra de bezoeker de sectie aanwijst of
+   er met het toetsenbord in staat: een citaat dat wegschuift terwijl je het
+   leest is erger dan geen carrousel.
+   setTimeout en geen setInterval, met `index` in de deps: zo krijgt een review
+   waar via de bolletjes naartoe gesprongen wordt ook de volle drie seconden. */
+function useCarousel(count, delay = 3000) {
+  const [index, setIndex] = useState(0)
+  const [paused, setPaused] = useState(false)
+
+  // De lijst groeit als /api/reviews binnenkomt en kan krimpen na moderatie.
+  useEffect(() => { setIndex((i) => (i < count ? i : 0)) }, [count])
+
+  useEffect(() => {
+    if (paused || count < 2) return
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return
+    const id = setTimeout(() => setIndex((i) => (i + 1) % count), delay)
+    return () => clearTimeout(id)
+  }, [index, paused, count, delay])
+
+  return { index, setIndex, setPaused }
 }
 
 function Reviews() {
@@ -645,9 +671,11 @@ function Reviews() {
   const getal = (n) => n.toFixed(1).replace('.', lang === 'nl' ? ',' : '.')
 
   /* Eigen reviews en Google-reviews in één vorm, zodat ze door dezelfde
-     component gerenderd kunnen worden. De eerste krijgt de grote behandeling:
-     de sectie opent met een zin van een klant, niet met het woord 'Reviews'.
-     Een klant die iets moois schrijft overtuigt nu eenmaal beter dan een kop. */
+     component gerenderd kunnen worden. Ze krijgen allemaal dezelfde plek en
+     hetzelfde formaat: de sectie opent met een zin van een klant, niet met het
+     woord 'Reviews'. Een klant die iets moois schrijft overtuigt nu eenmaal
+     beter dan een kop, en dan is er geen reden om er één groot te zetten en de
+     rest klein eronder. */
   const locale = lang === 'nl' ? 'nl-NL' : 'en-GB'
   const alle = [
     ...list.map((x, i) => ({
@@ -671,7 +699,7 @@ function Reviews() {
       google: true,
     })),
   ]
-  const [eerste, ...rest] = alle
+  const { index, setIndex, setPaused } = useCarousel(alle.length)
 
   /* De link om een review op Google achter te laten komt van het endpoint, dat
      hem uit het plaats-id samenstelt. Zo staat het id op één plek (Vercel) en
@@ -758,17 +786,36 @@ function Reviews() {
           </p>
         </div>
 
-        {eerste ? (
-          <>
-            <Quote review={eerste} featured />
-            {rest.length > 0 && (
-              <ul className="quote-grid">
-                {rest.map((x, i) => (
-                  <Quote key={x.key} review={x} style={{ '--d': `${i * 90}ms` }} />
+        {alle.length > 0 ? (
+          <div
+            className="quote-carousel reveal"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+            /* Capture, want de focus landt op de link ín een slide en niet op
+               deze div zelf. */
+            onFocusCapture={() => setPaused(true)}
+            onBlurCapture={() => setPaused(false)}
+          >
+            <div className="quote-stage">
+              {alle.map((x, i) => (
+                <Quote key={x.key} review={x} active={i === index} />
+              ))}
+            </div>
+
+            {alle.length > 1 && (
+              <div className="quote-dots">
+                {alle.map((x, i) => (
+                  <button
+                    key={x.key} type="button"
+                    className={`quote-dot${i === index ? ' on' : ''}`}
+                    aria-label={r.slideLabel(i + 1, alle.length)}
+                    aria-current={i === index}
+                    onClick={() => setIndex(i)}
+                  />
                 ))}
-              </ul>
+              </div>
             )}
-          </>
+          </div>
         ) : (
           <p className="reviews-empty reveal">{r.empty}</p>
         )}
