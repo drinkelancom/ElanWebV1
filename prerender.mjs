@@ -30,6 +30,60 @@ const ROOT = dirname(fileURLToPath(import.meta.url))
 const DIST = join(ROOT, 'dist')
 const SITE = 'https://www.drinkelan.com'
 
+/* ------------------------------------------------------------- reviews -- */
+
+/* De klantreviews staan achter /api/reviews en werden tot nu toe alleen door
+ * de React-app in JSON-LD gezet. Dat betekent dat de aggregateRating pas
+ * bestaat nádat de browser JavaScript heeft uitgevoerd én die aanroep is
+ * geslaagd — en dus nooit in de HTML staat die een crawler krijgt. Hier halen
+ * we ze bij het bouwen op en bakken ze in de productpagina's.
+ *
+ * Faalt de aanroep, dan laten we de rating weg en gaat de build gewoon door.
+ * Een productpagina zonder sterren is niet erg; een build die klapt omdat de
+ * API even niet reageerde wel.
+ *
+ * Let op: alleen de eigen reviews. Google-reviews horen hier niet bij — die
+ * staan al bij Google zelf, en ze hier nog eens als eigen beoordeling
+ * markeren telt ze dubbel en is in strijd met de richtlijnen voor
+ * review-fragmenten. Dezelfde regel staat in App.jsx.
+ */
+async function haalReviews() {
+  try {
+    const res = await fetch(`${SITE}/api/reviews`, { signal: AbortSignal.timeout(8000) })
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    const data = await res.json()
+    const lijst = (data.reviews || []).filter((r) => Number(r.rating) >= 1 && Number(r.rating) <= 5)
+    if (!lijst.length) return null
+    const som = lijst.reduce((n, r) => n + Number(r.rating), 0)
+    return { lijst, aantal: lijst.length, gemiddelde: Math.round((som / lijst.length) * 10) / 10 }
+  } catch (e) {
+    console.log(`[prerender] reviews overgeslagen: ${e.message}`)
+    return null
+  }
+}
+
+/* Product-markup mag dit wél. Google sluit zelf-verzamelde reviews alleen uit
+ * voor LocalBusiness en Organization, niet voor Product. */
+function reviewSchema(reviews) {
+  if (!reviews) return {}
+  return {
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: reviews.gemiddelde,
+      reviewCount: reviews.aantal,
+      bestRating: 5,
+      worstRating: 1,
+    },
+    review: reviews.lijst.map((r) => ({
+      '@type': 'Review',
+      author: { '@type': 'Person', name: r.name },
+      reviewRating: { '@type': 'Rating', ratingValue: Number(r.rating), bestRating: 5, worstRating: 1 },
+      ...(r.text ? { reviewBody: r.text } : {}),
+      ...(r.date ? { datePublished: r.date } : {}),
+    })),
+  }
+}
+
 /* Plaatsnamen zoals ze in de BAG staan zijn niet de plaatsnamen waarop mensen
    zoeken. Niemand typt 's-Gravenhage. */
 const PLAATSNAAM = {
@@ -195,7 +249,7 @@ function faqHtml(items) {
 
 /* ------------------------------------------------------ productpagina's -- */
 
-function productPagina(lang) {
+function productPagina(lang, reviews) {
   const t = content[lang]
   const nl = lang === 'nl'
   const path = nl ? '/kokoswater/' : '/coconut-water/'
@@ -314,6 +368,7 @@ ${faqHtml(faq.en)}`
               url: `${SITE}/verkooppunten/`,
               seller: ORG,
             },
+            ...reviewSchema(reviews),
           },
           {
             '@type': 'FAQPage',
@@ -486,9 +541,11 @@ ${s.outro.map(alinea).join('\n')}
 
 /* ------------------------------------------------------------ uitvoeren -- */
 
+const reviews = await haalReviews()
+
 const paginas = [
-  productPagina('nl'),
-  productPagina('en'),
+  productPagina('nl', reviews),
+  productPagina('en', reviews),
   verkooppuntenPagina(),
   verhaalPagina(),
 ]
