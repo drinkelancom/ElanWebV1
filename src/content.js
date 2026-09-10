@@ -166,7 +166,7 @@ export const content = {
       script: 'in cijfers',
       title: 'ÉLAN in cijfers',
       items: [
-        ['400+', 'verkooppunten door heel Nederland'],
+        ['450+', 'verkooppunten door heel Nederland'],
         ['100.000+', 'pakjes verkocht in 12 weken'],
         ['100%', 'puur kokoswater'],
         ['500 ml', 'hersluitbaar pak met dop'],
@@ -621,7 +621,7 @@ export const content = {
       script: 'by the numbers',
       title: 'ÉLAN by the numbers',
       items: [
-        ['400+', 'stockists across the Netherlands'],
+        ['450+', 'stockists across the Netherlands'],
         ['100,000+', 'cartons sold in 12 weeks'],
         ['100%', 'pure coconut water'],
         ['500 ml', 'resealable carton with cap'],
