@@ -1752,3 +1752,6 @@ ul { list-style: none; }
   .header-actions { gap: 9px; }
   .lang-toggle { font-size: 12px; }
 }
+
+/* Knop op het cookiebeleid waarmee je je toestemming herziet. */
+.legal-cookie-btn { margin-top: 8px; }

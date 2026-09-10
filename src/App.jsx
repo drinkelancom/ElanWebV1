@@ -1147,7 +1147,7 @@ function OurStory() {
 }
 
 /* ============ Juridische mockup-pagina ============ */
-function LegalPage({ data }) {
+function LegalPage({ data, toonCookieknop }) {
   const { t } = useLang()
   useScrollTop(data.title)
   return (
@@ -1167,6 +1167,17 @@ function LegalPage({ data }) {
                 <p className="story-para">{body}</p>
               </div>
             ))}
+            {/* Toestemming intrekken moet even makkelijk zijn als geven, dus
+                staat de knop op de pagina waar de tekst hem belooft. */}
+            {toonCookieknop && (
+              <button
+                type="button"
+                className="btn btn-outline legal-cookie-btn"
+                onClick={() => window.elanCookievoorkeur?.()}
+              >
+                {t.legal.cookiebeleid.button}
+              </button>
+            )}
           </div>
         </section>
       </main>
@@ -1218,7 +1229,7 @@ export default function App() {
   }
 
   if (isStory) return <OurStory />
-  if (legalKey) return <LegalPage data={t.legal[legalKey]} />
+  if (legalKey) return <LegalPage data={t.legal[legalKey]} toonCookieknop={legalKey === 'cookiebeleid'} />
 
   return (
     <>

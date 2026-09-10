@@ -64,15 +64,29 @@ function pagina({ lang, title, description, path, alternates = [], schema, body 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Google Analytics (GA4) — zelfde tag als in index.html. Deze pagina's
-         zijn statisch en laden de app niet, dus ze hebben hun eigen kopie. -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8Q2Y5RGQ9Q"></script>
+    <!-- Google Analytics (GA4) met Consent Mode v2 — zelfde blok als in
+         index.html. Deze pagina's zijn statisch en laden de app niet, dus ze
+         hebben hun eigen kopie, inclusief de toestemmingsbanner. -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        wait_for_update: 500
+      });
+      try {
+        if (localStorage.getItem('elan-cookie-consent') === 'granted') {
+          gtag('consent', 'update', { analytics_storage: 'granted' });
+        }
+      } catch (e) {}
       gtag('js', new Date());
       gtag('config', 'G-8Q2Y5RGQ9Q');
     </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8Q2Y5RGQ9Q"></script>
+    <script defer src="/consent.js"></script>
 
     <title>${esc(title)}</title>
     <meta name="description" content="${esc(description)}" />

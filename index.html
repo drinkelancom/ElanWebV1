@@ -4,16 +4,35 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Google Analytics (GA4). Staat ook in prerender.mjs, want de statische
-         SEO-pagina's laden de app niet en hebben hun eigen <head>. Route-
-         wissels binnen de SPA sturen zelf een page_view — zie App.jsx. -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8Q2Y5RGQ9Q"></script>
+    <!-- Google Analytics (GA4) met Consent Mode v2. Staat ook in prerender.mjs,
+         want de statische SEO-pagina's laden de app niet en hebben hun eigen
+         <head>. Route-wissels binnen de SPA sturen zelf een page_view — zie
+         App.jsx. De banner zelf zit in /consent.js.
+
+         Volgorde is hier niet vrijblijvend: 'denied' moet vaststaan vóór de
+         eerste hit, en de opgeslagen keuze moet meteen daarna gelezen worden.
+         Doe je dat later, dan is de eerste meting van een terugkerende
+         bezoeker al cookieloos de deur uit. -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        wait_for_update: 500
+      });
+      try {
+        if (localStorage.getItem('elan-cookie-consent') === 'granted') {
+          gtag('consent', 'update', { analytics_storage: 'granted' });
+        }
+      } catch (e) {}
       gtag('js', new Date());
       gtag('config', 'G-8Q2Y5RGQ9Q');
     </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8Q2Y5RGQ9Q"></script>
+    <script defer src="/consent.js"></script>
 
     <!-- Primaire SEO — URL's wijzen naar www.drinkelan.com (het live domein) -->
     <title>ÉLAN kokoswater | 100% puur, niet uit concentraat</title>
