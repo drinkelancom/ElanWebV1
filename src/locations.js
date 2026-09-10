@@ -15,6 +15,12 @@ export const STOCKISTS_CLAIM = '450+'
 export const STOCKISTS_CLAIM_NL = 'ruim 450'
 export const STOCKISTS_CLAIM_EN = 'over 450'
 
+// Het aantal steden werkt hetzelfde: de lijst hieronder telt er nu 32, dus
+// "ruim dertig" blijft kloppen als er een adres bij komt. Naar boven bijstellen
+// mag pas als de lijst dat ook laat zien.
+export const CITIES_CLAIM_NL = 'ruim dertig steden'
+export const CITIES_CLAIM_EN = 'more than thirty cities'
+
 export const locations = [
   {
     id: 'nl-hq',

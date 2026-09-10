@@ -27,7 +27,7 @@
 // Het aantal verkooppunten staat in locations.js, samen met de adreslijst
 // waar het over gaat. Eén plek, zodat de homepage en de verkooppuntenpagina
 // niet uit elkaar kunnen lopen.
-import { STOCKISTS_CLAIM } from './locations.js'
+import { STOCKISTS_CLAIM, CITIES_CLAIM_NL, CITIES_CLAIM_EN } from './locations.js'
 
 export const content = {
   /* ============================== NEDERLANDS ============================== */
@@ -196,7 +196,7 @@ export const content = {
         ['0g', 'toegevoegde suikers. Alleen natuurlijke suikers uit kokoswater'],
       ],
       foot: 'Gemaakt door twee Rotterdammers.',
-      sub: 'Het begon in Rotterdam. Inmiddels staat ÉLAN ook in Den Haag, Dordrecht, Schiedam en Amsterdam.',
+      sub: `Het begon in Rotterdam. Inmiddels ligt ÉLAN in ${CITIES_CLAIM_NL}, van Amsterdam tot Dordrecht.`,
     },
 
     // Verkrijgbaarheid (social proof) — punt 11.
@@ -675,7 +675,7 @@ export const content = {
         ['0g', 'added sugar. Only natural sugars from coconut water'],
       ],
       foot: 'Made by two people from Rotterdam.',
-      sub: 'It started in Rotterdam. ÉLAN is now also in The Hague, Dordrecht, Schiedam and Amsterdam.',
+      sub: `It started in Rotterdam. ÉLAN is now in ${CITIES_CLAIM_EN}, from Amsterdam to Dordrecht.`,
     },
 
     availability: {
