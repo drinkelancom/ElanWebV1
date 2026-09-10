@@ -329,6 +329,11 @@ export const content = {
       instagram: { handle: '@drink.elan', url: 'https://www.instagram.com/drink.elan/' },
       tiktok: { handle: '@drinkelan', url: 'https://www.tiktok.com/@drinkelan' },
       facebook: { handle: 'ÉLAN op Facebook', url: 'https://www.facebook.com/profile.php?id=61580372634885' },
+      linkedin: { handle: 'ÉLAN op LinkedIn', url: 'https://www.linkedin.com/company/drinkelan' },
+      // Het bedrijfsprofiel op Google Maps. Het cid-nummer hoort bij het
+      // plaats-id ChIJLTXlBgbNxUcRsF-YjYieoz4; dit is de pagina waar bezoekers
+      // de openingstijden, de route en de reviews vinden.
+      google: { handle: 'ÉLAN op Google', url: 'https://www.google.com/maps?cid=4513625560883683248' },
       feed: [
         { cap: 'puur van nature' },
         { cap: 'wat is ÉLAN' },
@@ -799,6 +804,8 @@ export const content = {
       instagram: { handle: '@drink.elan', url: 'https://www.instagram.com/drink.elan/' },
       tiktok: { handle: '@drinkelan', url: 'https://www.tiktok.com/@drinkelan' },
       facebook: { handle: 'ÉLAN on Facebook', url: 'https://www.facebook.com/profile.php?id=61580372634885' },
+      linkedin: { handle: 'ÉLAN on LinkedIn', url: 'https://www.linkedin.com/company/drinkelan' },
+      google: { handle: 'ÉLAN on Google', url: 'https://www.google.com/maps?cid=4513625560883683248' },
       feed: [
         { cap: 'pure by nature' },
         { cap: 'what is ÉLAN' },

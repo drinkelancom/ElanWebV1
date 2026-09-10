@@ -29,6 +29,24 @@ function FbIcon({ className }) {
   )
 }
 
+/* LinkedIn en Google in currentColor, want deze twee staan zowel op ivoor
+   (contact) als op donkergroen (footer). De vierkleuren-G hieronder blijft
+   voor de reviewknop, waar hij een merkherkenbare CTA is. */
+function LiIcon({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zm1.78 13.02H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z" />
+    </svg>
+  )
+}
+function GmbIcon({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M12 10.2v3.9h5.5c-.24 1.4-1.66 4.1-5.5 4.1-3.31 0-6.01-2.74-6.01-6.1S8.69 5.9 12 5.9c1.88 0 3.14.8 3.86 1.49l2.63-2.53C16.8 3.28 14.6 2.4 12 2.4 6.85 2.4 2.7 6.55 2.7 11.7S6.85 21 12 21c5.4 0 8.98-3.8 8.98-9.15 0-.62-.07-1.09-.15-1.56H12z" />
+    </svg>
+  )
+}
+
 /* Google "G" in de officiële vier kleuren — blijft leesbaar op ivoor. */
 function GoogleIcon({ className }) {
   return (
@@ -995,6 +1013,8 @@ function Contact() {
             <a href={t.socials.instagram.url} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><IgIcon className="social-ico" /></a>
             <a href={t.socials.tiktok.url} target="_blank" rel="noopener noreferrer" aria-label="TikTok"><TtIcon className="social-ico" /></a>
             <a href={t.socials.facebook.url} target="_blank" rel="noopener noreferrer" aria-label="Facebook"><FbIcon className="social-ico" /></a>
+            <a href={t.socials.linkedin.url} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><LiIcon className="social-ico" /></a>
+            <a href={t.socials.google.url} target="_blank" rel="noopener noreferrer" aria-label="Google"><GmbIcon className="social-ico" /></a>
           </div>
         </div>
         {status === 'ok' ? (
@@ -1047,6 +1067,9 @@ function Social() {
           <a className="social-btn" href={s.facebook.url} target="_blank" rel="noopener noreferrer">
             <FbIcon className="social-ico" /> {s.facebook.handle}
           </a>
+          <a className="social-btn" href={s.linkedin.url} target="_blank" rel="noopener noreferrer">
+            <LiIcon className="social-ico" /> {s.linkedin.handle}
+          </a>
         </div>
       </div>
 
@@ -1088,6 +1111,12 @@ export function Footer() {
           </a>
           <a href={t.socials.facebook.url} target="_blank" rel="noopener noreferrer" aria-label="Facebook">
             <FbIcon /> <span>{t.socials.facebook.handle}</span>
+          </a>
+          <a href={t.socials.linkedin.url} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <LiIcon /> <span>{t.socials.linkedin.handle}</span>
+          </a>
+          <a href={t.socials.google.url} target="_blank" rel="noopener noreferrer" aria-label="Google">
+            <GmbIcon /> <span>{t.socials.google.handle}</span>
           </a>
         </div>
         <nav className="footer-nav">
