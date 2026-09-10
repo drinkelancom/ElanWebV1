@@ -4,9 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- Google Analytics (GA4). Staat ook in prerender.mjs, want de statische
+         SEO-pagina's laden de app niet en hebben hun eigen <head>. Route-
+         wissels binnen de SPA sturen zelf een page_view — zie App.jsx. -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8Q2Y5RGQ9Q"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8Q2Y5RGQ9Q');
+    </script>
+
     <!-- Primaire SEO — URL's wijzen naar www.drinkelan.com (het live domein) -->
     <title>ÉLAN kokoswater | 100% puur, niet uit concentraat</title>
-    <meta name="description" content="ÉLAN is 100% puur kokoswater uit jonge groene kokosnoten. Niet uit concentraat, zonder toegevoegde suikers of conserveermiddelen. 12 kcal per 100 ml, in een hersluitbaar pak van 500 ml. Te koop bij 118 verkooppunten in Nederland." />
+    <meta name="description" content="ÉLAN is 100% puur kokoswater uit jonge groene kokosnoten. Niet uit concentraat, zonder toegevoegde suikers of conserveermiddelen. 12 kcal per 100 ml, in een hersluitbaar pak van 500 ml. Te koop bij ruim 450 verkooppunten in Nederland." />
     <link rel="canonical" href="https://www.drinkelan.com/" />
     <link rel="alternate" hreflang="x-default" href="https://www.drinkelan.com/" />
     <link rel="alternate" hreflang="nl-NL" href="https://www.drinkelan.com/" />
@@ -186,13 +197,13 @@
           glutenvrij, 12 kcal per 100 ml.
         </p>
         <p class="app-shell-lead">
-          Gemaakt door ELAN WORLD BV in Capelle aan den IJssel. Te koop bij 118
-          winkels, sportscholen en horecazaken in Nederland, met het
+          Gemaakt door ELAN WORLD BV in Capelle aan den IJssel. Te koop bij ruim
+          450 winkels, sportscholen en horecazaken in Nederland, met het
           zwaartepunt in Rotterdam en Den Haag.
         </p>
         <ul class="app-shell-links">
           <li><a href="/kokoswater/">Voedingswaarde en veelgestelde vragen</a></li>
-          <li><a href="/verkooppunten/">Alle verkooppunten in Nederland</a></li>
+          <li><a href="/verkooppunten/">Verkooppunten in Nederland</a></li>
           <li><a href="/ons-verhaal/">Ons verhaal</a></li>
           <li><a href="/coconut-water/">In English</a></li>
         </ul>

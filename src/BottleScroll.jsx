@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import LazyVideo from './LazyVideo.jsx'
 import { images, videos } from './data.js'
 import { useLang } from './lang.jsx'
 
@@ -304,7 +305,7 @@ export default function BottleScroll() {
       <div className="journey-stage" ref={stageRef}>
         {/* Kokospalmen-landschap: landschap op desktop, portret op mobiel */}
         <div className="journey-bg">
-          <video
+          <LazyVideo
             key={isMobile ? 'm' : 'd'}
             ref={bgRef}
             src={jv.src}

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, lazy, Suspense } from 'react'
 import { images, videos, socialFeedImages, WEB3FORMS_KEY, reviews, GOOGLE_REVIEW_URL, SITE_URL } from './data.js'
 import { useLang } from './lang.jsx'
 import BottleScroll from './BottleScroll.jsx'
+import LazyVideo from './LazyVideo.jsx'
 
 /* Social iconen */
 function IgIcon({ className }) {
@@ -52,6 +53,43 @@ function useHashRoute() {
     return () => window.removeEventListener('hashchange', on)
   }, [])
   return hash
+}
+
+/* Titel en meta description per route. De app draait op hash-routes, dus zonder
+   dit houdt elke route de titel van de homepage: gedeelde links zien er dan
+   allemaal hetzelfde uit, en in GA vallen ze in één rij samen. De waarden van
+   de homepage worden bij het laden bewaard, zodat we ze kunnen terugzetten. */
+const STANDAARD_TITEL = typeof document !== 'undefined' ? document.title : ''
+const STANDAARD_OMSCHRIJVING = typeof document !== 'undefined'
+  ? document.querySelector('meta[name="description"]')?.content ?? '' : ''
+
+function useDocumentMeta(route, legalKey, t) {
+  useEffect(() => {
+    const uitPageMeta = t.pageMeta?.[route]
+    const juridisch = legalKey ? t.legal?.[legalKey] : null
+    const titel = uitPageMeta?.title ?? juridisch?.title ?? null
+    const omschrijving = uitPageMeta?.description ?? juridisch?.intro ?? null
+
+    document.title = titel ? `${titel} | ÉLAN` : STANDAARD_TITEL
+    const tag = document.querySelector('meta[name="description"]')
+    if (tag) tag.content = omschrijving || STANDAARD_OMSCHRIJVING
+  }, [route, legalKey, t])
+}
+
+/* GA4 telt zelf alleen de eerste paginalading. Onze routes wisselen via de
+   hash, dus die moeten we met de hand melden — anders is elk bezoek na de
+   landing onzichtbaar. De eerste render slaan we over, want die is al geteld
+   door de gtag('config') in index.html. */
+function useGaPageView(hash) {
+  const eersteGehad = useRef(false)
+  useEffect(() => {
+    if (!eersteGehad.current) { eersteGehad.current = true; return }
+    if (typeof window.gtag !== 'function') return
+    window.gtag('event', 'page_view', {
+      page_location: window.location.href,
+      page_title: document.title,
+    })
+  }, [hash])
 }
 
 /* Scroll-reveal. `route` als dependency zodat de observer na een route-wissel
@@ -237,7 +275,7 @@ function Hero() {
   return (
     <section className="hero" id="top" ref={ref}>
       <div className="hero-media">
-        <video src={videos.ocean.src} poster={videos.ocean.poster} autoPlay muted loop playsInline />
+        <LazyVideo src={videos.ocean.src} poster={videos.ocean.poster} autoPlay muted loop playsInline />
         <div className="hero-rays" aria-hidden />
         <div className="hero-overlay" aria-hidden />
       </div>
@@ -353,7 +391,7 @@ function VideoBand() {
     <section className="vband" ref={secRef}>
       <div className="vband-sticky">
         <div className="vband-frame" ref={frameRef}>
-          <video src={videos.coconut.src} poster={videos.coconut.poster} autoPlay muted loop playsInline />
+          <LazyVideo src={videos.coconut.src} poster={videos.coconut.poster} autoPlay muted loop playsInline />
           <div className="vband-shade" />
           <div className="vband-caption" ref={capRef}>
             <span className="script script-lg">{t.videoBand.script}</span>
@@ -436,7 +474,7 @@ function Beach() {
   return (
     <section className="beach">
       <div className="beach-media" aria-hidden data-depth="0.08">
-        <video src={videos.movement.src} poster={videos.movement.poster} autoPlay muted loop playsInline />
+        <LazyVideo src={videos.movement.src} poster={videos.movement.poster} autoPlay muted loop playsInline />
       </div>
       <div className="beach-shade" aria-hidden />
       <div className="container beach-inner">
@@ -1157,6 +1195,8 @@ export default function App() {
     : legalKey ? 'legal'
     : 'main'
 
+  useDocumentMeta(route, legalKey, t)
+  useGaPageView(base)
   useScrollReveal(route)
   useDepth(route)
   useScrollBar(route)

@@ -24,6 +24,11 @@
 // ("ÉLAN is meer dan kokoswater…") en de regel bij de videoband ("Gebotteld op
 // het moment dat de natuur er klaar voor is."). Niet per ongeluk opschonen.
 
+// Het aantal verkooppunten staat in locations.js, samen met de adreslijst
+// waar het over gaat. Eén plek, zodat de homepage en de verkooppuntenpagina
+// niet uit elkaar kunnen lopen.
+import { STOCKISTS_CLAIM } from './locations.js'
+
 export const content = {
   /* ============================== NEDERLANDS ============================== */
   nl: {
@@ -45,6 +50,24 @@ export const content = {
       readStory: 'Lees ons verhaal',
       home: 'Home',
       back: 'Terug',
+    },
+
+    // <title> en meta description per hash-route. Zonder dit krijgt elke route
+    // de titel van de homepage, en ziet elke gedeelde link er hetzelfde uit.
+    // De homepage zelf staat hier niet in: die houdt wat in index.html staat.
+    pageMeta: {
+      story: {
+        title: 'Ons verhaal',
+        description: 'Hoe ÉLAN begon: twee Rotterdammers die het kokoswater dat ze zochten nergens konden kopen, en de producent die ze na maanden zoeken vonden.',
+      },
+      findus: {
+        title: 'Verkooppunten',
+        description: 'Zoek op plaats waar ÉLAN kokoswater te koop is. Supermarkten, toko’s, sportscholen en lunchrooms in Nederland.',
+      },
+      shop: {
+        title: 'Shop',
+        description: 'Bestel ÉLAN kokoswater. Losse pakken van 500 ml koop je bij de verkooppunten, een 12-pack bestel je online.',
+      },
     },
 
     hero: {
@@ -166,7 +189,7 @@ export const content = {
       script: 'in cijfers',
       title: 'ÉLAN in cijfers',
       items: [
-        ['450+', 'verkooppunten door heel Nederland'],
+        [STOCKISTS_CLAIM, 'verkooppunten door heel Nederland'],
         ['100.000+', 'pakjes verkocht in 12 weken'],
         ['100%', 'puur kokoswater'],
         ['500 ml', 'hersluitbaar pak met dop'],
@@ -503,6 +526,21 @@ export const content = {
       back: 'Back',
     },
 
+    pageMeta: {
+      story: {
+        title: 'Our story',
+        description: 'How ÉLAN started: two people from Rotterdam who could not buy the coconut water they were looking for, and the producer they found after months of searching.',
+      },
+      findus: {
+        title: 'Stockists',
+        description: 'Find out where ÉLAN coconut water is sold. Shops, grocers, gyms and lunchrooms across the Netherlands.',
+      },
+      shop: {
+        title: 'Shop',
+        description: 'Order ÉLAN coconut water. Single 500 ml cartons are sold at stockists, a 12-pack can be ordered online.',
+      },
+    },
+
     hero: {
       eyebrow: '100% Pure Coconut Water',
       script: 'pure by nature',
@@ -621,7 +659,7 @@ export const content = {
       script: 'by the numbers',
       title: 'ÉLAN by the numbers',
       items: [
-        ['450+', 'stockists across the Netherlands'],
+        [STOCKISTS_CLAIM, 'stockists across the Netherlands'],
         ['100,000+', 'cartons sold in 12 weeks'],
         ['100%', 'pure coconut water'],
         ['500 ml', 'resealable carton with cap'],

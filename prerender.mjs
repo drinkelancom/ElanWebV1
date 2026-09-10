@@ -18,11 +18,12 @@
  */
 
 import { mkdir, writeFile } from 'node:fs/promises'
+import { execSync } from 'node:child_process'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { content } from './src/content.js'
-import { locations } from './src/locations.js'
+import { locations, STOCKISTS_CLAIM_NL as CLAIM_NL, STOCKISTS_CLAIM_EN as CLAIM_EN } from './src/locations.js'
 import { faq } from './src/faq.js'
 
 const ROOT = dirname(fileURLToPath(import.meta.url))
@@ -62,6 +63,17 @@ function pagina({ lang, title, description, path, alternates = [], schema, body 
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Google Analytics (GA4) — zelfde tag als in index.html. Deze pagina's
+         zijn statisch en laden de app niet, dus ze hebben hun eigen kopie. -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8Q2Y5RGQ9Q"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8Q2Y5RGQ9Q');
+    </script>
+
     <title>${esc(title)}</title>
     <meta name="description" content="${esc(description)}" />
     <link rel="canonical" href="${url}" />${hreflang}
@@ -209,10 +221,10 @@ ${rows}
       daarom geen claims over.</p>
 
       <h2>Waar te koop</h2>
-      <p>ÉLAN ligt in ${winkels.length} winkels, sportscholen en horecazaken in
+      <p>ÉLAN ligt bij ${CLAIM_NL} winkels, sportscholen en horecazaken in
       Nederland. Het zwaartepunt ligt in Rotterdam en Den Haag, maar de lijst
       loopt van Alblasserdam tot Zoetermeer.</p>
-      <a class="cta" href="/verkooppunten/">Bekijk alle verkooppunten</a>
+      <a class="cta" href="/verkooppunten/">Bekijk de verkooppunten</a>
 
       <h2>Veelgestelde vragen</h2>
 ${faqHtml(faq.nl)}`
@@ -240,9 +252,9 @@ ${rows}
       claims about them.</p>
 
       <h2>Where to buy</h2>
-      <p>ÉLAN is stocked by ${winkels.length} shops, gyms and cafés across the
+      <p>ÉLAN is stocked by ${CLAIM_EN} shops, gyms and cafés across the
       Netherlands, most of them in Rotterdam and The Hague.</p>
-      <a class="cta" href="/verkooppunten/">See all stockists</a>
+      <a class="cta" href="/verkooppunten/">See the stockists</a>
 
       <h2>Frequently asked questions</h2>
 ${faqHtml(faq.en)}`
@@ -257,8 +269,8 @@ ${faqHtml(faq.en)}`
         ? 'Kokoswater van ÉLAN: voedingswaarde, ingrediënten en vragen'
         : 'ÉLAN coconut water: nutrition, ingredients and questions',
       description: nl
-        ? `100% puur kokoswater in een pak van 500 ml. Voedingswaarde per 100 ml, ingrediënten en antwoord op de vragen die het vaakst gesteld worden. Te koop bij ${winkels.length} verkooppunten in Nederland.`
-        : `100% pure coconut water in a 500 ml carton. Nutrition per 100 ml, ingredients and answers to the questions people ask most. Stocked by ${winkels.length} outlets across the Netherlands.`,
+        ? `100% puur kokoswater in een pak van 500 ml. Voedingswaarde per 100 ml, ingrediënten en antwoord op de vragen die het vaakst gesteld worden. Te koop bij ${CLAIM_NL} verkooppunten in Nederland.`
+        : `100% pure coconut water in a 500 ml carton. Nutrition per 100 ml, ingredients and answers to the questions people ask most. Stocked by ${CLAIM_EN} outlets across the Netherlands.`,
       schema: {
         '@context': 'https://schema.org',
         '@graph': [
@@ -340,7 +352,8 @@ ${items}
   const steden = `${top.slice(0, -1).join(', ')} en ${top.at(-1)}`
 
   const body = `      <h1>Waar koop je ÉLAN?</h1>
-      <p class="lead">${winkels.length} verkooppunten in Nederland, op alfabet per plaats.</p>
+      <p class="lead">ÉLAN ligt bij ${CLAIM_NL} verkooppunten in Nederland. Hieronder
+      de ${winkels.length} adressen die we tot nu toe verzameld hebben, op alfabet per plaats.</p>
 
       <p>ÉLAN ligt bij supermarkten, toko's, sportscholen, lunchrooms en
       speciaalzaken. De meeste adressen staan in ${esc(steden)}. Losse pakken
@@ -360,8 +373,8 @@ ${blokken}`
     html: pagina({
       lang: 'nl',
       path: '/verkooppunten/',
-      title: `Waar koop je ÉLAN kokoswater? ${winkels.length} verkooppunten`,
-      description: `Alle ${winkels.length} winkels, sportscholen en horecazaken in Nederland die ÉLAN kokoswater verkopen, gesorteerd per plaats. Met adres, van Rotterdam en Den Haag tot Dordrecht en Amsterdam.`,
+      title: `Waar koop je ÉLAN kokoswater? Verkooppunten in Nederland`,
+      description: `ÉLAN kokoswater ligt bij ${CLAIM_NL} verkooppunten in Nederland. ${winkels.length} winkels, sportscholen en horecazaken met adres, gesorteerd per plaats, van Rotterdam en Den Haag tot Dordrecht en Amsterdam.`,
       schema: {
         '@context': 'https://schema.org',
         '@graph': [
@@ -472,5 +485,67 @@ for (const p of paginas) {
   await writeFile(join(map, 'index.html'), p.html, 'utf8')
   console.log(`[prerender] ${p.path.padEnd(20)} ${(p.html.length / 1024).toFixed(1)} kB`)
 }
+
+/* ------------------------------------------------------------- sitemap -- */
+
+/* lastmod komt uit de laatste commit die de bron van die pagina raakte, niet
+ * uit de builddatum. Anders verspringt de datum bij elke deploy terwijl er
+ * niets veranderd is, en dan gaat Google hem terecht negeren. Zonder git
+ * (shallow clone op een buildserver) vallen we terug op vandaag. */
+function laatstGewijzigd(...bestanden) {
+  try {
+    const d = execSync(`git log -1 --format=%cs -- ${bestanden.join(' ')}`, {
+      encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim()
+    if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return d
+  } catch { /* geen git beschikbaar */ }
+  return new Date().toISOString().slice(0, 10)
+}
+
+const SITEMAP = [
+  {
+    loc: '/', prioriteit: '1.0', freq: 'weekly',
+    bron: ['index.html', 'src/content.js'],
+    alts: [['nl-NL', '/'], ['x-default', '/']],
+  },
+  {
+    loc: '/kokoswater/', prioriteit: '0.9', freq: 'monthly',
+    bron: ['src/faq.js', 'src/content.js', 'prerender.mjs'],
+    alts: [['nl-NL', '/kokoswater/'], ['en', '/coconut-water/']],
+  },
+  {
+    loc: '/coconut-water/', prioriteit: '0.7', freq: 'monthly',
+    bron: ['src/faq.js', 'src/content.js', 'prerender.mjs'],
+    alts: [['nl-NL', '/kokoswater/'], ['en', '/coconut-water/']],
+  },
+  {
+    loc: '/verkooppunten/', prioriteit: '0.9', freq: 'weekly',
+    bron: ['src/locations.js'], alts: [],
+  },
+  {
+    loc: '/ons-verhaal/', prioriteit: '0.6', freq: 'monthly',
+    bron: ['src/content.js'], alts: [],
+  },
+]
+
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Gegenereerd door prerender.mjs bij het bouwen. Niet met de hand bijwerken.
+  De hash-routes (#/find-us, #/shop) staan er bewust niet in: een zoekmachine
+  ziet alles achter een # als dezelfde pagina.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${SITEMAP.map((u) => `  <url>
+    <loc>${SITE}${u.loc}</loc>${u.alts.map(([lang, p]) =>
+    `\n    <xhtml:link rel="alternate" hreflang="${lang}" href="${SITE}${p}" />`).join('')}
+    <lastmod>${laatstGewijzigd(...u.bron)}</lastmod>
+    <changefreq>${u.freq}</changefreq>
+    <priority>${u.prioriteit}</priority>
+  </url>`).join('\n')}
+</urlset>
+`
+await writeFile(join(DIST, 'sitemap.xml'), sitemap, 'utf8')
+console.log(`[prerender] sitemap.xml     ${SITEMAP.length} URL's met lastmod`)
 
 console.log(`[prerender] ${paginas.length} pagina's, ${winkels.length} verkooppunten`)

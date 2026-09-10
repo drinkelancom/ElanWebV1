@@ -13,7 +13,7 @@ export const faq = {
   nl: [
     {
       q: 'Waar kun je ÉLAN kokoswater kopen?',
-      a: 'ÉLAN ligt in 118 winkels, sportscholen en horecazaken in Nederland, met de meeste adressen in Rotterdam en Den Haag. De volledige lijst per plaats staat op de verkooppuntenpagina. Een 12-pack is online te bestellen bij BGS Nutrition; losse pakken gaan via de verkooppunten.',
+      a: 'ÉLAN ligt bij ruim 450 winkels, sportscholen en horecazaken in Nederland, met de meeste adressen in Rotterdam en Den Haag. Op de verkooppuntenpagina staat de lijst met adressen die we tot nu toe verzameld hebben, gesorteerd per plaats. Een 12-pack is online te bestellen bij BGS Nutrition; losse pakken gaan via de verkooppunten.',
     },
     {
       q: 'Zitten er toegevoegde suikers in ÉLAN?',
@@ -60,7 +60,7 @@ export const faq = {
   en: [
     {
       q: 'Where can you buy ÉLAN coconut water?',
-      a: 'ÉLAN is stocked by 118 shops, gyms and cafés across the Netherlands, most of them in Rotterdam and The Hague. The full list by town is on the stockists page. A 12-pack can be ordered online from BGS Nutrition; single cartons go through the stockists.',
+      a: 'ÉLAN is stocked by over 450 shops, gyms and cafés across the Netherlands, most of them in Rotterdam and The Hague. The stockists page lists the addresses we have collected so far, sorted by town. A 12-pack can be ordered online from BGS Nutrition; single cartons go through the stockists.',
     },
     {
       q: 'Does ÉLAN contain added sugar?',

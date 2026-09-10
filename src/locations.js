@@ -2,6 +2,18 @@
 // Adrestekst = bron (Elan verkoop overzicht).
 // Coördinaten: OpenStreetMap winkel-POI waar beschikbaar, anders PDOK/BAG (adres-niveau).
 // Benodigd: name, country, city, lat, lng. type: 'hq' | 'store' | 'distributor'.
+//
+// Twee verschillende getallen, bewust:
+//  • STOCKISTS_CLAIM  — het totaal waar ÉLAN inmiddels ligt. Dit is de claim
+//    op de homepage, in de meta-teksten en in de FAQ.
+//  • locations.length — de adressen die we hier verzameld hebben en die op
+//    /verkooppunten/ getoond worden. Dat is een deel van het totaal.
+// Schrijf nergens "alle verkooppunten" over de lijst hieronder: een crawler
+// telt die adressen en ziet dan een tegenspraak met de claim. Noem het een
+// selectie, en houd het claim-getal op één plek — hier.
+export const STOCKISTS_CLAIM = '450+'
+export const STOCKISTS_CLAIM_NL = 'ruim 450'
+export const STOCKISTS_CLAIM_EN = 'over 450'
 
 export const locations = [
   {
