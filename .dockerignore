@@ -1,0 +1,21 @@
+# Wat niet mee hoeft in de build-context. Kleiner betekent hier vooral:
+# sneller uploaden naar de builder en geen toevallige bestanden in het image.
+
+node_modules
+dist
+.git
+.github
+.claude
+.DS_Store
+*.log
+
+# Lokaal gereedschap dat niets met de site zelf te maken heeft.
+giphy
+giphy.html
+inspect*.mjs
+extract-elan.mjs
+geocode-*.mjs
+render-gifs.mjs
+shot-local.mjs
+trim-image.mjs
+UPDATE-PLAN.html

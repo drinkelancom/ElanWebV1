@@ -1,0 +1,75 @@
+# NEXUS-WORKS deploy
+#
+# Kopieer dit bestand naar .github/workflows/nexus-deploy.yml in een repo die je
+# op je eigen NAS wilt draaien. Staat het er niet, dan gebeurt er niets — zo
+# kies je per project of het via de NAS gaat, via Vercel, of via allebei.
+# Vercel merkt hier niets van; die volgt zijn eigen koppeling.
+#
+# Wat er gebeurt:
+#   push naar main -> GitHub Actions bouwt het image -> pusht naar ghcr.io
+#   -> de NAS ziet binnen 5 minuten de nieuwe digest en rolt hem uit
+#
+# De NAS haalt op; GitHub duwt niets. Er staat dus geen poort open en GitHub
+# bewaart geen sleutels van je server.
+#
+# Eenmalig op de NAS:
+#   ./scripts/nas app new <naam> --image ghcr.io/<owner>/<repo>:main --port 3000
+
+name: NEXUS-WORKS deploy
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:        # ook handmatig te starten vanuit GitHub
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE: ${{ github.repository }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write       # nodig om naar ghcr.io te pushen
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Inloggen bij ghcr.io
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}   # automatisch aanwezig
+
+      - name: Tags bepalen
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE }}
+          tags: |
+            type=raw,value=main,enable={{is_default_branch}}
+            type=sha,prefix=sha-,format=short
+        # 'main' is de tag die de NAS volgt; 'sha-abc1234' blijft staan zodat je
+        # altijd naar een specifieke versie kunt terugrollen.
+
+      - name: Bouwen en pushen
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          # Cache tussen builds; scheelt op GitHub's machines veel tijd.
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64          # de NAS is x86_64
+
+      - name: Klaar
+        run: |
+          echo "Image gepusht: ${{ steps.meta.outputs.tags }}"
+          echo "De NAS haalt hem binnen 5 minuten op."
