@@ -49,7 +49,12 @@ export const SITE_URL = 'https://www.drinkelan.com'
 // dan stelt /api/google-reviews deze link zelf samen en heeft die voorrang.
 // Vul dit alleen als je géén Places API gebruikt maar wél de knop wilt tonen.
 // Leeg laten verbergt de knop; de rest van de sectie blijft gewoon werken.
-export const GOOGLE_REVIEW_URL = ''
+// Opgehaald uit het bedrijfsprofiel zelf (Ask for reviews → Review link) en
+// letterlijk uit de DOM gelezen: in Google's lettertype zijn de hoofdletter-I
+// en de kleine L niet te onderscheiden, en één verkeerd teken breekt de link.
+// Het bijbehorende Place ID is ChIJLTXlBgbNxUcRsF-YjYieoz4 — nodig voor
+// GOOGLE_PLACE_ID in Vercel zodra er een Maps API-sleutel is.
+export const GOOGLE_REVIEW_URL = 'https://g.page/r/CbBfmI2InqM-EBM/review'
 
 // Goedgekeurde klantreviews. Bewust taal-onafhankelijk: dit zijn letterlijke
 // citaten van klanten, die vertalen we niet mee met de NL/EN-schakelaar.
