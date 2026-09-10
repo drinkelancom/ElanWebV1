@@ -492,13 +492,25 @@ for (const p of paginas) {
  * uit de builddatum. Anders verspringt de datum bij elke deploy terwijl er
  * niets veranderd is, en dan gaat Google hem terecht negeren. Zonder git
  * (shallow clone op een buildserver) vallen we terug op vandaag. */
+/* Of de terugval is gebruikt, en zo ja waarom. Dit belandt als commentaar in de
+ * sitemap, zodat je met één curl op de live site ziet waar de datums vandaan
+ * komen. Zonder die regel is een terugval niet te onderscheiden van een echte
+ * commit van vandaag, en merk je pas maanden later dat elke deploy alle
+ * pagina's als "vandaag gewijzigd" opgeeft. */
+let datumBron = 'git'
+
 function laatstGewijzigd(...bestanden) {
   try {
     const d = execSync(`git log -1 --format=%cs -- ${bestanden.join(' ')}`, {
       encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'],
     }).trim()
     if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return d
-  } catch { /* geen git beschikbaar */ }
+    // Git draait wel, maar kent dit bestand niet — bijvoorbeeld een shallow
+    // clone waarin de commit die het aanraakte is weggesneden.
+    datumBron = `builddatum (git gaf geen datum voor ${bestanden[0]})`
+  } catch {
+    datumBron = 'builddatum (git niet beschikbaar)'
+  }
   return new Date().toISOString().slice(0, 10)
 }
 
@@ -528,24 +540,34 @@ const SITEMAP = [
   },
 ]
 
-const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<!--
-  Gegenereerd door prerender.mjs bij het bouwen. Niet met de hand bijwerken.
-  De hash-routes (#/find-us, #/shop) staan er bewust niet in: een zoekmachine
-  ziet alles achter een # als dezelfde pagina.
--->
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
-${SITEMAP.map((u) => `  <url>
+// Eerst de regels opbouwen, dan pas de kop: laatstGewijzigd() bepaalt onderweg
+// of de terugval is gebruikt, en dat moet in het commentaar bovenaan komen.
+const sitemapRegels = SITEMAP.map((u) => `  <url>
     <loc>${SITE}${u.loc}</loc>${u.alts.map(([lang, p]) =>
     `\n    <xhtml:link rel="alternate" hreflang="${lang}" href="${SITE}${p}" />`).join('')}
     <lastmod>${laatstGewijzigd(...u.bron)}</lastmod>
     <changefreq>${u.freq}</changefreq>
     <priority>${u.prioriteit}</priority>
-  </url>`).join('\n')}
+  </url>`).join('\n')
+
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Gegenereerd door prerender.mjs bij het bouwen. Niet met de hand bijwerken.
+  De hash-routes (#/find-us, #/shop) staan er bewust niet in: een zoekmachine
+  ziet alles achter een # als dezelfde pagina.
+
+  lastmod-bron: ${datumBron}
+  Hoort "git" te zijn: de datum van de laatste commit die de bron van die
+  pagina raakte. Staat hier "builddatum", dan heeft de buildserver geen
+  bruikbare git-historie en krijgt elke pagina de deploydatum — dat is een
+  lastmod die Google terecht gaat negeren.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${sitemapRegels}
 </urlset>
 `
 await writeFile(join(DIST, 'sitemap.xml'), sitemap, 'utf8')
-console.log(`[prerender] sitemap.xml     ${SITEMAP.length} URL's met lastmod`)
+console.log(`[prerender] sitemap.xml     ${SITEMAP.length} URL's, lastmod uit ${datumBron}`)
 
 console.log(`[prerender] ${paginas.length} pagina's, ${winkels.length} verkooppunten`)
