@@ -858,16 +858,33 @@ function Reviews() {
           <p className="reviews-empty reveal">{r.empty}</p>
         )}
 
+        {/* Google staat voorop en het eigen formulier eronder, omdat een
+            Google-review het enige is wat we niet zelf kunnen aanmaken: die
+            vult het kennispaneel en is voor een vreemde verifieerbaar. Beide
+            blijven voor iedereen zichtbaar — alleen tevreden klanten naar
+            Google sturen is review gating en verboden.
+            Zonder Google-link (endpoint uit, data.js leeg) valt het eigen
+            formulier terug in de hoofdrol. */}
         <div className="reviews-actions reveal">
-          {!open && status !== 'ok' && (
-            <button className="btn btn-primary" onClick={() => setOpen(true)}>{r.writeCta}</button>
-          )}
-          {schrijfUrl && (
+          {schrijfUrl ? (
             <a className="btn btn-outline" href={schrijfUrl} target="_blank" rel="noopener noreferrer">
               <GoogleIcon className="g-ico" /> {r.googleCta}
             </a>
+          ) : (
+            !open && status !== 'ok' && (
+              <button className="btn btn-primary" onClick={() => setOpen(true)}>{r.writeCta}</button>
+            )
           )}
         </div>
+
+        {schrijfUrl && !open && status !== 'ok' && (
+          <p className="reviews-alt reveal">
+            {r.noGoogleLead}{' '}
+            <button type="button" className="reviews-alt-link" onClick={() => setOpen(true)}>
+              {r.writeCta}
+            </button>
+          </p>
+        )}
 
         {status === 'ok' ? (
           <div className="review-form review-sent">

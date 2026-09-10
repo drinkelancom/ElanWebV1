@@ -217,6 +217,7 @@ export const content = {
       googleLabel: 'via Google',
       slideLabel: (n, van) => `Review ${n} van ${van}`,
       writeCta: 'Schrijf een review',
+      noGoogleLead: 'Geen Google-account?',
       googleCta: 'Review ons op Google',
       cancel: 'Annuleren',
       form: {
@@ -688,6 +689,7 @@ export const content = {
       googleLabel: 'via Google',
       slideLabel: (n, van) => `Review ${n} of ${van}`,
       writeCta: 'Write a review',
+      noGoogleLead: 'No Google account?',
       googleCta: 'Review us on Google',
       cancel: 'Cancel',
       form: {
