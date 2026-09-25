@@ -356,12 +356,23 @@ export default function FindUs() {
             style={{ width: '100%', height: '100%' }}
           >
             <MapController onReady={(m) => { mapRef.current = m }} />
+            {/* Esri Light Gray Canvas. Dit stond eerder op CARTO, maar dat
+                serveert sinds kort alleen nog een 'API KEY REQUIRED'-tegel
+                (2 kB, voor elke stijl) zonder account. Esri gebruikt dezelfde
+                tweedeling — grijze ondergrond, labels los erboven — zodat de
+                groene pins de enige kleur op de kaart blijven.
+                Let op: Esri zet de tegel-as anders neer ({z}/{y}/{x}) en heeft
+                geen {s}-subdomeinen of retina-variant. Boven zoom 16 bestaan
+                er geen tegels, dus schaalt Leaflet niveau 16 op in plaats van
+                een gat te laten vallen. */}
             <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &middot; CARTO'
-              url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png"
+              attribution='Tegels &copy; Esri &middot; &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>-bijdragers'
+              url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+              maxNativeZoom={16}
             />
             <TileLayer
-              url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png"
+              url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}"
+              maxNativeZoom={16}
             />
             {filtered.map((l) => (
               <Marker
