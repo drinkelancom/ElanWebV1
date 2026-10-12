@@ -547,6 +547,7 @@ function Fridge() {
    staan op de lichte ivoor-tegels. */
 const availabilityLogos = [
   { src: '/logos/plus.png', alt: 'PLUS' },
+  { src: '/logos/jumbo.svg', alt: 'Jumbo' },
   { src: '/logos/spar.png', alt: 'SPAR' },
   { src: '/logos/boons-markt.svg', alt: "Boon's Markt" },
   { src: '/logos/warung-mini.png', alt: 'Warung Mini' },

@@ -74,7 +74,7 @@ export const content = {
       eyebrow: '100% Puur Kokoswater',
       script: 'puur van nature',
       tagline: '100% puur kokoswater. Meer niet.',
-      sub: 'Getapt uit jonge groene kokosnoten. Zacht van smaak, licht in de mond, koud op zijn best.',
+      sub: 'Een unieke, zachte smaak die je vanaf de eerste slok verrast. Heerlijk verfrissend, puur van nature en op zijn best ijskoud.',
       cta: 'Ontdek ÉLAN',
     },
 
@@ -554,7 +554,7 @@ export const content = {
       eyebrow: '100% Pure Coconut Water',
       script: 'pure by nature',
       tagline: '100% Pure Coconut Water. Nothing else.',
-      sub: 'Tapped from young green coconuts. Soft on the tongue, light in the mouth, best served cold.',
+      sub: 'A unique, smooth taste that surprises you from the very first sip. Wonderfully refreshing, pure by nature and at its best ice-cold.',
       cta: 'Discover ÉLAN',
     },
 
