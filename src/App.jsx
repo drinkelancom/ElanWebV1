@@ -502,7 +502,7 @@ function Beach() {
           <div className="figures-grid">
             {t.stats.items.map(([a, b], i) => (
               <div key={i} className="figure" style={{ '--d': `${i * 90}ms` }}>
-                <strong>{a}</strong><span>{b}</span>
+                <strong className={a.length > 8 ? "is-long" : undefined}>{a}</strong><span>{b}</span>
               </div>
             ))}
           </div>

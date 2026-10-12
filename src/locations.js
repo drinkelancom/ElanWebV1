@@ -11,9 +11,9 @@
 // Schrijf nergens "alle verkooppunten" over de lijst hieronder: een crawler
 // telt die adressen en ziet dan een tegenspraak met de claim. Noem het een
 // selectie, en houd het claim-getal op één plek — hier.
-export const STOCKISTS_CLAIM = '450+'
-export const STOCKISTS_CLAIM_NL = 'ruim 450'
-export const STOCKISTS_CLAIM_EN = 'over 450'
+export const STOCKISTS_CLAIM = '600+'
+export const STOCKISTS_CLAIM_NL = 'ruim 600'
+export const STOCKISTS_CLAIM_EN = 'over 600'
 
 // Het aantal steden werkt hetzelfde: de lijst hieronder telt er nu 48, dus
 // "ruim veertig" blijft kloppen als er een adres bij komt. Naar boven bijstellen
