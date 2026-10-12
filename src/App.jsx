@@ -546,8 +546,8 @@ function Fridge() {
 /* Verkooppunt-logo's (taal-onafhankelijk). Zwarte line-art én full-color logo's
    staan op de lichte ivoor-tegels. */
 const availabilityLogos = [
-  { src: '/logos/plus.png', alt: 'PLUS' },
   { src: '/logos/jumbo.svg', alt: 'Jumbo' },
+  { src: '/logos/plus.png', alt: 'PLUS' },
   { src: '/logos/spar.png', alt: 'SPAR' },
   { src: '/logos/boons-markt.svg', alt: "Boon's Markt" },
   { src: '/logos/warung-mini.png', alt: 'Warung Mini' },

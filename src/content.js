@@ -129,8 +129,8 @@ export const content = {
 
     videoBand: {
       script: 'recht uit de bron',
-      title: 'Getapt uit jonge groene kokosnoten.',
-      body: 'Eén ingrediënt, meer niet. Gebotteld op het moment dat de natuur er klaar voor is.',
+      title: 'Puur van nature. Bijzonder van smaak.',
+      body: '100% puur kokoswater, nooit uit concentraat. Zonder toegevoegde suikers, zonder toevoegingen. Alleen de zachte, verfrissende smaak van ÉLAN.',
     },
 
     meaning: {
@@ -609,8 +609,8 @@ export const content = {
 
     videoBand: {
       script: 'straight from the source',
-      title: 'Tapped from young green coconuts.',
-      body: 'One ingredient, nothing else. Bottled the moment nature is ready.',
+      title: 'Pure by nature. Remarkable in taste.',
+      body: '100% pure coconut water, never from concentrate. No added sugars, no additives. Just the smooth, refreshing taste of ÉLAN.',
     },
 
     meaning: {

@@ -1587,6 +1587,17 @@ export const locations = [
     lng: 5.432274,
     type: 'store',
   },
+  {
+    // Google noemt 3311 BH, maar de BAG kent Grote Markt 75 alleen onder 3311 BG.
+    id: 'nl-spar-koellin-dordrecht',
+    name: 'SPAR Koellin',
+    country: 'Netherlands',
+    city: 'Dordrecht',
+    address: 'Grote Markt 75, 3311 BG',
+    lat: 51.816616,
+    lng: 4.666796,
+    type: 'store',
+  },
 ]
 
 export const typeColors = {
