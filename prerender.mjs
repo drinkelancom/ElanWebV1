@@ -148,6 +148,7 @@ function pagina({ lang, title, description, path, alternates = [], schema, body 
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="theme-color" content="#0c2c1b" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="ÉLAN" />
@@ -337,8 +338,8 @@ ${faqHtml(faq.en)}`
         ? 'Kokoswater van ÉLAN: voedingswaarde, ingrediënten en vragen'
         : 'ÉLAN coconut water: nutrition, ingredients and questions',
       description: nl
-        ? `100% puur kokoswater in een pak van 500 ml. Voedingswaarde per 100 ml, ingrediënten en antwoord op de vragen die het vaakst gesteld worden. Te koop bij ${CLAIM_NL} verkooppunten in Nederland.`
-        : `100% pure coconut water in a 500 ml carton. Nutrition per 100 ml, ingredients and answers to the questions people ask most. Stocked by ${CLAIM_EN} outlets across the Netherlands.`,
+        ? `Voedingswaarde, ingrediënten en veelgestelde vragen over ÉLAN: 100% puur kokoswater in een pak van 500 ml, te koop bij ${CLAIM_NL} verkooppunten.`
+        : `Nutrition, ingredients and common questions about ÉLAN: 100% pure coconut water in a 500 ml carton, stocked by ${CLAIM_EN} Dutch outlets.`,
       schema: {
         '@context': 'https://schema.org',
         '@graph': [
@@ -443,7 +444,7 @@ ${blokken}`
       lang: 'nl',
       path: '/verkooppunten/',
       title: `Waar koop je ÉLAN kokoswater? Verkooppunten in Nederland`,
-      description: `ÉLAN kokoswater ligt bij ${CLAIM_NL} verkooppunten in Nederland. ${winkels.length} winkels, sportscholen en horecazaken met adres, gesorteerd per plaats, van Rotterdam en Den Haag tot Dordrecht en Amsterdam.`,
+      description: `ÉLAN ligt bij ${CLAIM_NL} verkooppunten in Nederland. Hier ${winkels.length} winkels, sportscholen en horecazaken met adres, per plaats gesorteerd.`,
       schema: {
         '@context': 'https://schema.org',
         '@graph': [

@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && node prerender.mjs",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "indexnow": "node indexnow.mjs"
   },
   "dependencies": {
     "@vercel/blob": "^2.8.0",
