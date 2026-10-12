@@ -15,7 +15,7 @@ export const STOCKISTS_CLAIM = '450+'
 export const STOCKISTS_CLAIM_NL = 'ruim 450'
 export const STOCKISTS_CLAIM_EN = 'over 450'
 
-// Het aantal steden werkt hetzelfde: de lijst hieronder telt er nu 46, dus
+// Het aantal steden werkt hetzelfde: de lijst hieronder telt er nu 48, dus
 // "ruim veertig" blijft kloppen als er een adres bij komt. Naar boven bijstellen
 // mag pas als de lijst dat ook laat zien.
 export const CITIES_CLAIM_NL = 'ruim veertig steden'
@@ -1565,6 +1565,26 @@ export const locations = [
     address: 'Prins Alexanderplein 60, 3067 GC',
     lat: 51.951791,
     lng: 4.552073,
+    type: 'store',
+  },
+  {
+    id: 'nl-plus-rechtuyt-schoonhoven',
+    name: 'PLUS Rechtuyt',
+    country: 'Netherlands',
+    city: 'Schoonhoven',
+    address: 'Adam van Vianenstraat 100, 2871 VV',
+    lat: 51.951692,
+    lng: 4.846987,
+    type: 'store',
+  },
+  {
+    id: 'nl-plus-leersum',
+    name: 'PLUS Leersum',
+    country: 'Netherlands',
+    city: 'Leersum',
+    address: 'Honingraat 57, 3956 HH',
+    lat: 52.009981,
+    lng: 5.432274,
     type: 'store',
   },
 ]
